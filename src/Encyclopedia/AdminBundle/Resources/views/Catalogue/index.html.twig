@@ -1,0 +1,53 @@
+{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+
+{% block body %}
+<script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#filter_catalogue').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('_catalogue_autocomplete_search') }}",
+                    dataType: 'json',
+                    data: {
+                        catalogue: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+				value : item.name,
+				id: item.id
+                            }
+                        }));
+                    },
+                    maxRows: 15
+                })
+            },
+            select: function( event, ui ) { 
+                $('#id_catalogue').val(ui.item.id);
+            }
+        });
+
+    });
+</script>
+
+<div class="grid_0">
+    <h3>Search</h3>
+    <form action="{{ path('_catalogue_search') }}" method="POST">
+        <label for="filter_catalogue">Rechercher une entrée</label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" /> <input type="hidden" id="id_catalogue" name="id_catalogue" value="" /> <input type="submit" name="submit" value="Ok" />
+    </form>
+</div>
+<div class="grid_0">
+    <h3>Last 15 entries</h3>
+    <ul>
+        {% for le in lastentries %}
+        <li><a href="{{ path('_catalogue_edit', {'id' : le.id}) }}">{{ le.name }} ({{ le.category.name }})</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
