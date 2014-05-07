@@ -1,0 +1,3 @@
+encyclopedia_front_homepage:
+    pattern:  /
+    defaults: { _controller: EncyclopediaFrontBundle:Default:index }

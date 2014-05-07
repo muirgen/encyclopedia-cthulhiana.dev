@@ -1,0 +1,8 @@
+encyclopedia_admin:
+    resource: "@EncyclopediaAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin/
+
+encyclopedia_front:
+    resource: "@EncyclopediaFrontBundle/Resources/config/routing.yml"
+    prefix:   /
+

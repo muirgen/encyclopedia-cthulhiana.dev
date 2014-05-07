@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Encyclopedia Cthulhiana - Administration</title>
+        {% block stylesheets %}
+        <link href="{{ asset('css/960-grid/min/reset.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/960-grid/min/text.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/960-grid/grid.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet" />  
+        <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.10.4.custom.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/admin.css') }}" rel="stylesheet" />
+        {% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('js/libs/jquery-2.0.2.min.js') }}"></script>
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="header container_11">
+                <h1>Encyclopedia Cthulhiana</h1>
+                <h2>Administration</h2>
+            </div> 
+            <div class="menu container_11">
+                <ul>
+                    <li>Accueil</li>
+                    <li class="pipe">|</li>
+                    <li><a href="{{ path('_index')}}">Index</a></li>
+                    <li class="pipe">|</li>
+                    <li><a href="{{ path('_logout') }}">Logout</a></li>
+                </ul>
+            </div>
+            <div class="corpus container_11">
+            {% block body %}
+
+            {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

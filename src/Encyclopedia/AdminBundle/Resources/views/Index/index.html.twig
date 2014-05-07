@@ -1,0 +1,41 @@
+{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+
+{% block body %}
+<script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#filter_index').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('_index_search') }}",
+                    dataType: 'json',
+                    data: {
+                        index: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(object) {
+                            return object.id + ', ' + object.name; // on retourne cette forme de suggestion
+                        }));
+                    },
+                    maxRows: 15
+                })
+            }
+        });
+
+    });
+</script>
+
+<div class="grid_0">
+    <form action="{{ path('_index_search') }}" method="POST">
+        <label for="filter_index">Rechercher une entrée</label> <input type="text" class="ui-autocomplete-input" id="filter_index" name="filter_index" value="" /> <input type="text" name="id" value="" />
+    </form>
+</div>
+<div class="grid_0">
+    Ici les 15 dernières entrées
+</div>
+{% endblock %}

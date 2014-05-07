@@ -1,0 +1,14 @@
+encyclopedia_admin_homepage:
+    pattern:  /
+    defaults: { _controller: EncyclopediaAdminBundle:Default:index }
+_login:
+    pattern: /login
+    defaults: { _controller: EncyclopediaAdminBundle:Security:login }
+_login_check:
+    pattern: /login_check
+_logout:
+    pattern: /logout
+# importe les routes d'un répertoire Controller
+admin:
+    resource: "@EncyclopediaAdminBundle/Controller"
+    type:     annotation
