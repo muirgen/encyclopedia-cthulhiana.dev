@@ -5,12 +5,14 @@
         <group>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Form/CatalogueType.php</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Catalogue.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Repository/CatalogueRepository.php</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Persons.php</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Oeuvres.php</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/CatalogueAlias/edit.html.twig</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Catalogue/edit.html.twig</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/css/admin.css</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/CatalogueOeuvres.php</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Controller/CatalogueController.php</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/css/960-grid/grid.css</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Catalogue/index.html.twig</file>
         </group>
     </open-files>
 </project-private>

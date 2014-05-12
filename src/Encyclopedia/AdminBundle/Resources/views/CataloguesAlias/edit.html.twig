@@ -1,0 +1,39 @@
+{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+
+{% block body %}
+<script src="{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}"></script>
+<script src="{{ asset('js/libs/tinymce/tinymce.min.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    
+        $('textarea.tinymce').tinymce({
+            script_url : '{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}', 
+            theme: 'modern',
+            theme_modern_toolbar_location : "top",
+            theme_modern_toolbar_align : "left",
+            theme_modern_statusbar_location : "bottom"
+
+        });
+ 
+});
+</script>
+
+
+<h3><a href="{{ path('_catalogues') }}">Catalogue</a> > Edit : <a href="{{ path('_catalogues_edit', {'id' : catalogue.id}) }}">{{ catalogue.name }}</a> > Alias : {{ entity.name }}</h3>
+<div class="container_12 edit">
+    <div class="grid_6 block">
+        <fieldset><legend>Edit</legend>    
+        {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+
+        {{ form_row(edit_form.name) }}
+        {{ form_row(edit_form.country) }}
+        {{ form_row(edit_form.id_catalogue) }}
+        {{ form_row(edit_form.description, { 'attr' : {'class' : 'tinymce'} }) }}
+        {{ form_row(edit_form.note, { 'attr' : {'class' : 'tinymce'} }) }}
+
+        {{ form_end(edit_form) }}
+        </fieldset>
+    </div>
+</div>
+{% endblock %}
