@@ -15,6 +15,7 @@
         {{ form_end(edit_form) }}
         </fieldset>
     </div>
+    {% if entity.id %}
     <div class="grid_6 block">
         <fieldset><legend>Alias</legend>
             <p><a href="{{ path('_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
@@ -46,7 +47,7 @@
                     <th>Origin</th>
                     <th>Format</th>
                     <th>Author</th>
-                    <th>Library</th>
+                    <th>Publishing</th>
                 </tr>
                 {% for co in entity.cataloguesOeuvres %}
                 <tr>
@@ -72,6 +73,7 @@
             {% endif %}
         </fieldset>
     </div>
+   {% endif %}
 </div>
 
 {% endblock %}

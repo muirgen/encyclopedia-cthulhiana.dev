@@ -1,0 +1,62 @@
+{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+
+{% block body %}
+<script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+
+        $('#filter_person').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('_persons_autocomplete_search') }}",
+                    dataType: 'json',
+                    data: {
+                        person: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+				value : item.name,
+				id: item.id
+                            }
+                        }));
+                    },
+                    maxRows: 15
+                })
+            },
+            select: function( event, ui ) { 
+                $('#id_person').val(ui.item.id);
+                
+            },
+            close: function() { 
+		$('form#autocomplete_search').submit();
+            }
+        }).on('click', function(){
+		$(this).val('');
+                $('id_person').val('');
+            });
+
+    });
+</script>
+<h3>Persons</h3>
+<div class="grid_0">
+    <div style="float:left; width:17%;">
+        <form action="{{ path('_persons_search') }}" method="POST" id="autocomplete_search">
+            <label for="filter_person">Search</label> <input type="text" class="ui-autocomplete-input" id="filter_person" name="filter_person" value="" /> <input type="hidden" id="id_person" name="id_person" value="" /> <input type="submit" name="submit_search" value="Ok" />
+        </form>
+    </div>
+    <div style="float:left; width:17%"><a href="{{ path('_persons_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
+</div>
+<div class="grid_0">
+    <h4>Last 15 entries</h4>
+    <ul>
+        {% for le in lastentries %}
+        <li><a href="{{ path('_persons_edit', {'id' : le.id}) }}">{{ le.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

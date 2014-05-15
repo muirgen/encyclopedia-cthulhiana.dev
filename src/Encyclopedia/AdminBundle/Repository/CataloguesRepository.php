@@ -16,8 +16,8 @@ class CataloguesRepository extends EntityRepository{
                 . 'SELECT id_catalogue as id, name FROM catalogues_alias WHERE name LIKE ? ';
         
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('EncyclopediaAdminBundle:Catalogue', 'c');
-        $rsm->addEntityResult('EncyclopediaAdminBundle:CatalogueAlias', 'ca');
+        $rsm->addEntityResult('EncyclopediaAdminBundle:Catalogues', 'c');
+        $rsm->addEntityResult('EncyclopediaAdminBundle:CataloguesAlias', 'ca');
         $rsm->addFieldResult('c', 'id', 'id');
         $rsm->addFieldResult('c', 'name', 'name');
         $rsm->addFieldResult('ca', 'id', 'id');

@@ -36,11 +36,10 @@ class CataloguesAlias {
     private $id_catalogue;
     
     /**
-     * @var string
-     * 
-     * @ORM\Column(name="country", type="string", length=2, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Lang", inversedBy="cataloguesAliasLang")
+     * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      */
-    protected $country;
+    protected $id_lang;
     
     /**
      * @var text
@@ -70,7 +69,7 @@ class CataloguesAlias {
      * Set name
      *
      * @param string $name
-     * @return CatalogueAlias
+     * @return CataloguesAlias
      */
     public function setName($name)
     {
@@ -90,56 +89,10 @@ class CataloguesAlias {
     }
 
     /**
-     * Set id_catalogue
-     *
-     * @param \Encyclopedia\AdminBundle\Entity\Catalogue $idCatalogue
-     * @return CatalogueAlias
-     */
-    public function setIdCatalogue(\Encyclopedia\AdminBundle\Entity\Catalogue $idCatalogue = null)
-    {
-        $this->id_catalogue = $idCatalogue;
-
-        return $this;
-    }
-
-    /**
-     * Get id_catalogue
-     *
-     * @return \Encyclopedia\AdminBundle\Entity\Catalogue 
-     */
-    public function getIdCatalogue()
-    {
-        return $this->id_catalogue;
-    }
-
-    /**
-     * Set country
-     *
-     * @param string $country
-     * @return CatalogueAlias
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return string 
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
      * Set description
      *
      * @param string $description
-     * @return CatalogueAlias
+     * @return CataloguesAlias
      */
     public function setDescription($description)
     {
@@ -162,7 +115,7 @@ class CataloguesAlias {
      * Set note
      *
      * @param string $note
-     * @return CatalogueAlias
+     * @return CataloguesAlias
      */
     public function setNote($note)
     {
@@ -179,5 +132,51 @@ class CataloguesAlias {
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set id_catalogue
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $idCatalogue
+     * @return CataloguesAlias
+     */
+    public function setIdCatalogue(\Encyclopedia\AdminBundle\Entity\Catalogues $idCatalogue = null)
+    {
+        $this->id_catalogue = $idCatalogue;
+
+        return $this;
+    }
+
+    /**
+     * Get id_catalogue
+     *
+     * @return \Encyclopedia\AdminBundle\Entity\Catalogues 
+     */
+    public function getIdCatalogue()
+    {
+        return $this->id_catalogue;
+    }
+
+    /**
+     * Set id_lang
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Lang $idLang
+     * @return CataloguesAlias
+     */
+    public function setIdLang(\Encyclopedia\AdminBundle\Entity\Lang $idLang = null)
+    {
+        $this->id_lang = $idLang;
+
+        return $this;
+    }
+
+    /**
+     * Get id_lang
+     *
+     * @return \Encyclopedia\AdminBundle\Entity\Lang 
+     */
+    public function getIdLang()
+    {
+        return $this->id_lang;
     }
 }

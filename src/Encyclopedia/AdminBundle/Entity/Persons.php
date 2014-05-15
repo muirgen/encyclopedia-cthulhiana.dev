@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Persons
  *
  * @ORM\Table(name="persons")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Encyclopedia\AdminBundle\Repository\PersonsRepository")
  * 
  */
 class Persons {
@@ -32,6 +32,13 @@ class Persons {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
+     * @ORM\OneToMany(targetEntity="PersonsAlias", mappedBy="id_person")
+     */
+    protected $alias;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
      * @ORM\ManyToMany(targetEntity="Oeuvres", inversedBy="persons")
      * @ORM\JoinTable(name="oeuvres_persons",
      *   joinColumns={
@@ -49,6 +56,7 @@ class Persons {
      */
     public function __construct()
     {
+        $this->alias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->oeuvres = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -83,6 +91,39 @@ class Persons {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add alias
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\PersonsAlias $alias
+     * @return Persons
+     */
+    public function addAlias(\Encyclopedia\AdminBundle\Entity\PersonsAlias $alias)
+    {
+        $this->alias[] = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Remove alias
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\PersonsAlias $alias
+     */
+    public function removeAlias(\Encyclopedia\AdminBundle\Entity\PersonsAlias $alias)
+    {
+        $this->alias->removeElement($alias);
+    }
+
+    /**
+     * Get alias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

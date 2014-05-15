@@ -30,6 +30,22 @@ class CataloguesCategories {
     protected $name;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="CataloguesCategoriesTrans", mappedBy="category")
+     */
+    protected $translation;
+    
+   
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->translation = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -43,7 +59,7 @@ class CataloguesCategories {
      * Set name
      *
      * @param string $name
-     * @return CatalogueCategories
+     * @return CataloguesCategories
      */
     public function setName($name)
     {
@@ -60,5 +76,38 @@ class CataloguesCategories {
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans $translation
+     * @return CataloguesCategories
+     */
+    public function addTranslation(\Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans $translation)
+    {
+        $this->translation[] = $translation;
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans $translation
+     */
+    public function removeTranslation(\Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans $translation)
+    {
+        $this->translation->removeElement($translation);
+    }
+
+    /**
+     * Get translation
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslation()
+    {
+        return $this->translation;
     }
 }

@@ -25,7 +25,7 @@ class CataloguesController extends Controller {
      * @Route("/", name="_catalogues")
      */
     public function indexAction() {
-
+        
         $em = $this->getDoctrine()->getManager();
         $lastEntries = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
                 ->findAllWithLimit(15);
@@ -60,9 +60,9 @@ class CataloguesController extends Controller {
      */
     public function newAction() {
         
-        $entity = new Catalogue();
+        $entity = new Catalogues();
         
-        $form = $this->catalogueCreateForm($entity);
+        $form = $this->cataloguesCreateForm($entity);
         
         return array(
             'entity'      => $entity,
