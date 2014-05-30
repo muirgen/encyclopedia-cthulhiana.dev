@@ -9,29 +9,29 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Encyclopedia\AdminBundle\Form\CataloguesType;
-use Encyclopedia\AdminBundle\Entity\Catalogues;
+use Encyclopedia\AdminBundle\Form\OeuvresType;
+use Encyclopedia\AdminBundle\Entity\Oeuvres;
 
 /**
- * Description of CataloguesController
+ * Description of OeuvresController
  *
  * @author Jenny
  *
- * @Route("/catalogues")
+ * @Route("/oeuvres")
  */
-class CataloguesController extends Controller {
-
+class OeuvresController extends Controller{
+    
     /**
-     * @Route("/", name="_catalogues")
+     * @Route("/", name="_oeuvres")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction(){
         
         $em = $this->getDoctrine()->getManager();
-        $lastEntries = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+        $lastentries = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
                 ->findAllWithLimit(15);
         
-        return array('lastentries' => $lastEntries);
+        return array('lastentries' => $lastentries);
     }
     
     /**************************************************
@@ -39,14 +39,14 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-    * Creates a form to create a Catalogue entity.
-    * @param Catalogue $entity The entity
+    * Creates a form to create a Oeuvre entity.
+    * @param Oeuvre $entity The entity
     * @return \Symfony\Component\Form\Form The form
     */
-    private function cataloguesCreateForm(Catalogues $entity){
+    private function oeuvresCreateForm(Oeuvres $entity){
         
-        $form = $this->createForm(new CataloguesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_create'),
+        $form = $this->createForm(new OeuvresType(), $entity, array(
+            'action' => $this->generateUrl('_oeuvres_create'),
             'method' => 'POST',
         ));
 
@@ -54,33 +54,32 @@ class CataloguesController extends Controller {
         
         return $form;
     }
-        
+    
     /**
-     * @Route("/new", name="_catalogues_new")
-     * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
+     * @Route("/new", name="_oeuvres_new")
+     * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
-    public function newAction() {
+    public function newAction(){
         
-        $entity = new Catalogues();
+        $entity = new Oeuvres();
         
-        $form = $this->cataloguesCreateForm($entity);
+        $form = $this->oeuvresCreateForm($entity);
         
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $form->createView()
-        );
+        return array('entity' => $entity,
+                    'edit_form' => $form->createView());
+        
     }
     
     /**
-     * @Route("/create", name="_catalogues_create")
+     * @Route("/create", name="_oeuvres_create")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
     public function createAction(Request $request) {
 
-        $entity = new Catalogues();
+        $entity = new Oeuvres();
         
-        $form = $this->cataloguesCreateForm($entity);
+        $form = $this->oeuvresCreateForm($entity);
         
         $form->handleRequest($request);
 
@@ -89,7 +88,7 @@ class CataloguesController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -101,16 +100,15 @@ class CataloguesController extends Controller {
     /**************************************************
      * EDIT ENTITY
      **************************************************/
-    
     /**
-    * Creates a form to edit a Catalogue entity.
-    * @param Catalogue $entity The entity
+    * Creates a form to edit a Oeuvre entity.
+    * @param Oeuvre $entity The entity
     * @return \Symfony\Component\Form\Form The form
     */
-    private function cataloguesEditForm(Catalogues $entity)
+    private function oeuvresEditForm(Oeuvres $entity)
     {
-        $form = $this->createForm(new CataloguesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new OeuvresType(), $entity, array(
+            'action' => $this->generateUrl('_oeuvres_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
         
@@ -119,8 +117,8 @@ class CataloguesController extends Controller {
         return $form;
     }
     
-    /**
-     * @Route("/edit/{id}", name="_catalogues_edit")
+   /**
+     * @Route("/edit/{id}", name="_oeuvres_edit")
      * @Method("GET")
      * @Template()
      */
@@ -128,13 +126,13 @@ class CataloguesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
+        $entity = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogues entity.');
+            throw $this->createNotFoundException('Unable to find Oeuvres entity.');
         }
         
-        $form = $this->cataloguesEditForm($entity);
+        $form = $this->oeuvresEditForm($entity);
 
         return array(
             'entity'      => $entity,
@@ -143,28 +141,28 @@ class CataloguesController extends Controller {
     }
 
     /**
-     * @Route("/update/{id}", name="_catalogues_update")
+     * @Route("/update/{id}", name="_oeuvres_update")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
     public function updateAction(Request $request, $id){
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
+        $entity = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogues entity.');
+            throw $this->createNotFoundException('Unable to find Oeuvres entity.');
         }
         
-        $form = $this->cataloguesEditForm($entity);
+        $form = $this->oeuvresEditForm($entity);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $id)));
         }
 
         return array(
@@ -178,40 +176,41 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/autocomplete-search", name="_catalogues_autocomplete_search")
+     * @Route("/autocomplete-search", name="_oeuvres_autocomplete_search")
      * @Method("GET")
      */
     public function autocompleteSearchAction(Request $request) {
 
-        $termSearch = $request->query->get('catalogue');
+        $termSearch = $request->query->get('oeuvre');
+        $id_catalogue = $request->query->get('id_catalogue');
 
         $em = $this->getDoctrine()->getManager();
-        $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
-                ->findByAutocompleteWithAlias($termSearch);
+        $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+                ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
 
         $array_props = array();
 
-        foreach ($props as $key => $p):
-            $array_props[$key + 1] = array('id' => $p['ca_id'], 'name' => $p['ca_name']);
+        foreach ($props as $key => $o):
+            $array_props[$key + 1] = array('id' => $o['oa_id'], 'name' => $o['oa_name']);
         endforeach;
 
         return new Response(json_encode($array_props));
     }
 
     /**
-     * @Route("/search", name="_catalogues_search")
+     * @Route("/search", name="_oeuvres_search")
      * @Method("POST")
      */
     public function searchAction(Request $request) {
 
-        $id_catalogue = $request->request->get('id_catalogue');
+        $id_oeuvre = $request->request->get('id_oeuvre');
 
         /**
-         * if $id_catalogue is referenced in the form submitted (choice of item inside the autocomplete list)
+         * if $id_oeuvre is referenced in the form submitted (choice of item inside the autocomplete list)
          * Redirect to the edit form for the id.
          */
-        if ($id_catalogue) {
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id_catalogue)));
+        if ($id_oeuvre) {
+            return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $id_oeuvre)));
         }
 
         /**
@@ -220,5 +219,5 @@ class CataloguesController extends Controller {
          */
         return new Response('search');
     }
-
+    
 }

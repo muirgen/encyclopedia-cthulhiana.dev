@@ -25,7 +25,7 @@ class CataloguesCategoriesTrans {
      * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      * @ORM\Id
      */
-    protected $lang;
+    protected $languages;
     
     /**
      * @var string
@@ -80,25 +80,25 @@ class CataloguesCategoriesTrans {
     }
 
     /**
-     * Set lang
+     * Set languages
      *
-     * @param \Encyclopedia\AdminBundle\Entity\Lang $lang
+     * @param \Encyclopedia\AdminBundle\Entity\Lang $languages
      * @return CataloguesCategoriesTrans
      */
-    public function setLang(\Encyclopedia\AdminBundle\Entity\Lang $lang)
+    public function setLanguages(\Encyclopedia\AdminBundle\Entity\Lang $languages)
     {
-        $this->lang = $lang;
+        $this->languages = $languages;
 
         return $this;
     }
 
     /**
-     * Get lang
+     * Get languages
      *
      * @return \Encyclopedia\AdminBundle\Entity\Lang 
      */
-    public function getLang()
+    public function getLanguages()
     {
-        return $this->lang;
+        return $this->languages;
     }
 }

@@ -33,13 +33,13 @@ class CataloguesAlias {
      * @ORM\ManyToOne(targetEntity="Catalogues", inversedBy="alias")
      * @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
      */
-    private $id_catalogue;
+    private $catalogues;
     
     /**
      * @ORM\ManyToOne(targetEntity="Lang", inversedBy="cataloguesAliasLang")
      * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      */
-    protected $id_lang;
+    protected $languages;
     
     /**
      * @var text
@@ -55,6 +55,7 @@ class CataloguesAlias {
      */
     protected $note;
     
+
     /**
      * Get id
      *
@@ -135,48 +136,48 @@ class CataloguesAlias {
     }
 
     /**
-     * Set id_catalogue
+     * Set catalogues
      *
-     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $idCatalogue
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $catalogues
      * @return CataloguesAlias
      */
-    public function setIdCatalogue(\Encyclopedia\AdminBundle\Entity\Catalogues $idCatalogue = null)
+    public function setCatalogues(\Encyclopedia\AdminBundle\Entity\Catalogues $catalogues = null)
     {
-        $this->id_catalogue = $idCatalogue;
+        $this->catalogues = $catalogues;
 
         return $this;
     }
 
     /**
-     * Get id_catalogue
+     * Get catalogues
      *
      * @return \Encyclopedia\AdminBundle\Entity\Catalogues 
      */
-    public function getIdCatalogue()
+    public function getCatalogues()
     {
-        return $this->id_catalogue;
+        return $this->catalogues;
     }
 
     /**
-     * Set id_lang
+     * Set languages
      *
-     * @param \Encyclopedia\AdminBundle\Entity\Lang $idLang
+     * @param \Encyclopedia\AdminBundle\Entity\Lang $languages
      * @return CataloguesAlias
      */
-    public function setIdLang(\Encyclopedia\AdminBundle\Entity\Lang $idLang = null)
+    public function setLanguages(\Encyclopedia\AdminBundle\Entity\Lang $languages = null)
     {
-        $this->id_lang = $idLang;
+        $this->languages = $languages;
 
         return $this;
     }
 
     /**
-     * Get id_lang
+     * Get languages
      *
      * @return \Encyclopedia\AdminBundle\Entity\Lang 
      */
-    public function getIdLang()
+    public function getLanguages()
     {
-        return $this->id_lang;
+        return $this->languages;
     }
 }

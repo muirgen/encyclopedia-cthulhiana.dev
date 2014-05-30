@@ -132,7 +132,7 @@ class CataloguesCategoriesController extends Controller{
         $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Catalogues Categories entity.');
         }
         
         $form = $this->cataloguesCategoriesEditForm($entity);
@@ -155,7 +155,7 @@ class CataloguesCategoriesController extends Controller{
         $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Catalogues Categories entity.');
         }
         
         $form = $this->cataloguesCategoriesEditForm($entity);

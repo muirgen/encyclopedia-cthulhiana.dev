@@ -43,7 +43,7 @@ class PersonsAliasController extends Controller {
     
     /**
      * @Route("/id-person-{id_person}/new", name="_persons_alias_new")
-     * @Template("EncyclopediaAdminBundle:personsAlias:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:PersonsAlias:edit.html.twig")
      */
     public function newAction($id_person) {
         
@@ -65,7 +65,7 @@ class PersonsAliasController extends Controller {
     /**
      * @Route("/id-person-{id_person}/create", name="_persons_alias_create")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:personsAlias:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:PersonsAlias:edit.html.twig")
      */
     public function createAction(Request $request, $id_person) {
         
@@ -127,7 +127,7 @@ class PersonsAliasController extends Controller {
         $entity = $em->getRepository('EncyclopediaAdminBundle:PersonsAlias')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Person entity.');
+            throw $this->createNotFoundException('Unable to find Persons Alias entity.');
         }
         
         $form = $this->personsAliasEditForm($entity, $id_person);
@@ -152,7 +152,7 @@ class PersonsAliasController extends Controller {
         $entity = $em->getRepository('EncyclopediaAdminBundle:PersonsAlias')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Person entity.');
+            throw $this->createNotFoundException('Unable to find Persons Alias entity.');
         }
         
         $form = $this->personsAliasEditForm($entity, $id_person);

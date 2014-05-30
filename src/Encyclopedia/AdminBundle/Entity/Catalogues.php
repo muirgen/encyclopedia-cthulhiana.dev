@@ -47,7 +47,7 @@ class Catalogues {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\OneToMany(targetEntity="CataloguesAlias", mappedBy="id_catalogue")
+     * @ORM\OneToMany(targetEntity="CataloguesAlias", mappedBy="catalogues")
      */
     protected $alias;
     
@@ -57,7 +57,6 @@ class Catalogues {
      * @ORM\OneToMany(targetEntity="CataloguesOeuvres", mappedBy="catalogues")
      */
     protected $cataloguesOeuvres;
-   
    
     /**
      * Constructor

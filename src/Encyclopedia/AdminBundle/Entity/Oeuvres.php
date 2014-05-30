@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Oeuvres
  *
  * @ORM\Table(name="oeuvres")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Encyclopedia\AdminBundle\Repository\OeuvresRepository")
  * 
  */
 class Oeuvres {
@@ -29,7 +29,6 @@ class Oeuvres {
      */
     protected $name;
 
-
     /**
      * @var \Year
      * 
@@ -47,6 +46,13 @@ class Oeuvres {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
+     * @ORM\OneToMany(targetEntity="OeuvresAlias", mappedBy="oeuvres")
+     */
+    protected $alias;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
      * @ORM\OneToMany(targetEntity="CataloguesOeuvres", mappedBy="oeuvres")
      */
     protected $cataloguesOeuvres;
@@ -57,13 +63,13 @@ class Oeuvres {
      * @ORM\ManyToMany(targetEntity="Persons", mappedBy="oeuvres")
      */
     protected $persons;
-   
-   
+    
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->alias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cataloguesOeuvres = new \Doctrine\Common\Collections\ArrayCollection();
         $this->persons = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -145,6 +151,39 @@ class Oeuvres {
     public function getFormat()
     {
         return $this->format;
+    }
+
+    /**
+     * Add alias
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\OeuvresAlias $alias
+     * @return Oeuvres
+     */
+    public function addAlias(\Encyclopedia\AdminBundle\Entity\OeuvresAlias $alias)
+    {
+        $this->alias[] = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Remove alias
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\OeuvresAlias $alias
+     */
+    public function removeAlias(\Encyclopedia\AdminBundle\Entity\OeuvresAlias $alias)
+    {
+        $this->alias->removeElement($alias);
+    }
+
+    /**
+     * Get alias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**

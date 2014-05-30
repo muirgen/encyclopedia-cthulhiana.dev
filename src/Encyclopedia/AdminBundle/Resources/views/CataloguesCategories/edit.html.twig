@@ -15,22 +15,22 @@
     </div>
     <div class="grid_6 block">
         {% if entity.id %}
-        <p><a href="{{ path('_catalogues_categories_trans_new',{'id_category' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a Translation</a></p>
         <fieldset><legend>Translation</legend>
-        {% if entity.translation|length > 0 %} 
-            <table class="list">
-                <tr>
-                    <th>Translation</th>
-                    <th>Country</th>
-                </tr>
-                {% for tr in entity.translation %}
-                <tr>
-                    <td style="vertical-align:middle">{{tr.nameTrans}}</td>
-                    <td style="vertical-align:bottom"><img src="{{ asset('img/flags/'~tr.lang.isoCode~'.png') }}" width="20px" height="20px" /></td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
+            <p><a href="{{ path('_catalogues_categories_trans_new',{'id_category' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a Translation</a></p>
+            {% if entity.translation|length > 0 %} 
+                <table class="list">
+                    <tr>
+                        <th>Translation</th>
+                        <th>Country</th>
+                    </tr>
+                    {% for tr in entity.translation %}
+                    <tr>
+                        <td style="vertical-align:baseline">{{tr.nameTrans}}</td>
+                        <td style="vertical-align:bottom"><img src="{{ asset('img/flags/'~tr.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
         </fieldset>
         {% endif %}
     </div>

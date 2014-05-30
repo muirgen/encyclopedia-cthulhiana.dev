@@ -6,21 +6,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CataloguesCategoriesTransType extends AbstractType
+class OeuvresType extends AbstractType
 {
-        /**
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nameTrans')
-            ->add('category','entity', array('class' => 'EncyclopediaAdminBundle:CataloguesCategories',
-                                                'property' => 'name'))
-            ->add('languages', 'entity', array('class' => 'EncyclopediaAdminBundle:Lang',
-                                            'property' => 'name'))   
-        ;
+            ->add('name')
+            ->add('date', 'text', array('max_length' => 4))
+            ->add('format','choice',array('choices' => array('Short Story' => 'Short Story',
+                                                             'Novel' => 'Novel',
+                                                             'Movie' => 'Movie',
+                                                             'Encyclopedia' => 'Encyclopedia'),
+                                          'required' => true));
     }
     
     /**
@@ -29,7 +30,7 @@ class CataloguesCategoriesTransType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans'
+            'data_class' => 'Encyclopedia\AdminBundle\Entity\Oeuvres'
         ));
     }
 
@@ -38,6 +39,6 @@ class CataloguesCategoriesTransType extends AbstractType
      */
     public function getName()
     {
-        return 'encyclopedia_adminbundle_cataloguescategoriestrans';
+        return 'encyclopedia_adminbundle_oeuvres';
     }
 }

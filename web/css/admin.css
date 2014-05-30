@@ -47,8 +47,13 @@ h4{
 
 .corpus{
     margin-top: 1%;
+    z-index: 1;
+    position:relative;
 }
 
+.block{
+    z-index: 1;
+}
 /** Edit form specs **/
 .edit div{
     width:100%;
@@ -105,6 +110,14 @@ h4{
     float:right;
 }
 
+/** spec form input **/
+.formAdding input[type="submit"]{
+    width:auto;
+    background-color:#9ab11a;
+    border:1px solid #9ab11a;
+    color:#FFFFFF;
+}
+
 /** Table display **/
 table{
     width:100%;
@@ -125,6 +138,26 @@ table tr td.tableText p{
     margin: 0;
 }
 
+/** Div wich appear with summary of item like oeuvres, auteurs, catalogues **/
+/** When a choice has been choose in drop down list. **/
+.edit .divSummaryContent, .divSummaryContent{
+    border-left:1px dotted #9ab11a;
+    z-index:4;
+    position:absolute;
+    right:0.2%;
+    width:45%;
+    background-color:#f9f9f9;
+    display:none;
+    height:350px;
+}
+.edit .divOpenSummaryContent, .divOpenSummaryContent{
+    background-color: #FFFFFF;
+    z-index: 4;
+    position: absolute;
+    right:0.2%;
+    display: none;
+    width:auto;
+}
 /** overwriting css jquery for autocomplete **/
 .ui-corner-all{
     border-top-left-radius: 0;

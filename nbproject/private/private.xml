@@ -3,16 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Form/CatalogueType.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Catalogue.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Persons.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/Oeuvres.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/CatalogueAlias/edit.html.twig</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Catalogue/edit.html.twig</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Catalogues/edit.html.twig</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Controller/OeuvresController.php</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/css/admin.css</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Entity/CatalogueOeuvres.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Controller/CatalogueController.php</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/css/960-grid/grid.css</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Oeuvres/index.html.twig</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/layout.html.twig</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Repository/OeuvresRepository.php</file>
         </group>
     </open-files>
 </project-private>

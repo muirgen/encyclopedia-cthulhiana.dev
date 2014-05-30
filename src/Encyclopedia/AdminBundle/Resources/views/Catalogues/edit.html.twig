@@ -1,7 +1,56 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body %}
+<script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        
+        $('#filter_oeuvre').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('_oeuvres_autocomplete_search') }}",
+                    dataType: 'json',
+                    data: {
+                        oeuvre: request.term,
+                        id_catalogue: {{ entity.id }}
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+				value : item.name,
+				id: item.id
+                            }
+                        }));
+                    },
+                    maxRows: 15
+                })
+            },
+            select: function( event, ui ) { 
+                $('#id_oeuvre').val(ui.item.id);
+                openInfoBox('Oeuvre');
+                
+            },
+            close: function() { 
+		$('form#autocomplete_search').submit();
+            }
+        }).on('click', function(){
+		$(this).val('');
+                $('id_oeuvre').val('');
+            });
+
+    });
+</script>
+{# to come back at the top of page #}
+<a name="top"></a>
+{# breadcrumb #}
 <h3><a href="{{ path('_catalogues') }}">Catalogue</a> > Edit : {{ entity.name }}</h3>
+{# navigation submenu #}
+<p><a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
+{# page informations #}
 <div class="container_12 edit">
     <div class="grid_6 block">
         <fieldset><legend>Edit</legend>    
@@ -16,7 +65,7 @@
         </fieldset>
     </div>
     {% if entity.id %}
-    <div class="grid_6 block">
+    <div class="grid_0 block"><a name="alias"></a>
         <fieldset><legend>Alias</legend>
             <p><a href="{{ path('_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
             {% if entity.alias|length > 0 %}
@@ -29,16 +78,26 @@
                 {% for alias in entity.alias %}
                 <tr>
                     <td><a href="{{ path('_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
-                    <td>{{ alias.country }}</td>
+                    <td><img src="{{ asset('img/flags/'~alias.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
                     <td class="tableText">{{ alias.description|raw }}</td>
                 </tr>
                 {% endfor %}
             </table>
             {% endif %}
         </fieldset>
+        <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
-    <div class="grid_0">
+    
+    <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
         <fieldset><legend>Oeuvres</legend>
+            <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
+            <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
+                <form action="" method="POST" class="formAdding">
+                <label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
+                </form>
+                <br />
+                <span id="spanCloseOeuvre" style="display:block; clear: both;"><a href="javascript:closeDiv('Oeuvre'),clearFields('Oeuvre');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related oeuvre</a></span>
+            </div>
             {% if entity.cataloguesOeuvres|length > 0 %}
             <table class="list">
                 <tr>
@@ -72,6 +131,7 @@
             </table>
             {% endif %}
         </fieldset>
+        <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
    {% endif %}
 </div>

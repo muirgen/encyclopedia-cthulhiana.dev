@@ -46,17 +46,23 @@ class Lang {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\OneToMany(targetEntity="CataloguesAlias", mappedBy="id_lang")
+     * @ORM\OneToMany(targetEntity="CataloguesAlias", mappedBy="languages")
      */
     protected $cataloguesAliasLang;
     
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\OneToMany(targetEntity="CataloguesCategoriesTrans", mappedBy="lang")
+     * @ORM\OneToMany(targetEntity="CataloguesCategoriesTrans", mappedBy="languages")
      */
     protected $cataloguesCategoriesLang;
     
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="OeuvresAlias", mappedBy="languages")
+     */
+    protected $oeuvresAliasLang;
     
     /**
      * Constructor
@@ -65,6 +71,7 @@ class Lang {
     {
         $this->cataloguesAliasLang = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cataloguesCategoriesLang = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->oeuvresAliasLang = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -210,5 +217,38 @@ class Lang {
     public function getCataloguesCategoriesLang()
     {
         return $this->cataloguesCategoriesLang;
+    }
+
+    /**
+     * Add oeuvresAliasLang
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\OeuvresAlias $oeuvresAliasLang
+     * @return Lang
+     */
+    public function addOeuvresAliasLang(\Encyclopedia\AdminBundle\Entity\OeuvresAlias $oeuvresAliasLang)
+    {
+        $this->oeuvresAliasLang[] = $oeuvresAliasLang;
+
+        return $this;
+    }
+
+    /**
+     * Remove oeuvresAliasLang
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\OeuvresAlias $oeuvresAliasLang
+     */
+    public function removeOeuvresAliasLang(\Encyclopedia\AdminBundle\Entity\OeuvresAlias $oeuvresAliasLang)
+    {
+        $this->oeuvresAliasLang->removeElement($oeuvresAliasLang);
+    }
+
+    /**
+     * Get oeuvresAliasLang
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOeuvresAliasLang()
+    {
+        return $this->oeuvresAliasLang;
     }
 }

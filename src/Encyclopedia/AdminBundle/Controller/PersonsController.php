@@ -23,6 +23,7 @@ class PersonsController extends Controller{
     
     /**
      * @Route("/", name="_persons")
+     * @Template()
      */
     public function indexAction() {
 
@@ -30,7 +31,7 @@ class PersonsController extends Controller{
         $lastEntries = $em->getRepository('EncyclopediaAdminBundle:Persons')
                 ->findAllWithLimit(15);
         
-        return $this->render('EncyclopediaAdminBundle:Persons:index.html.twig',array('lastentries' => $lastEntries));
+        return array('lastentries' => $lastEntries);
     }
     
     /**************************************************
@@ -56,7 +57,7 @@ class PersonsController extends Controller{
     
     /**
      * @Route("/new", name="_persons_new")
-     * @Template("EncyclopediaAdminBundle:persons:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:Persons:edit.html.twig")
      */
     public function newAction() {
         
@@ -73,7 +74,7 @@ class PersonsController extends Controller{
     /**
      * @Route("/create", name="_persons_create")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:persons:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:Persons:edit.html.twig")
      */
     public function createAction(Request $request) {
 
@@ -130,7 +131,7 @@ class PersonsController extends Controller{
         $entity = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Persons entity.');
         }
         
         $form = $this->personsEditForm($entity);
@@ -153,7 +154,7 @@ class PersonsController extends Controller{
         $entity = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Persons entity.');
         }
         
         $form = $this->personsEditForm($entity);

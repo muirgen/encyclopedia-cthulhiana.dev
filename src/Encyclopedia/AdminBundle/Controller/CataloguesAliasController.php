@@ -43,7 +43,7 @@ class CataloguesAliasController extends Controller {
     
     /**
      * @Route("/id-catalogue-{id_catalogue}/new", name="_catalogues_alias_new")
-     * @Template("EncyclopediaAdminBundle:cataloguesAlias:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
     public function newAction($id_catalogue) {
         
@@ -51,7 +51,7 @@ class CataloguesAliasController extends Controller {
         $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id_catalogue);
         
         $entity = new CataloguesAlias();
-        $entity->setIdCatalogue($catalogue);
+        $entity->setCatalogues($catalogue);
      
         $form = $this->cataloguesAliasCreateForm($entity,$id_catalogue);
         
@@ -65,7 +65,7 @@ class CataloguesAliasController extends Controller {
     /**
      * @Route("/id-catalogue-{id_catalogue}/create", name="_catalogues_alias_create")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:cataloguesAlias:edit.html.twig")
+     * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
     public function createAction(Request $request, $id_catalogue) {
         
@@ -98,8 +98,8 @@ class CataloguesAliasController extends Controller {
      **************************************************/
     
     /**
-    * Creates a form to edit a Catalogue entity.
-    * @param Catalogue $entity The entity
+    * Creates a form to edit a CataloguesAlias entity.
+    * @param CataloguesAlias $entity The entity
     * @return \Symfony\Component\Form\Form The form
     */
     private function cataloguesAliasEditForm(CataloguesAlias $entity, $id_catalogue)
@@ -117,7 +117,7 @@ class CataloguesAliasController extends Controller {
     /**
      * @Route("/id-catalogue-{id_catalogue}/edit/{id}/", name="_catalogues_alias_edit")
      * @Method("GET")
-     * @Template()
+     * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
     public function editAction($id, $id_catalogue) {
         
@@ -127,7 +127,7 @@ class CataloguesAliasController extends Controller {
         $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesAlias')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Catalogues Alias entity.');
         }
         
         $form = $this->cataloguesAliasEditForm($entity, $id_catalogue);
@@ -152,7 +152,7 @@ class CataloguesAliasController extends Controller {
         $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesAlias')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Catalogue entity.');
+            throw $this->createNotFoundException('Unable to find Catalogues Alias entity.');
         }
         
         $form = $this->cataloguesAliasEditForm($entity, $id_catalogue);
