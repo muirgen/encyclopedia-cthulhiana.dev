@@ -48,11 +48,11 @@ class OeuvresRepository extends EntityRepository {
         $results = null;
 
         $sql = 'SELECT id, CONCAT(name," (", format ,") ") AS name FROM oeuvres'
-                . ' LEFT JOIN catalogues_oeuvres ON (oeuvres.id = catalogues_oeuvres.id_oeuvre) WHERE name LIKE ? AND catalogues_oeuvres.id_catalogue IS NULL '
+                . ' LEFT JOIN catalogues_oeuvres ON (oeuvres.id = catalogues_oeuvres.id_oeuvre) WHERE name LIKE ? AND (catalogues_oeuvres.id_catalogue != ? OR catalogues_oeuvres.id_catalogue IS NULL ) '
                 . ' UNION'
                 . ' SELECT id_oeuvre as id,'
                 . ' CONCAT(name," [Alias : " , '
-                . '(SELECT CONCAT( name,  " (", format,  ") " ) AS name FROM oeuvres LEFT JOIN catalogues_oeuvres ON (oeuvres.id = catalogues_oeuvres.id_oeuvre) WHERE oeuvres_alias.id_oeuvre = oeuvres.id AND catalogues_oeuvres.id_catalogue IS NULL LIMIT 1)'
+                . '(SELECT CONCAT( name,  " (", format,  ") " ) AS name FROM oeuvres LEFT JOIN catalogues_oeuvres ON (oeuvres.id = catalogues_oeuvres.id_oeuvre) WHERE oeuvres_alias.id_oeuvre = oeuvres.id AND (catalogues_oeuvres.id_catalogue != ? OR catalogues_oeuvres.id_catalogue IS NULL) LIMIT 1)'
                 . ',"]") AS name'
                 . ' FROM oeuvres_alias WHERE name LIKE ? ';
 
@@ -67,7 +67,9 @@ class OeuvresRepository extends EntityRepository {
         $query = $this->_em->createNativeQuery($sql, $rsm);
 
         $query->setParameter(1, '%' . $term . '%');
-        $query->setParameter(2, '%' . $term . '%');
+        $query->setParameter(2,$idCatalogue);
+        $query->setParameter(3,$idCatalogue);
+        $query->setParameter(4, '%' . $term . '%');
 
 
         $results = $query->getScalarResult();

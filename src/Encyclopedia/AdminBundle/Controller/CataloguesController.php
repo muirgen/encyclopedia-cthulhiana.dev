@@ -220,5 +220,75 @@ class CataloguesController extends Controller {
          */
         return new Response('search');
     }
+    
+    /**************************************************
+     * Add and delete an oeuvre attached to an item
+     **************************************************/
+    
+    /**
+     * @Route("/{id}/addoeuvre", name="_catalogues_addoeuvre")
+     * @Method("POST")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function addOeuvreAction(Request $request, $id){
+        
+        $error = null;
+        $id_oeuvre = $request->request->get('id_oeuvre');
+        $from_url = $this->getRequest()->headers->get('referer');
+                
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $id_oeuvre));
+        
+        if($entity){
+            $error = '<i class="fa fa-exclamation-triangle"></i> This catalogue item is already attached to the selected oeuvre<br/><i class="fa fa-exclamation-triangle"></i> Try another one<br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        
+        else{
+            
+            $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
+            $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+            
+            $entity = new \Encyclopedia\AdminBundle\Entity\CataloguesOeuvres();
+            $entity->setCatalogues($catalogue);
+            $entity->setOeuvres($oeuvre);
+            
+            $em->persist($entity);
+            $em->flush();
 
+            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            
+        }
+        
+        return array('error' => $error);
+        
+    }
+    
+    /**
+     * @Route("/{id}/deloeuvre/{idoeuvre}", name="_catalogues_deloeuvre")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function delOeuvreAction(Request $request, $id, $idoeuvre){
+      
+        $error = null;
+        $from_url = $this->getRequest()->headers->get('referer');
+                
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $idoeuvre));
+        
+        if(!$entity){
+            $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        
+        else{
+            $em->remove($entity);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+        }
+        
+        return array('error' => $error);
+    }
+    
+    
 }

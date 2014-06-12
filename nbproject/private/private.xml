@@ -5,10 +5,10 @@
         <group>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Catalogues/edit.html.twig</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Controller/OeuvresController.php</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/js/jsfunctionbackend.js</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/web/css/admin.css</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/Oeuvres/index.html.twig</file>
-            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/layout.html.twig</file>
             <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Repository/OeuvresRepository.php</file>
+            <file>file:/E:/wamp/www/encyclopedia-cthulhiana.dev/src/Encyclopedia/AdminBundle/Resources/views/layout.html.twig</file>
         </group>
     </open-files>
 </project-private>

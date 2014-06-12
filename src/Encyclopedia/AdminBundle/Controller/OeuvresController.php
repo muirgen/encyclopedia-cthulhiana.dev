@@ -183,11 +183,18 @@ class OeuvresController extends Controller{
 
         $termSearch = $request->query->get('oeuvre');
         $id_catalogue = $request->query->get('id_catalogue');
+        $action = $request->query->get('action');
 
         $em = $this->getDoctrine()->getManager();
-        $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
-                ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
-
+        
+        if($action == 'addcatalogueitem'){
+            $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+                    ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
+        }
+        else{
+            $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+                    ->findByAutocompleteWithAlias($termSearch);
+        }
         $array_props = array();
 
         foreach ($props as $key => $o):

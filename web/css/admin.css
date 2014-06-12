@@ -165,6 +165,13 @@ table tr td.tableText p{
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+/** Specifics colours **/
+.error{
+    color:#BB0000;
+}
+.orange{
+    color:#E34A0B;
+}
 .ui-menu {
 	padding: 0;
 	margin: 0;
