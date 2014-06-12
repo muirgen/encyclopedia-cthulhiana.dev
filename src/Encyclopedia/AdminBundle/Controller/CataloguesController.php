@@ -234,6 +234,7 @@ class CataloguesController extends Controller {
         
         $error = null;
         $id_oeuvre = $request->request->get('id_oeuvre');
+        $firstAppearance = $request->request->get('firstappearance');
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
@@ -251,6 +252,7 @@ class CataloguesController extends Controller {
             $entity = new \Encyclopedia\AdminBundle\Entity\CataloguesOeuvres();
             $entity->setCatalogues($catalogue);
             $entity->setOeuvres($oeuvre);
+            $entity->setFirstAppearance($firstAppearance);
             
             $em->persist($entity);
             $em->flush();

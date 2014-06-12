@@ -59,12 +59,32 @@ class Catalogues {
     protected $cataloguesOeuvres;
    
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\ManyToMany(targetEntity="Catalogues", mappedBy="relatedItems")
+     */
+    protected $cataloguesItems;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="cataloguesItems")
+     * @ORM\JoinTable(name="catalogues_related",
+     *      joinColumns={@ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="id_related", referencedColumnName="id")}
+     *      )
+     */
+    protected $relatedItems;
+    
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->alias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cataloguesOeuvres = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cataloguesItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->relatedItems = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -210,5 +230,71 @@ class Catalogues {
     public function getCataloguesOeuvres()
     {
         return $this->cataloguesOeuvres;
+    }
+
+    /**
+     * Add cataloguesItems
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $cataloguesItems
+     * @return Catalogues
+     */
+    public function addCataloguesItem(\Encyclopedia\AdminBundle\Entity\Catalogues $cataloguesItems)
+    {
+        $this->cataloguesItems[] = $cataloguesItems;
+
+        return $this;
+    }
+
+    /**
+     * Remove cataloguesItems
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $cataloguesItems
+     */
+    public function removeCataloguesItem(\Encyclopedia\AdminBundle\Entity\Catalogues $cataloguesItems)
+    {
+        $this->cataloguesItems->removeElement($cataloguesItems);
+    }
+
+    /**
+     * Get cataloguesItems
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCataloguesItems()
+    {
+        return $this->cataloguesItems;
+    }
+
+    /**
+     * Add relatedItems
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems
+     * @return Catalogues
+     */
+    public function addRelatedItem(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
+    {
+        $this->relatedItems[] = $relatedItems;
+
+        return $this;
+    }
+
+    /**
+     * Remove relatedItems
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems
+     */
+    public function removeRelatedItem(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
+    {
+        $this->relatedItems->removeElement($relatedItems);
+    }
+
+    /**
+     * Get relatedItems
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRelatedItems()
+    {
+        return $this->relatedItems;
     }
 }

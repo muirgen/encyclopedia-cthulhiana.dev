@@ -2,6 +2,7 @@
 
 {% block body %}
 <script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+{% if entity.id %}
 <script>
     $(document).ready(function() {
         
@@ -45,12 +46,13 @@
 
     });
 </script>
+{% endif %}
 {# to come back at the top of page #}
 <a name="top"></a>
 {# breadcrumb #}
 <h3><a href="{{ path('_catalogues') }}">Catalogue</a> > Edit : {{ entity.name }}</h3>
 {# navigation submenu #}
-<p><a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
+<p><a href="#relateditems">Related Items</a> | <a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
 {# page informations #}
 <div class="container_12 edit">
     <div class="grid_6 block">
@@ -65,7 +67,19 @@
         {{ form_end(edit_form) }}
         </fieldset>
     </div>
+     
     {% if entity.id %}
+    <!-- Related Items -->
+    <div class="grid_0 block" id="blockRelateditems"><a name="relateditems"></a>
+        <fieldset><legend>Related items</legend>
+            {% if entity.relatedItems|length > 0 %}
+                {% for ri in entity.relatedItems %}
+                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }}</a></span>
+                {% endfor %}
+            {% endif %}
+        </fieldset>    
+    </div> 
+    <!-- Alias -->
     <div class="grid_0 block"><a name="alias"></a>
         <fieldset><legend>Alias</legend>
             <p><a href="{{ path('_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
@@ -88,14 +102,16 @@
         </fieldset>
         <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
-    
+    <!-- Oeuvres related -->
     <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
         <fieldset><legend>Oeuvres</legend>
             <!-- the form to add an oeuvre to the catalogue item -->
             <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
             <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
                 <form action="{{ path('_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
-                <label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" autocomplete="off" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
+                    <p><label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" autocomplete="off" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> </p>
+                    <p><label for="firstappearance">First appearance: </label> <input type="radio" name="firstappearance" value="1" /> Yes <input type="radio" name="firstappearance" value="0" checked="checked" /> No </p>
+                    <input type="submit" name="submit_add" value="Add" class="smallButton" />
                 </form>
                 <br />
                 <span id="spanCloseOeuvre" style="display:block; clear: both;"><a href="javascript:closeDiv('Oeuvre'),clearFields('Oeuvre');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related oeuvre</a></span>
@@ -106,7 +122,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Year</th>
-                    <th>Origin</th>
+                    <th>First appearance</th>
                     <th>Format</th>
                     <th>Author</th>
                     <th>Publishing</th>
