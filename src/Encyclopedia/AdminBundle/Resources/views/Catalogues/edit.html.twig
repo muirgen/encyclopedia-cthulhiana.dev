@@ -74,7 +74,7 @@
         <fieldset><legend>Related items</legend>
             {% if entity.relatedItems|length > 0 %}
                 {% for ri in entity.relatedItems %}
-                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }}</a></span>
+                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_catalogues_delrelated', {'id':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
                 {% endfor %}
             {% endif %}
         </fieldset>    

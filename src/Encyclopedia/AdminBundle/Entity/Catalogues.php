@@ -57,22 +57,23 @@ class Catalogues {
      * @ORM\OneToMany(targetEntity="CataloguesOeuvres", mappedBy="catalogues")
      */
     protected $cataloguesOeuvres;
-   
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
      * @ORM\ManyToMany(targetEntity="Catalogues", mappedBy="relatedItems")
      */
+    
     protected $cataloguesItems;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="cataloguesItems")
+     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="cataloguesItems", cascade={"persist"})
      * @ORM\JoinTable(name="catalogues_related",
-     *      joinColumns={@ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="id_related", referencedColumnName="id")}
-     *      )
+     *   joinColumns={@ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="id_related", referencedColumnName="id")}
+     * )
      */
     protected $relatedItems;
     
