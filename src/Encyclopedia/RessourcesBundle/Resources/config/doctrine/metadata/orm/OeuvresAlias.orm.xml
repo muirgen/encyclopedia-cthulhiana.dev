@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="OeuvresAlias" table="oeuvres_alias">
+    <indexes>
+      <index name="name" columns="name"/>
+      <index name="id_oeuvre" columns="id_oeuvre"/>
+      <index name="id_lang" columns="id_lang"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="250" nullable="false"/>
+    <many-to-one field="idLang" target-entity="Lang">
+      <join-columns>
+        <join-column name="id_lang" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idOeuvre" target-entity="Oeuvres">
+      <join-columns>
+        <join-column name="id_oeuvre" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Oeuvres" table="oeuvres">
+    <indexes>
+      <index name="name" columns="name,date"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="250" nullable="false"/>
+    <field name="date" type="date" column="date" nullable="true"/>
+    <field name="format" type="string" column="format" length="250" nullable="true"/>
+    <many-to-many field="idPublishing" target-entity="Publishing" inversed-by="idOeuvre">
+      <join-table name="oeuvres_publishing">
+        <join-columns>
+          <join-column name="id_oeuvre" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="id_publishing" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="idPerson" target-entity="Persons" inversed-by="idOeuvre">
+      <join-table name="oeuvres_persons">
+        <join-columns>
+          <join-column name="id_oeuvre" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="id_person" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="idCatalogue" target-entity="Catalogues" inversed-by="idOeuvre">
+      <join-table name="catalogues_oeuvres">
+        <join-columns>
+          <join-column name="id_oeuvre" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="id_catalogue" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

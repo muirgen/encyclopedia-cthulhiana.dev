@@ -1,0 +1,7 @@
+parameters:
+#    encyclopedia_ressources.example.class: Encyclopedia\RessourcesBundle\Example
+
+services:
+#    encyclopedia_ressources.example:
+#        class: %encyclopedia_ressources.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

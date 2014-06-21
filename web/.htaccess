@@ -68,14 +68,16 @@ DirectoryIndex app.php
 
 # End of pattern #
 
-SetEnv SHORT_OPEN_TAGS 0
-SetEnv REGISTER_GLOBALS 0
-SetEnv MAGIC_QUOTES 0
-SetEnv SESSION_AUTOSTART 0
-SetEnv ZEND_OPTIMIZER 1
-SetEnv PHP_VER 5_4 
- 
-RewriteEngine on
- 
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /web/
+
+RewriteCond %{REQUEST_URI} \.(css|gif|ico|jpg|js|png|swf|txt|pdf|doc|docx|mp3|svg|otf|eot|ttf|woff)$
+RewriteRule ^(.*)$ $1 [QSA,L]
+
+RewriteCond %{REQUEST_URI} dev.php
+RewriteRule ^(.*)$ app_dev.php/$1 [QSA,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ web/app_dev.php [QSA,L]
+RewriteRule ^(.*)$ app_dev.php/$1 [QSA,L]
+</IfModule>
