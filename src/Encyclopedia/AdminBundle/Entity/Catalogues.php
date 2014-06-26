@@ -68,14 +68,19 @@ class Catalogues {
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * 
-     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="cataloguesItems", cascade={"persist"})
+     *
+     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="cataloguesItems")
      * @ORM\JoinTable(name="catalogues_related",
-     *   joinColumns={@ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="id_related", referencedColumnName="id")}
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_related", referencedColumnName="id")
+     *   }
      * )
      */
     protected $relatedItems;
+    
     
     /**
      * Constructor
@@ -272,7 +277,7 @@ class Catalogues {
      * @param \Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems
      * @return Catalogues
      */
-    public function addRelatedItem(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
+    public function addRelatedItems(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
     {
         $this->relatedItems[] = $relatedItems;
 
@@ -284,9 +289,10 @@ class Catalogues {
      *
      * @param \Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems
      */
-    public function removeRelatedItem(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
+    public function removeRelatedItems(\Encyclopedia\AdminBundle\Entity\Catalogues $relatedItems)
     {
         $this->relatedItems->removeElement($relatedItems);
+        
     }
 
     /**

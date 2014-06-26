@@ -184,11 +184,20 @@ class CataloguesController extends Controller {
     public function autocompleteSearchAction(Request $request) {
 
         $termSearch = $request->query->get('catalogue');
+        $id_catalogue = $request->query->get('id_catalogue');
+        $action = $request->query->get('action');
 
         $em = $this->getDoctrine()->getManager();
-        $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
-                ->findByAutocompleteWithAlias($termSearch);
-
+        
+        if($action == 'addrelateditem'){
+            $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+                    ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
+        }
+        else{
+            $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+                    ->findByAutocompleteWithAlias($termSearch);
+        }
+        
         $array_props = array();
 
         foreach ($props as $key => $p):
@@ -226,38 +235,36 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/{id}/addrelated", name="_catalogues_addrelated")
+     * @Route("/{idcatalogue}/addrelated", name="_catalogues_addrelated")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
-    public function addRelatedAction(Request $request, $id){
+    public function addRelatedAction(Request $request, $idcatalogue){
         
         $error = null;
-        $id_oeuvre = $request->request->get('id_oeuvre');
-        $firstAppearance = $request->request->get('firstappearance');
+        $idrelated = $request->request->get('id_related');
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $id_oeuvre));
         
-        if($entity){
-            $error = '<i class="fa fa-exclamation-triangle"></i> This catalogue item is already attached to the selected oeuvre<br/><i class="fa fa-exclamation-triangle"></i> Try another one<br/><a href="'.$from_url.'">Back to the item</a>';
+        $entityCatalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idcatalogue);
+        $entityRelated = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idrelated);
+        
+        if($entityCatalogue->getRelatedItems()->contains($idrelated) AND $entityRelated->getRelatedItems()->contains($idcatalogue)){
+            $error = '<i class="fa fa-exclamation-triangle"></i> This catalogue item is already attached on related<br/><i class="fa fa-exclamation-triangle"></i> Try another one<br/><a href="'.$from_url.'">Back to the item</a>';
         }
         
         else{
             
-            $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
-            $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+            $entityCatalogue->addRelatedItems($entityRelated);
+            $entityRelated->addRelatedItems($entityCatalogue);
             
-            $entity = new \Encyclopedia\AdminBundle\Entity\CataloguesOeuvres();
-            $entity->setCatalogues($catalogue);
-            $entity->setOeuvres($oeuvre);
-            $entity->setFirstAppearance($firstAppearance);
+            $em->persist($entityCatalogue);
+            $em->persist($entityRelated);
             
-            $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $idcatalogue)));
             
         }
         
@@ -266,27 +273,34 @@ class CataloguesController extends Controller {
     }
     
     /**
-     * @Route("/{id}/delrelated/{idrelated}", name="_catalogues_delrelated")
+     * @Route("/{idcatalogue}/delrelated/{idrelated}", name="_catalogues_delrelated")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
-    public function delRelatedAction(Request $request, $id, $idrelated){
+    public function delRelatedAction(Request $request, $idcatalogue, $idrelated){
       
         $error = null;
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->findAll();
+        $entityCatalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idcatalogue);
+        $entityRelated = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idrelated);
         
-        if(!$entity){
+        if(!$entityCatalogue OR !$entityRelated){
             $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
         }
         
         else{
-            //$em->remove($entity);
-            //$em->flush();
             
-            //return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            $entityCatalogue->removeRelatedItems($entityRelated);
+            $entityRelated->removeRelatedItems($entityCatalogue);
+            
+            $em->persist($entityCatalogue);
+            $em->persist($entityRelated);
+            
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $idcatalogue)));
         }
         
         return array('error' => $error);

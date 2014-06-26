@@ -19,6 +19,7 @@ function clearFields(target){
     index = target.toLowerCase();
     $('#filter_'+index).val('');
     $('#id_'+index).val('');
+    
     closeInfoBox(target);
 }
 
@@ -113,7 +114,7 @@ function openInfoBox(target) {
 }
 
 function closeInfoBox(target) {
-
+   
     var top = $('#block' + target).offset().top;
     var top = top - 200;
 

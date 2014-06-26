@@ -34,15 +34,44 @@
             select: function( event, ui ) { 
                 $('#id_oeuvre').val(ui.item.id);
                 openInfoBox('Oeuvre');
-                
-            },
-            close: function() { 
-		$('form#autocomplete_search').submit();
             }
         }).on('click', function(){
 		$(this).val('');
                 $('id_oeuvre').val('');
             });
+            
+        $('#filter_catalogue').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('_catalogues_autocomplete_search') }}",
+                    dataType: 'json',
+                    data: {
+                        catalogue: request.term,
+                        id_catalogue: {{ entity.id }},
+                        action: 'addrelateditem'
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+				value : item.name,
+				id: item.id
+                            }
+                        }));
+                    },
+                    maxRows: 15
+                })
+            },
+            select: function( event, ui ) { 
+                $('#id_related').val(ui.item.id); 
+            }
+        }).on('click', function(){
+		$(this).val('');
+                $('id_related').val('');
+            });    
 
     });
 </script>
@@ -70,13 +99,29 @@
      
     {% if entity.id %}
     <!-- Related Items -->
-    <div class="grid_0 block" id="blockRelateditems"><a name="relateditems"></a>
+    <div class="grid_0 block" id="blockRelatedItems"><a name="relateditems"></a>
         <fieldset><legend>Related items</legend>
+            
+            {# the form to add a related catalogue item to the current catalogue item #}
+            <span id="spanOpenRelatedItems" style="display:block;"><a href="javascript:openDiv('RelatedItems');" id="eventOnRelatedItems"><i class="fa fa-plus-circle fa-3"></i> Add a related item</a></span>
+            <div class="grid_6" id="hiddenDivRelatedItems" style="display:none;">
+                <form action="{{ path('_catalogues_addrelated', {'idcatalogue': entity.id}) }}" method="POST" class="formAdding">
+                    <label for="filter_catalogue">Catalogue item: </label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" autocomplete="off" /> <input type="hidden" id="id_related" name="id_related" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
+                </form>
+                <br />
+                <span id="spanCloseRelatedItems" style="display:block; clear: both;"><a href="javascript:closeDiv('RelatedItems'),clearFields('RelatedItems');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related item</a></span>
+            </div>
+            {# End of the form #}
+            
+            {# test if related items exist in the entity, and deploy them #}
             {% if entity.relatedItems|length > 0 %}
+                <div class="grid_0">
                 {% for ri in entity.relatedItems %}
-                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_catalogues_delrelated', {'id':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
+                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_catalogues_delrelated', {'idcatalogue':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
                 {% endfor %}
+                </div>
             {% endif %}
+            {# end of the if #}
         </fieldset>    
     </div> 
     <!-- Alias -->
@@ -105,7 +150,8 @@
     <!-- Oeuvres related -->
     <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
         <fieldset><legend>Oeuvres</legend>
-            <!-- the form to add an oeuvre to the catalogue item -->
+            
+            {# the form to add an oeuvre to the current catalogue item #}
             <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
             <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
                 <form action="{{ path('_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
@@ -116,7 +162,9 @@
                 <br />
                 <span id="spanCloseOeuvre" style="display:block; clear: both;"><a href="javascript:closeDiv('Oeuvre'),clearFields('Oeuvre');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related oeuvre</a></span>
             </div>
-            <!-- End of the form -->
+            {# end of the form #}
+            
+            {# test if oeuvres exist in the entity, and deploy them #}
             {% if entity.cataloguesOeuvres|length > 0 %}
             <table class="list">
                 <tr>
@@ -153,6 +201,7 @@
                 {% endfor %}
             </table>
             {% endif %}
+            {# end of the if block #}
         </fieldset>
         <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
