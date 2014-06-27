@@ -39,15 +39,7 @@ class Persons {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\ManyToMany(targetEntity="Oeuvres", inversedBy="persons")
-     * @ORM\JoinTable(name="oeuvres_persons",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_person", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="Oeuvres", mappedBy="persons")
      */
     protected $oeuvres;
 
@@ -59,7 +51,7 @@ class Persons {
         $this->alias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->oeuvres = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *

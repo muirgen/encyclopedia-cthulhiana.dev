@@ -60,9 +60,28 @@ class Oeuvres {
     /**
      * @var \Doctrine\Common\Collections\Collection
      * 
-     * @ORM\ManyToMany(targetEntity="Persons", mappedBy="oeuvres")
+     * @ORM\ManyToMany(targetEntity="Persons", inversedBy="oeuvres", cascade={"persist","remove"})
+     * @ORM\JoinTable(name="oeuvres_persons",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_person", referencedColumnName="id")
+     *   }
+     * )
      */
     protected $persons;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Publishing", mappedBy="oeuvres")
+     */
+    private $publishing;
+    
+    public function getOeuvreAndFormat() {
+        return $this->getName() . ' ( ' . $this->getformat() . ' )';
+    }
     
     /**
      * Constructor
@@ -72,6 +91,7 @@ class Oeuvres {
         $this->alias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cataloguesOeuvres = new \Doctrine\Common\Collections\ArrayCollection();
         $this->persons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->publishing = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -250,5 +270,38 @@ class Oeuvres {
     public function getPersons()
     {
         return $this->persons;
+    }
+
+    /**
+     * Add publishing
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Publishing $publishing
+     * @return Oeuvres
+     */
+    public function addPublishing(\Encyclopedia\AdminBundle\Entity\Publishing $publishing)
+    {
+        $this->publishing[] = $publishing;
+
+        return $this;
+    }
+
+    /**
+     * Remove publishing
+     *
+     * @param \Encyclopedia\AdminBundle\Entity\Publishing $publishing
+     */
+    public function removePublishing(\Encyclopedia\AdminBundle\Entity\Publishing $publishing)
+    {
+        $this->publishing->removeElement($publishing);
+    }
+
+    /**
+     * Get publishing
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPublishing()
+    {
+        return $this->publishing;
     }
 }

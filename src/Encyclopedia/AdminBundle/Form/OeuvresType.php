@@ -21,7 +21,14 @@ class OeuvresType extends AbstractType
                                                              'Novel' => 'Novel',
                                                              'Movie' => 'Movie',
                                                              'Encyclopedia' => 'Encyclopedia'),
-                                          'required' => true));
+                                          'required' => true))
+            ->add('persons','entity',(array('class' => 'EncyclopediaAdminBundle:Persons',
+                                            'property' => 'name',
+                                            'label' => 'Authors',
+                                            'multiple' => true,
+                                            'expanded' => true,
+                                            'by_reference' => false)))
+            ;
     }
     
     /**

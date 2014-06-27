@@ -21,7 +21,9 @@ class CataloguesCategoriesTrans {
     protected $category;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="Lang", inversedBy="cataloguesCategoriesLang")
+     * @var \Lang
+     * 
+     * @ORM\ManyToOne(targetEntity="Lang")
      * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      * @ORM\Id
      */

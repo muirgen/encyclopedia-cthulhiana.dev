@@ -86,6 +86,16 @@ h4{
     margin-right:1%;
     color:#9ab11a;
 }
+
+.edit div div > span label{
+    border:none;
+    display:inline;
+    float:none;
+    margin-right:0;
+    width:auto;
+    color:#000;
+}
+
 .edit input[type="text"],input[type="password"], select, textarea{
     border:1px solid #9ab11a;
     font-size:0.9em;

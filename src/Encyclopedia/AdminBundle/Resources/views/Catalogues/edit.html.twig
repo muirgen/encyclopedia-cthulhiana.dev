@@ -1,6 +1,6 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
-{% block body %}
+{% block body -%}
 <script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
 {% if entity.id %}
 <script>
@@ -76,12 +76,16 @@
     });
 </script>
 {% endif %}
+
 {# to come back at the top of page #}
 <a name="top"></a>
+
 {# breadcrumb #}
 <h3><a href="{{ path('_catalogues') }}">Catalogue</a> > Edit : {{ entity.name }}</h3>
+
 {# navigation submenu #}
 <p><a href="#relateditems">Related Items</a> | <a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
+
 {# page informations #}
 <div class="container_12 edit">
     <div class="grid_6 block">
@@ -96,9 +100,12 @@
         {{ form_end(edit_form) }}
         </fieldset>
     </div>
-     
+    
+    {# if entity.id exist, it's not a creation for a new item, deploy all related features #}
+    
     {% if entity.id %}
-    <!-- Related Items -->
+        
+    {# Related Items #}
     <div class="grid_0 block" id="blockRelatedItems"><a name="relateditems"></a>
         <fieldset><legend>Related items</legend>
             
@@ -124,7 +131,9 @@
             {# end of the if #}
         </fieldset>    
     </div> 
-    <!-- Alias -->
+    {# End of related items #}
+    
+    {# Alias #}
     <div class="grid_0 block"><a name="alias"></a>
         <fieldset><legend>Alias</legend>
             <p><a href="{{ path('_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
@@ -147,7 +156,9 @@
         </fieldset>
         <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
-    <!-- Oeuvres related -->
+    {# End Alias #}
+    
+    {# Oeuvres related #}
     <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
         <fieldset><legend>Oeuvres</legend>
             
@@ -178,9 +189,15 @@
                 </tr>
                 {% for co in entity.cataloguesOeuvres %}
                 <tr>
-                    <td>{{ co.oeuvres.name }}</td>
+                    <td><a href="{{ path('_oeuvres_edit', {'id': co.oeuvres.id}) }}">{{ co.oeuvres.name }}</a></td>
                     <td>{{ co.oeuvres.date }}</td>
-                    <td>{{ co.firstAppearance }}</td>
+                    <td>
+                        {# test if the related catalogue's item has been seen for the first time in the oeuvre #}
+                        {% if co.firstAppearance == 1 %}
+                            <i class="fa fa-eye"></i>
+                        {% endif %}
+                        {# end of the if for the firstApprearance #}
+                    </td>
                     <td>{{ co.oeuvres.format }}</td>
                     <td>
                         {% if co.oeuvres.persons|length > 0 %}
@@ -192,7 +209,13 @@
                         {% endif %}
                     </td>
                     <td>
-                        
+                        {% if co.oeuvres.publishing|length > 0 %}
+                        <ul>
+                            {% for publishing in co.oeuvres.publishing %}
+                            <li>{{ publishing.title }}</li>                                
+                            {% endfor %}    
+                        </ul>
+                        {% endif %}
                     </td>
                     <td>
                         <a href="{{ path('_catalogues_deloeuvre', {'id':entity.id,'idoeuvre':co.oeuvres.id}) }}"><i class="fa fa-times fa-4 orange"></i></a>
@@ -205,7 +228,10 @@
         </fieldset>
         <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
     </div>
-   {% endif %}
+   {# End of oeuvres related #}    
+   
+    {% endif %}
+   
 </div>
 
 {% endblock %}

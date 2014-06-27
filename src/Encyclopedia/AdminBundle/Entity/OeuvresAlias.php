@@ -36,7 +36,9 @@ class OeuvresAlias {
     private $oeuvres;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Lang", inversedBy="oeuvresAliasLang")
+     * @var \Lang
+     * 
+     * @ORM\ManyToOne(targetEntity="Lang")
      * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      */
     protected $languages;

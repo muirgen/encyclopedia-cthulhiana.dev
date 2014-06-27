@@ -133,6 +133,9 @@ class OeuvresController extends Controller{
         }
         
         $form = $this->oeuvresEditForm($entity);
+        
+        //$persons = $entity->getPersons();
+        //$form->get('persons')->setData($persons);
 
         return array(
             'entity'      => $entity,
@@ -156,10 +159,20 @@ class OeuvresController extends Controller{
         }
         
         $form = $this->oeuvresEditForm($entity);
-
+        
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            
+            /* gets all the Persons inside the form we have related to the oeuvre */
+            $relatedPersons = $entity->getPersons();
+            
+            /* Do a loop on it to persist the collection */
+            foreach($relatedPersons as $p){
+                $em->persist($p);
+            }
+            
+            /* And flush every thing */
             $em->flush();
 
             return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $id)));

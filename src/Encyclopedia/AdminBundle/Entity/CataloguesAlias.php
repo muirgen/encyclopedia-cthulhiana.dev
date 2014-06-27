@@ -36,7 +36,9 @@ class CataloguesAlias {
     private $catalogues;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Lang", inversedBy="cataloguesAliasLang")
+     * @var \Lang
+     * 
+     * @ORM\ManyToOne(targetEntity="Lang")
      * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
      */
     protected $languages;
