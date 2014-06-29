@@ -148,6 +148,29 @@ table tr td.tableText p{
     margin: 0;
 }
 
+table.records_list{
+    width:100%;
+    border:1px solid #9ab11a
+}
+table.records_list tr th{
+    background-color:#9ab11a;
+    color:#FFFFFF;
+    padding:0.2%;
+    white-space: nowrap;
+}
+table.records_list tr td{
+    padding:0.2%;
+    text-align: left;
+}
+table.records_list tr td.tableText{
+    width:auto;
+    max-width: 150px;
+}
+table.records_list tr td.tableText p{
+    line-height: 1.1em;
+    margin: 0;
+}
+
 /** Div wich appear with summary of item like oeuvres, auteurs, catalogues **/
 /** When a choice has been choose in drop down list. **/
 .edit .divSummaryContent, .divSummaryContent{

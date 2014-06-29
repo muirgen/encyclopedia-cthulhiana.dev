@@ -33,14 +33,54 @@ class PublishingController extends Controller {
         ));
     }
 
+    /**************************************************
+     * CREATE ENTITY
+     **************************************************/
+    
+    /**
+     * Creates a form to create a Publishing entity.
+     *
+     * @param Publishing $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function publishingCreateForm(Publishing $entity) {
+        $form = $this->createForm(new PublishingType(), $entity, array(
+            'action' => $this->generateUrl('_publishing_create'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return $form;
+    }
+    
+    /**
+     * @Route("/new", name="_publishing_new")
+     * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
+     */
+    public function newAction() {
+        
+        $entity = new Publishing();
+        $form = $this->publishingCreateForm($entity);
+
+        return array(
+                    'entity' => $entity,
+                    'edit_form' => $form->createView(),
+                );
+    }
+    
     /**
      * @Route("/create", name="_publishing_create")
      * @Method("POST")
-     * @Template("EncyclopediaAdminBundle:Publishing:new.html.twig")
+     * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
      */
     public function createAction(Request $request) {
+        
         $entity = new Publishing();
-        $form = $this->createCreateForm($entity);
+        
+        $form = $this->publishingCreateForm($entity);
+        
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -51,43 +91,13 @@ class PublishingController extends Controller {
             return $this->redirect($this->generateUrl('_publishing_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('EncyclopediaAdminBundle:Publishing:new.html.twig', array(
+        return array(
                     'entity' => $entity,
-                    'form' => $form->createView(),
-        ));
+                    'edit_form' => $form->createView(),
+                );
     }
 
-    /**
-     * Creates a form to create a Publishing entity.
-     *
-     * @param Publishing $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Publishing $entity) {
-        $form = $this->createForm(new PublishingType(), $entity, array(
-            'action' => $this->generateUrl('_publishing_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * @Route("/new", name="_publishing_new")
-     * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
-     */
-    public function newAction() {
-        $entity = new Publishing();
-        $form = $this->createCreateForm($entity);
-
-        return $this->render('EncyclopediaAdminBundle:Publishing:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-        ));
-    }
+    
 
     /**
      * @Route("/show/{id}", name="_publishing_show")

@@ -1,51 +1,47 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body -%}
-    <h1>Publishing list</h1>
-
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Editor</th>
-                <th>Classification</th>
-                <th>Typenumber</th>
-                <th>Refnumber</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('_publishing_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.title }}</td>
-                <td>{{ entity.author }}</td>
-                <td>{{ entity.editor }}</td>
-                <td>{{ entity.classification }}</td>
-                <td>{{ entity.typeNumber }}</td>
-                <td>{{ entity.refNumber }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('_publishing_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('_publishing_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('_publishing_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+<h3>Publishing</h3>
+<div class="grid_0">
+<div style="float:left; width:100%"><a href="{{ path('_publishing_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
+<h4>Last entries</h4>    
+<table class="records_list" style="border:1px solid c0c0c0;">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th width="20%">Subtitle</th>
+            <th>Author</th>
+            <th>Collection</th>
+            <th>Collection Number</th>
+            <th>Publisher</th>
+            <th>Publish month</th>
+            <th>Publish year</th>
+            <th>Classification</th>
+            <th>Typenumber</th>
+            <th>Refnumber</th>
+            <th>Language</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('_publishing_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td><a href="{{ path('_publishing_edit', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
+            <td>{{ entity.subtitle }}</td>
+            <td>{{ entity.author }}</td>
+            <td>{{ entity.collection }}</td>
+            <td>{{ entity.collectionNumber }}</td>
+            <td>{{ entity.publisher }}</td>
+            <td>{{ entity.publishMonth }}</td>
+            <td>{{ entity.publishYear }}</td>
+            <td>{{ entity.classification }}</td>
+            <td>{{ entity.typeNumber }}</td>
+            <td>{{ entity.refNumber }}</td>
+            <td><img src="{{ asset('img/flags/'~entity.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

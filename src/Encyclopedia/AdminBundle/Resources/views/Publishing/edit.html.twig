@@ -10,8 +10,13 @@
         
         <div style="float:left;width:48%;">
         {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.subtitle) }}
         {{ form_row(edit_form.author) }}
-        {{ form_row(edit_form.editor) }}
+        {{ form_row(edit_form.collection) }}
+        {{ form_row(edit_form.collectionNumber) }}
+        {{ form_row(edit_form.publisher) }}
+        {{ form_row(edit_form.publishMonth) }}
+        {{ form_row(edit_form.publishYear) }}
         {{ form_row(edit_form.classification) }}
         {{ form_row(edit_form.typeNumber) }}
         {{ form_row(edit_form.refNumber) }}
@@ -24,12 +29,12 @@
         {{ form_end(edit_form) }}
         </fieldset>
     </div>
+    
+    {% if entity.id %}
+        
+        
+    {% endif %}
+        
 </div>
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('_publishing') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    
 {% endblock %}

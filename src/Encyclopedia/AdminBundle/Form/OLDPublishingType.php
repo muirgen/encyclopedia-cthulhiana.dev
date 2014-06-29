@@ -16,13 +16,8 @@ class PublishingType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('subtitle')
             ->add('author')
-            ->add('collection')
-            ->add('collectionNumber')
             ->add('publisher')
-            ->add('publishMonth')
-            ->add('publishYear')
             ->add('classification')
             ->add('typeNumber')
             ->add('refNumber')

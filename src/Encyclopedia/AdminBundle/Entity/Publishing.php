@@ -27,6 +27,13 @@ class Publishing
      * @ORM\Column(name="title", type="string", length=250, nullable=false)
      */
     private $title;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="subtitle", type="string", length=250, nullable=true)
+     */
+    private $subtitle;
 
     /**
      * @var string
@@ -34,13 +41,41 @@ class Publishing
      * @ORM\Column(name="author", type="string", length=250, nullable=false)
      */
     private $author;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collection", type="string", length=250, nullable=true)
+     */
+    private $collection;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collection_number", type="string", length=100, nullable=true)
+     */
+    private $collectionNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="editor", type="string", length=250, nullable=false)
+     * @ORM\Column(name="publisher", type="string", length=250, nullable=true)
      */
-    private $editor;
+    private $publisher;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="publish_month", type="string", length=50, nullable=true)
+     */
+    private $publishMonth;
+    
+    /**
+     * @var \Year
+     * 
+     * @ORM\Column(name="publish_year", columnDefinition="YEAR")
+     */
+    private $publishYear;
 
     /**
      * @var string
@@ -59,7 +94,7 @@ class Publishing
     /**
      * @var string
      *
-     * @ORM\Column(name="ref_number", type="string", length=250, nullable=false)
+     * @ORM\Column(name="ref_number", type="string", length=250, nullable=true)
      */
     private $refNumber;
 
@@ -87,7 +122,7 @@ class Publishing
      * )
      */
     private $oeuvres;
-
+    
     /**
      * Constructor
      */
@@ -130,6 +165,29 @@ class Publishing
     }
 
     /**
+     * Set subtitle
+     *
+     * @param string $subtitle
+     * @return Publishing
+     */
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+
+        return $this;
+    }
+
+    /**
+     * Get subtitle
+     *
+     * @return string 
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
+    }
+
+    /**
      * Set author
      *
      * @param string $author
@@ -153,26 +211,118 @@ class Publishing
     }
 
     /**
-     * Set editor
+     * Set collection
      *
-     * @param string $editor
+     * @param string $collection
      * @return Publishing
      */
-    public function setEditor($editor)
+    public function setCollection($collection)
     {
-        $this->editor = $editor;
+        $this->collection = $collection;
 
         return $this;
     }
 
     /**
-     * Get editor
+     * Get collection
      *
      * @return string 
      */
-    public function getEditor()
+    public function getCollection()
     {
-        return $this->editor;
+        return $this->collection;
+    }
+
+    /**
+     * Set collectionNumber
+     *
+     * @param string $collectionNumber
+     * @return Publishing
+     */
+    public function setCollectionNumber($collectionNumber)
+    {
+        $this->collectionNumber = $collectionNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get collectionNumber
+     *
+     * @return string 
+     */
+    public function getCollectionNumber()
+    {
+        return $this->collectionNumber;
+    }
+
+    /**
+     * Set publisher
+     *
+     * @param string $publisher
+     * @return Publishing
+     */
+    public function setPublisher($publisher)
+    {
+        $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    /**
+     * Get publisher
+     *
+     * @return string 
+     */
+    public function getPublisher()
+    {
+        return $this->publisher;
+    }
+
+    /**
+     * Set publishMonth
+     *
+     * @param string $publishMonth
+     * @return Publishing
+     */
+    public function setPublishMonth($publishMonth)
+    {
+        $this->publishMonth = $publishMonth;
+
+        return $this;
+    }
+
+    /**
+     * Get publishMonth
+     *
+     * @return string 
+     */
+    public function getPublishMonth()
+    {
+        return $this->publishMonth;
+    }
+
+    /**
+     * Set publishYear
+     *
+     * @param string $publishYear
+     * @return Publishing
+     */
+    public function setPublishYear($publishYear)
+    {
+        $this->publishYear = $publishYear;
+
+        return $this;
+    }
+
+    /**
+     * Get publishYear
+     *
+     * @return string 
+     */
+    public function getPublishYear()
+    {
+        return $this->publishYear;
     }
 
     /**
@@ -273,7 +423,7 @@ class Publishing
      * @param \Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres
      * @return Publishing
      */
-    public function addOeuvres(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
+    public function addOeuvre(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
     {
         $this->oeuvres[] = $oeuvres;
 
@@ -285,7 +435,7 @@ class Publishing
      *
      * @param \Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres
      */
-    public function removeOeuvres(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
+    public function removeOeuvre(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
     {
         $this->oeuvres->removeElement($oeuvres);
     }
