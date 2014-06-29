@@ -196,7 +196,7 @@
                         {% if co.firstAppearance == 1 %}
                             <i class="fa fa-eye"></i>
                         {% endif %}
-                        {# end of the if for the firstApprearance #}
+                        {# end of the if for the firstAppearance #}
                     </td>
                     <td>{{ co.oeuvres.format }}</td>
                     <td>
@@ -212,7 +212,7 @@
                         {% if co.oeuvres.publishing|length > 0 %}
                         <ul>
                             {% for publishing in co.oeuvres.publishing %}
-                            <li>{{ publishing.title }}</li>                                
+                                <li><a href="{{ path('_publishing_edit', {'id': publishing.id }) }}">{{ publishing.title }} ( {{publishing.classification }} )</a></li>                                
                             {% endfor %}    
                         </ul>
                         {% endif %}

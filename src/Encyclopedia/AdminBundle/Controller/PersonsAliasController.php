@@ -8,8 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Encyclopedia\AdminBundle\Form\PersonsAliasType;
-use Encyclopedia\AdminBundle\Entity\PersonsAlias;
+
+use Encyclopedia\LibraryBundle\Form\PersonsAliasType;
+use Encyclopedia\LibraryBundle\Entity\PersonsAlias;
 
 /**
  * Description of PersonsAliasController
@@ -48,7 +49,7 @@ class PersonsAliasController extends Controller {
     public function newAction($id_person) {
         
         $em = $this->getDoctrine()->getManager();
-        $person = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id_person);
+        $person = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id_person);
         
         $entity = new PersonsAlias();
         $entity->setIdPerson($person);
@@ -70,7 +71,7 @@ class PersonsAliasController extends Controller {
     public function createAction(Request $request, $id_person) {
         
         $em = $this->getDoctrine()->getManager();
-        $person = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id_person);
+        $person = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id_person);
         
         $entity = new PersonsAlias();
         
@@ -122,9 +123,9 @@ class PersonsAliasController extends Controller {
     public function editAction($id, $id_person) {
         
         $em = $this->getDoctrine()->getManager();
-        $person = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id_person);
+        $person = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id_person);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:PersonsAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:PersonsAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persons Alias entity.');
@@ -147,9 +148,9 @@ class PersonsAliasController extends Controller {
     public function updateAction(Request $request, $id, $id_person){
         
         $em = $this->getDoctrine()->getManager();
-        $person = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id_person);
+        $person = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id_person);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:PersonsAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:PersonsAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persons Alias entity.');

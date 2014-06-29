@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Encyclopedia\AdminBundle\Form\CataloguesType;
-use Encyclopedia\AdminBundle\Entity\Catalogues;
+use Encyclopedia\LibraryBundle\Form\CataloguesType;
+use Encyclopedia\LibraryBundle\Entity\Catalogues;
 
 /**
  * Description of CataloguesController
@@ -28,7 +28,7 @@ class CataloguesController extends Controller {
     public function indexAction() {
         
         $em = $this->getDoctrine()->getManager();
-        $lastEntries = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+        $lastEntries = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
                 ->findAllWithLimit(15);
         
         return array('lastentries' => $lastEntries);
@@ -128,7 +128,7 @@ class CataloguesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues entity.');
@@ -151,7 +151,7 @@ class CataloguesController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues entity.');
@@ -190,11 +190,11 @@ class CataloguesController extends Controller {
         $em = $this->getDoctrine()->getManager();
         
         if($action == 'addrelateditem'){
-            $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
                     ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
         }
         else{
-            $props = $em->getRepository('EncyclopediaAdminBundle:Catalogues')
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
                     ->findByAutocompleteWithAlias($termSearch);
         }
         
@@ -247,8 +247,8 @@ class CataloguesController extends Controller {
                 
         $em = $this->getDoctrine()->getManager();
         
-        $entityCatalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idcatalogue);
-        $entityRelated = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idrelated);
+        $entityCatalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($idcatalogue);
+        $entityRelated = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($idrelated);
         
         if($entityCatalogue->getRelatedItems()->contains($idrelated) AND $entityRelated->getRelatedItems()->contains($idcatalogue)){
             $error = '<i class="fa fa-exclamation-triangle"></i> This catalogue item is already attached on related<br/><i class="fa fa-exclamation-triangle"></i> Try another one<br/><a href="'.$from_url.'">Back to the item</a>';
@@ -283,8 +283,8 @@ class CataloguesController extends Controller {
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
-        $entityCatalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idcatalogue);
-        $entityRelated = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($idrelated);
+        $entityCatalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($idcatalogue);
+        $entityRelated = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($idrelated);
         
         if(!$entityCatalogue OR !$entityRelated){
             $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
@@ -323,7 +323,7 @@ class CataloguesController extends Controller {
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $id_oeuvre));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $id_oeuvre));
         
         if($entity){
             $error = '<i class="fa fa-exclamation-triangle"></i> This catalogue item is already attached to the selected oeuvre<br/><i class="fa fa-exclamation-triangle"></i> Try another one<br/><a href="'.$from_url.'">Back to the item</a>';
@@ -331,10 +331,10 @@ class CataloguesController extends Controller {
         
         else{
             
-            $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id);
-            $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+            $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
+            $oeuvre = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id_oeuvre);
             
-            $entity = new \Encyclopedia\AdminBundle\Entity\CataloguesOeuvres();
+            $entity = new \Encyclopedia\LibraryBundle\Entity\CataloguesOeuvres();
             $entity->setCatalogues($catalogue);
             $entity->setOeuvres($oeuvre);
             $entity->setFirstAppearance($firstAppearance);
@@ -361,7 +361,7 @@ class CataloguesController extends Controller {
         $from_url = $this->getRequest()->headers->get('referer');
                 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $idoeuvre));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesOeuvres')->findOneBy(array('catalogues' => $id, 'oeuvres' => $idoeuvre));
         
         if(!$entity){
             $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';

@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('EncyclopediaAdminBundle:Default:index.html.twig');
+        return $this->render('EncyclopediaLibraryBundle:Default:index.html.twig');
     }
 }

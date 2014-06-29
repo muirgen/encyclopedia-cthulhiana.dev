@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Encyclopedia\FrontBundle\EncyclopediaFrontBundle(),
             new Encyclopedia\AdminBundle\EncyclopediaAdminBundle(),
             new Encyclopedia\RessourcesBundle\EncyclopediaRessourcesBundle(),
+            new Encyclopedia\LibraryBundle\EncyclopediaLibraryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

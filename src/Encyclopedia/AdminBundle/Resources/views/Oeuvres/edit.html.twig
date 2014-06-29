@@ -69,6 +69,40 @@
         </fieldset>
     </div>
     {# End of related catalogu's item #}
-         
+    
+    {# publishing #}
+    <div class="grid_0">
+        <fieldset><legend>Publishing</legend>
+            {# test if oeuvre is within a publishing, and deploy them #}
+            {% if entity.publishing|length > 0 %}
+                
+                <table class="list">
+                    <tr>
+                        <th>Classification</th>
+                        <th>Title</th>
+                        <th>Subtitle</th>
+                        <th>Year</th>
+                        <th>Language / country</th>
+                    </tr>
+                    
+                    {% for p in entity.publishing %}
+                    <tr>
+                        <td>{{ p.classification }}</td>
+                        <td><a href="{{ path('_publishing_edit', {'id': p.id}) }}">{{ p.title }}</a></td>
+                        <td>{{ p.subtitle }}</td>
+                        <td>{{ p.publishYear }}</td>
+                        <td><img src="{{ asset('img/flags/'~p.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </table>    
+                    
+           {% endif %}   
+           {# end of if #} 
+        </fieldset>
+    </div>
+    {# End of related catalogu's item #}
+    
    {% endif %}
+   
 {% endblock %}

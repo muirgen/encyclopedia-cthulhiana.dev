@@ -1,0 +1,52 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+body{
+    background-color:#6a6a6a;
+    font-family:verdana, arial, sans-serif;
+    color:#dcdcdc;
+}
+h1{
+    color:#dadada;
+    font-size:2.2em;
+    font-family: 'Vollkorn', serif;
+    font-weight: lighter;
+}
+h2{
+    color:#d8d8d8;
+    font-size:1.8em;
+    font-family: 'Vollkorn', serif;
+    font-weight: lighter;
+}
+.menu{
+    //background-color:#9ab11a;
+    background-color:#9cb418;
+    color:#FFFFFF;
+}
+.menu ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display:inline;
+}
+.menu ul li{
+    margin-left: 0;
+    padding:1% 2% 1% 2%;
+    display:inline-block;
+}
+.menu ul li a:link, .menu ul li a:hover, .menu ul li a:visited{
+    color:#FFFFFF;
+    text-decoration: none;
+}
+.menu ul li.pipe{
+    padding:1%;
+}
+
+.corpus{
+    margin-top: 1%;
+    z-index: 1;
+    position:relative;
+}
+

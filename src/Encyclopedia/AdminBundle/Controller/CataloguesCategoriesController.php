@@ -9,11 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Encyclopedia\AdminBundle\Entity\CataloguesCategories;
-use Encyclopedia\AdminBundle\Form\CataloguesCategoriesType;
+use Encyclopedia\LibraryBundle\Entity\CataloguesCategories;
+use Encyclopedia\LibraryBundle\Form\CataloguesCategoriesType;
 
-use Encyclopedia\AdminBundle\Entity\CataloguesCategoriesTrans;
-use Encyclopedia\AdminBundle\Form\CataloguesCategoriesTransType;
+use Encyclopedia\LibraryBundle\Entity\CataloguesCategoriesTrans;
+use Encyclopedia\LibraryBundle\Form\CataloguesCategoriesTransType;
 
 /**
  * Description of CataloguesController
@@ -30,7 +30,7 @@ class CataloguesCategoriesController extends Controller{
      */
     public function indexAction(){
         
-        $list = $this->getDoctrine()->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->findAll();
+        $list = $this->getDoctrine()->getRepository('EncyclopediaLibraryBundle:CataloguesCategories')->findAll();
         
         return array('list' => $list);
         
@@ -129,7 +129,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategories')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues Categories entity.');
@@ -152,7 +152,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategories')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues Categories entity.');
@@ -202,7 +202,7 @@ class CataloguesCategoriesController extends Controller{
     public function newTranslationAction($id_category){
         
         $em = $this->getDoctrine()->getManager();
-        $category = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategories')->find($id_category);
+        $category = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategories')->find($id_category);
         
         $entity = new CataloguesCategoriesTrans();
         $entity->setCategory($category);
@@ -271,7 +271,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
       
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find CataloguesCategoriesTrans entity.');
@@ -294,7 +294,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find CatalogueCategoriesTrans entity.');

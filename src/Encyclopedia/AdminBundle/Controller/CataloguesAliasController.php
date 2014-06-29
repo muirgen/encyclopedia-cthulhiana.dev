@@ -8,8 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Encyclopedia\AdminBundle\Form\CataloguesAliasType;
-use Encyclopedia\AdminBundle\Entity\CataloguesAlias;
+use Encyclopedia\LibraryBundle\Form\CataloguesAliasType;
+use Encyclopedia\LibraryBundle\Entity\CataloguesAlias;
 
 /**
  * Description of CataloguesAliasController
@@ -48,7 +48,7 @@ class CataloguesAliasController extends Controller {
     public function newAction($id_catalogue) {
         
         $em = $this->getDoctrine()->getManager();
-        $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id_catalogue);
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
         
         $entity = new CataloguesAlias();
         $entity->setCatalogues($catalogue);
@@ -70,7 +70,7 @@ class CataloguesAliasController extends Controller {
     public function createAction(Request $request, $id_catalogue) {
         
         $em = $this->getDoctrine()->getManager();
-        $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id_catalogue);
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
         
         $entity = new CataloguesAlias();
         
@@ -122,9 +122,9 @@ class CataloguesAliasController extends Controller {
     public function editAction($id, $id_catalogue) {
         
         $em = $this->getDoctrine()->getManager();
-        $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id_catalogue);
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues Alias entity.');
@@ -147,9 +147,9 @@ class CataloguesAliasController extends Controller {
     public function updateAction(Request $request, $id, $id_catalogue){
         
         $em = $this->getDoctrine()->getManager();
-        $catalogue = $em->getRepository('EncyclopediaAdminBundle:Catalogues')->find($id_catalogue);
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:CataloguesAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Catalogues Alias entity.');

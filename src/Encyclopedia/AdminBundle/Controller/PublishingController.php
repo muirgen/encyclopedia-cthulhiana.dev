@@ -7,11 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Encyclopedia\AdminBundle\Entity\Publishing;
-use Encyclopedia\AdminBundle\Form\PublishingType;
+
+use Encyclopedia\LibraryBundle\Entity\Publishing;
+use Encyclopedia\LibraryBundle\Form\PublishingType;
 
 /**
- * Description of OeuvresController
+ * Description of PublishingController
  *
  * @author Jenny
  *
@@ -26,7 +27,7 @@ class PublishingController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('EncyclopediaAdminBundle:Publishing')->findAll();
+        $entities = $em->getRepository('EncyclopediaLibraryBundle:Publishing')->findAll();
 
         return $this->render('EncyclopediaAdminBundle:Publishing:index.html.twig', array(
                     'entities' => $entities,
@@ -88,7 +89,7 @@ class PublishingController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_publishing_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_publishing_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -96,53 +97,11 @@ class PublishingController extends Controller {
                     'edit_form' => $form->createView(),
                 );
     }
-
     
-
-    /**
-     * @Route("/show/{id}", name="_publishing_show")
-     * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
-     */
-    public function showAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Publishing')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Publishing entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('EncyclopediaAdminBundle:Publishing:show.html.twig', array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),));
-    }
-
-    /**
-     * @Route("/edit/{id}", name="_publishing_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Publishing')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Publishing entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('EncyclopediaAdminBundle:Publishing:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
+    /**************************************************
+     * EDIT ENTITY
+     **************************************************/
+    
     /**
      * Creates a form to edit a Publishing entity.
      *
@@ -150,7 +109,7 @@ class PublishingController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Publishing $entity) {
+    private function publishingEditForm(Publishing $entity) {
         $form = $this->createForm(new PublishingType(), $entity, array(
             'action' => $this->generateUrl('_publishing_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -159,6 +118,28 @@ class PublishingController extends Controller {
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
+    }
+    
+    /**
+     * @Route("/edit/{id}", name="_publishing_edit")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Publishing')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Publishing entity.');
+        }
+
+        $editForm = $this->publishingEditForm($entity);
+
+        return array(
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView()
+                );
     }
 
     /**
@@ -170,13 +151,13 @@ class PublishingController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Publishing')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Publishing')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find publishing entity.');
         }
         
-        $form = $this->createEditForm($entity);
+        $form = $this->publishingEditForm($entity);
         
         $form->handleRequest($request);
 
@@ -204,6 +185,10 @@ class PublishingController extends Controller {
         
     }
 
+    /**************************************************
+     * DELETE ENTITY
+     **************************************************/
+    
     /**
      * @Route("/delete/{id}", name="_publishing_delete")
      * @Template("EncyclopediaAdminBundle:Publishing:new.html.twig")
@@ -214,7 +199,7 @@ class PublishingController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('EncyclopediaAdminBundle:Publishing')->find($id);
+            $entity = $em->getRepository('EncyclopediaLibraryBundle:Publishing')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Publishing entity.');

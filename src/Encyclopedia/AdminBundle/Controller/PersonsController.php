@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Encyclopedia\AdminBundle\Form\PersonsType;
-use Encyclopedia\AdminBundle\Entity\Persons;
+use Encyclopedia\LibraryBundle\Form\PersonsType;
+use Encyclopedia\LibraryBundle\Entity\Persons;
 
 /**
  * Description of PersonsController
@@ -28,7 +28,7 @@ class PersonsController extends Controller{
     public function indexAction() {
 
         $em = $this->getDoctrine()->getManager();
-        $lastEntries = $em->getRepository('EncyclopediaAdminBundle:Persons')
+        $lastEntries = $em->getRepository('EncyclopediaLibraryBundle:Persons')
                 ->findAllWithLimit(15);
         
         return array('lastentries' => $lastEntries);
@@ -128,7 +128,7 @@ class PersonsController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persons entity.');
@@ -151,7 +151,7 @@ class PersonsController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Persons')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Persons')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persons entity.');
@@ -186,7 +186,7 @@ class PersonsController extends Controller{
         $termSearch = $request->query->get('person');
 
         $em = $this->getDoctrine()->getManager();
-        $props = $em->getRepository('EncyclopediaAdminBundle:Persons')
+        $props = $em->getRepository('EncyclopediaLibraryBundle:Persons')
                 ->findByAutocompleteWithAlias($termSearch);
 
         $array_props = array();

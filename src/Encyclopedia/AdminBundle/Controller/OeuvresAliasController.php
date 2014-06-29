@@ -8,8 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Encyclopedia\AdminBundle\Form\OeuvresAliasType;
-use Encyclopedia\AdminBundle\Entity\OeuvresAlias;
+
+use Encyclopedia\LibraryBundle\Form\OeuvresAliasType;
+use Encyclopedia\LibraryBundle\Entity\OeuvresAlias;
 
 /**
  * Description of CataloguesAliasController
@@ -48,7 +49,7 @@ class OeuvresAliasController extends Controller {
     public function newAction($id_oeuvre) {
         
         $em = $this->getDoctrine()->getManager();
-        $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+        $oeuvre = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id_oeuvre);
         
         $entity = new OeuvresAlias();
         $entity->setOeuvres($oeuvre);
@@ -70,7 +71,7 @@ class OeuvresAliasController extends Controller {
     public function createAction(Request $request, $id_oeuvre) {
         
         $em = $this->getDoctrine()->getManager();
-        $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+        $oeuvre = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id_oeuvre);
         
         $entity = new OeuvresAlias();
         
@@ -122,9 +123,9 @@ class OeuvresAliasController extends Controller {
     public function editAction($id, $id_oeuvre) {
         
         $em = $this->getDoctrine()->getManager();
-        $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+        $oeuvre = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id_oeuvre);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:OeuvresAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:OeuvresAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Oeuvres Alias entity.');
@@ -147,9 +148,9 @@ class OeuvresAliasController extends Controller {
     public function updateAction(Request $request, $id, $id_oeuvre){
         
         $em = $this->getDoctrine()->getManager();
-        $oeuvre = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id_oeuvre);
+        $oeuvre = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id_oeuvre);
         
-        $entity = $em->getRepository('EncyclopediaAdminBundle:OeuvresAlias')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:OeuvresAlias')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Oeuvres Alias entity.');

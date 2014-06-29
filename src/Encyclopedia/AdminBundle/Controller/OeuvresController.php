@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Encyclopedia\AdminBundle\Form\OeuvresType;
-use Encyclopedia\AdminBundle\Entity\Oeuvres;
+use Encyclopedia\LibraryBundle\Form\OeuvresType;
+use Encyclopedia\LibraryBundle\Entity\Oeuvres;
 
 /**
  * Description of OeuvresController
@@ -28,7 +28,7 @@ class OeuvresController extends Controller{
     public function indexAction(){
         
         $em = $this->getDoctrine()->getManager();
-        $lastentries = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+        $lastentries = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')
                 ->findAllWithLimit(15);
         
         return array('lastentries' => $lastentries);
@@ -109,7 +109,7 @@ class OeuvresController extends Controller{
     {
         $form = $this->createForm(new OeuvresType(), $entity, array(
             'action' => $this->generateUrl('_oeuvres_update', array('id' => $entity->getId())),
-            'method' => 'POST',
+            'method' => 'PUT',
         ));
         
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -126,7 +126,7 @@ class OeuvresController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Oeuvres entity.');
@@ -145,14 +145,14 @@ class OeuvresController extends Controller{
 
     /**
      * @Route("/update/{id}", name="_oeuvres_update")
-     * @Method("POST")
+     * @Method("PUT")
      * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
     public function updateAction(Request $request, $id){
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')->find($id);
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Oeuvres entity.');
@@ -201,11 +201,11 @@ class OeuvresController extends Controller{
         $em = $this->getDoctrine()->getManager();
         
         if($action == 'addcatalogueitem'){
-            $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')
                     ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
         }
         else{
-            $props = $em->getRepository('EncyclopediaAdminBundle:Oeuvres')
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Oeuvres')
                     ->findByAutocompleteWithAlias($termSearch);
         }
         $array_props = array();
