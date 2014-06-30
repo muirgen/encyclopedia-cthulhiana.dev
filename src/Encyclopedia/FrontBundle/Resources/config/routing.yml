@@ -1,3 +1,7 @@
-encyclopedia_front_homepage:
-    pattern:  /
-    defaults: { _controller: EncyclopediaFrontBundle:Default:index }
+#encyclopedia_front_homepage:
+#    pattern:  /
+#    defaults: { _controller: EncyclopediaFrontBundle:Default:index }
+# importe les routes d'un répertoire Controller
+front:
+    resource: "@EncyclopediaFrontBundle/Controller"
+    type:     annotation

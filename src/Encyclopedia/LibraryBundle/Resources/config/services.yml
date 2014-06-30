@@ -5,3 +5,13 @@ services:
 #    encyclopedia_library.example:
 #        class: %encyclopedia_library.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    library.twig.library_extension:
+        class: Encyclopedia\LibraryBundle\Twig\LibraryExtension
+        tags: 
+            - { name: twig.extension }
+    kernel.listener.languages:
+        class: Encyclopedia\LibraryBundle\Listener\LanguagesListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest } 
+        arguments: [ @service_container, [ 'en', 'fr' ] ]
+            

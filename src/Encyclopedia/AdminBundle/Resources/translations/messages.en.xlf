@@ -4,11 +4,11 @@
         <body>
             <trans-unit id="1">
                 <source>fhtagn_matters</source>
-                <target>(Parce que Fhtagn importe !)</target>
+                <target>(Because Fhtagn matters!)</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>about</source>
-                <target>A propos</target>
+                <target>About</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>contact</source>

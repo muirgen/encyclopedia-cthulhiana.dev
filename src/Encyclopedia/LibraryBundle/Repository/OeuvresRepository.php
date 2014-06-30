@@ -25,8 +25,8 @@ class OeuvresRepository extends EntityRepository {
                 . ' FROM oeuvres_alias WHERE name LIKE ? ';
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('EncyclopediaAdminBundle:Oeuvres', 'o');
-        $rsm->addEntityResult('EncyclopediaAdminBundle:OeuvresAlias', 'oa');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:Oeuvres', 'o');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:OeuvresAlias', 'oa');
         $rsm->addFieldResult('o', 'id', 'id');
         $rsm->addFieldResult('o', 'name', 'name');
         $rsm->addFieldResult('oa', 'id', 'id');
@@ -57,8 +57,8 @@ class OeuvresRepository extends EntityRepository {
                 . ' FROM oeuvres_alias WHERE name LIKE ? ';
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('EncyclopediaAdminBundle:Oeuvres', 'o');
-        $rsm->addEntityResult('EncyclopediaAdminBundle:OeuvresAlias', 'oa');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:Oeuvres', 'o');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:OeuvresAlias', 'oa');
         $rsm->addFieldResult('o', 'id', 'id');
         $rsm->addFieldResult('o', 'name', 'name');
         $rsm->addFieldResult('oa', 'id', 'id');

@@ -17,8 +17,8 @@ class PersonsRepository extends EntityRepository{
                 . 'SELECT id_person as id, name FROM persons_alias WHERE name LIKE ? ';
         
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('EncyclopediaAdminBundle:Persons', 'p');
-        $rsm->addEntityResult('EncyclopediaAdminBundle:PersonsAlias', 'pa');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:Persons', 'p');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:PersonsAlias', 'pa');
         $rsm->addFieldResult('p', 'id', 'id');
         $rsm->addFieldResult('p', 'name', 'name');
         $rsm->addFieldResult('pa', 'id', 'id');
