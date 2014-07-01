@@ -232,7 +232,7 @@ class CataloguesCategoriesController extends Controller{
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_categories_trans_edit', array('id_category' => $entity->getCategory()->getId(),'id_lang' => $entity->getLang()->getId())));
+            return $this->redirect($this->generateUrl('_catalogues_categories_trans_edit', array('id_category' => $entity->getCategory()->getId(),'id_lang' => $entity->getLanguages()->getId())));
         }
 
         return array(
@@ -271,7 +271,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
         
-        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'languages' => $id_lang));
       
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find CataloguesCategoriesTrans entity.');

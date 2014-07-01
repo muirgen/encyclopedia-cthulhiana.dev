@@ -35,27 +35,27 @@
                     </div>
                     <div class="internalLinks grid_16">
                         <ul>
-                            <li>{% trans %}about{% endtrans %}</li>
-                            <li>{% trans %}contact{% endtrans %}</li>
+                            <li>{% trans from "header" %}header.navigation.about{% endtrans %}</li>
+                            <li>{% trans from "header" %}header.navigation.contact{% endtrans %}</li>
                         </ul>
                     </div>
                 </div>
                 <div class="randomIndex container_12">
-                    <div class="grid_5"><h3>Ia! Ia! Cthulhu Fhtagn!</h3><br/>{% trans %}fhtagn_matters{% endtrans %}</div>
+                    <div class="grid_5"><h3>Ia! Ia! Cthulhu Fhtagn!</h3><br/>{% trans from "header" %}header.fhtagn{% endtrans %}</div>
                     <div class="grid_7">{{ render(controller('EncyclopediaFrontBundle:Default:randomIndex')) }}</div>
                 </div>        
                 <div class="menu grid_0">
                 <ul>
-                    <li>Accueil</li>
+                    <li><a href="{{ path('_homepage') }}">{% trans from "navigation" %}home{% endtrans %}</a></li>
                     <li class="pipe"> | </li>
-                    <li>Index</li>
+                    <li><a href="{{ path('_catalogues') }}">{% trans from "navigation" %}index{% endtrans %}</a></li>
                 </ul>
                 </div>
                 
             </div>
 
             <div class="corpus container_11">
-            {% block body %}
+            {% block body -%}
                    
             {% endblock %}
             </div>

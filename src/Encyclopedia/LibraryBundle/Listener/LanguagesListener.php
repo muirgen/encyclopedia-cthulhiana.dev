@@ -27,24 +27,49 @@ class LanguagesListener {
         
         $req = $e->getRequest();
         $locale = $req->getPreferredLanguage($this->availableLocales);
-        
-        // generate a new URL from the current route-name and -params, overwriting
-        // the current locale
-        $routeName = $req->attributes->get('_route');
-        $routeParams = array_merge($req->attributes->get('_route_params'), array('_locale' => $locale));
+        $request_uri = $req->server->get('REQUEST_URI');
+      
+        $track_uri = explode('/', $request_uri);
+        $array_excp = array('_wdt','sf2','admin');
+        $test_uri = array_diff($track_uri, $array_excp);
 
-        if($routeName == '_homepagewithoutlocale'){
-            $routeName = '_homepage';
+        $routeName = $req->attributes->get('_route');
+        $routeParams = $req->attributes->get('_route_params');
+        
+        if(empty($test_uri)){
+            
+            if($track_uri[1] == '_wdt'){
+                return;
+            }
+            if($track_uri[1] == 'admin'){
+                
+                $localizedUrl = $this->container->get('router')->generate($routeName,$routeParams);
+                $response = new \Symfony\Component\HttpFoundation\RedirectResponse($localizedUrl);
+            
+                $e->setResponse($response);
+            }
+            
+        }
+        if(!empty($test_uri) && ($track_uri[1] != 'admin') && $track_uri[1] != '_wdt'){
+            // generate a new URL from the current route-name and -params, overwriting
+            // the current locale
+            $routeParams = array_merge($req->attributes->get('_route_params'), array('_locale' => $locale));
+
+            if($routeName == '_homepagewithoutlocale'){
+                $routeName = '_homepage';
+            }
+
+            if(!$req->attributes->get('_locale')){
+
+                $localizedUrl = $this->container->get('router')->generate($routeName,$routeParams);
+                $response = new \Symfony\Component\HttpFoundation\RedirectResponse($localizedUrl);
+
+                $e->setResponse($response);
+
+            }
+        
         }
         
-        if(!$req->attributes->get('_locale')){
-            
-            $localizedUrl = $this->container->get('router')->generate($routeName,$routeParams);
-            $response = new \Symfony\Component\HttpFoundation\RedirectResponse($localizedUrl);
-            
-            $e->setResponse($response);
-            
-        }
         
     }
 
