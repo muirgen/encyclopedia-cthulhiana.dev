@@ -22,11 +22,11 @@ security:
             pattern:    ^/admin
             anonymous: ~
             form_login:
-                login_path:  _login
-                check_path:  _login_check
+                login_path:  _admin_login
+                check_path:  _admin_login_check
             logout:
-                path: _logout
-                target: _login
+                path: _admin_logout
+                target: _admin_login
                 invalidate_session: false
             http_basic:
                 realm: "Secured Admin Area"      

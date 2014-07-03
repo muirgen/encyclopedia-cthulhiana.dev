@@ -1,7 +1,7 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body %}
-<h3><a href="{{ path('_persons') }}">Person</a> > Edit : <a href="{{ path('_persons_edit', {'id' : person.id}) }}">{{ person.name }}</a> > Alias : {{ entity.name }}</h3>
+<h3><a href="{{ path('_admin_persons') }}">Person</a> > Edit : <a href="{{ path('_admin_persons_edit', {'id' : person.id}) }}">{{ person.name }}</a> > Alias : {{ entity.name }}</h3>
 <div class="container_12 edit">
     <div class="grid_6 block">
         <fieldset><legend>Edit</legend>    

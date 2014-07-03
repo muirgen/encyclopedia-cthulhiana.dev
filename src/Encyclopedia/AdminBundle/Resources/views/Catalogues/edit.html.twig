@@ -13,7 +13,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('_oeuvres_autocomplete_search') }}",
+                    url: "{{ path('_admin_oeuvres_autocomplete_search') }}",
                     dataType: 'json',
                     data: {
                         oeuvre: request.term,
@@ -47,7 +47,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('_catalogues_autocomplete_search') }}",
+                    url: "{{ path('_admin_catalogues_autocomplete_search') }}",
                     dataType: 'json',
                     data: {
                         catalogue: request.term,
@@ -112,7 +112,7 @@
             {# the form to add a related catalogue item to the current catalogue item #}
             <span id="spanOpenRelatedItems" style="display:block;"><a href="javascript:openDiv('RelatedItems');" id="eventOnRelatedItems"><i class="fa fa-plus-circle fa-3"></i> Add a related item</a></span>
             <div class="grid_6" id="hiddenDivRelatedItems" style="display:none;">
-                <form action="{{ path('_catalogues_addrelated', {'idcatalogue': entity.id}) }}" method="POST" class="formAdding">
+                <form action="{{ path('_admin_catalogues_addrelated', {'idcatalogue': entity.id}) }}" method="POST" class="formAdding">
                     <label for="filter_catalogue">Catalogue item: </label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" autocomplete="off" /> <input type="hidden" id="id_related" name="id_related" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
                 </form>
                 <br />
@@ -124,7 +124,7 @@
             {% if entity.relatedItems|length > 0 %}
                 <div class="grid_0">
                 {% for ri in entity.relatedItems %}
-                    <span class="cloudItem"><a href="{{ path('_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_catalogues_delrelated', {'idcatalogue':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
+                    <span class="cloudItem"><a href="{{ path('_admin_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_admin_catalogues_delrelated', {'idcatalogue':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
                 {% endfor %}
                 </div>
             {% endif %}
@@ -136,7 +136,7 @@
     {# Alias #}
     <div class="grid_0 block"><a name="alias"></a>
         <fieldset><legend>Alias</legend>
-            <p><a href="{{ path('_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
+            <p><a href="{{ path('_admin_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
             {% if entity.alias|length > 0 %}
             <table class="list">
                 <tr>
@@ -146,7 +146,7 @@
                 </tr>
                 {% for alias in entity.alias %}
                 <tr>
-                    <td><a href="{{ path('_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
+                    <td><a href="{{ path('_admin_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
                     <td><img src="{{ asset('img/flags/'~alias.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
                     <td class="tableText">{{ alias.description|raw }}</td>
                 </tr>
@@ -165,7 +165,7 @@
             {# the form to add an oeuvre to the current catalogue item #}
             <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
             <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
-                <form action="{{ path('_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
+                <form action="{{ path('_admin_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
                     <p><label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" autocomplete="off" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> </p>
                     <p><label for="firstappearance">First appearance: </label> <input type="radio" name="firstappearance" value="1" /> Yes <input type="radio" name="firstappearance" value="0" checked="checked" /> No </p>
                     <input type="submit" name="submit_add" value="Add" class="smallButton" />
@@ -189,7 +189,7 @@
                 </tr>
                 {% for co in entity.cataloguesOeuvres %}
                 <tr>
-                    <td><a href="{{ path('_oeuvres_edit', {'id': co.oeuvres.id}) }}">{{ co.oeuvres.name }}</a></td>
+                    <td><a href="{{ path('_admin_oeuvres_edit', {'id': co.oeuvres.id}) }}">{{ co.oeuvres.name }}</a></td>
                     <td>{{ co.oeuvres.date }}</td>
                     <td>
                         {# test if the related catalogue's item has been seen for the first time in the oeuvre #}
@@ -212,13 +212,13 @@
                         {% if co.oeuvres.publishing|length > 0 %}
                         <ul>
                             {% for publishing in co.oeuvres.publishing %}
-                                <li><a href="{{ path('_publishing_edit', {'id': publishing.id }) }}">{{ publishing.title }} ( {{publishing.classification }} )</a></li>                                
+                                <li><a href="{{ path('_admin_publishing_edit', {'id': publishing.id }) }}">{{ publishing.title }} ( {{publishing.classification }} )</a></li>                                
                             {% endfor %}    
                         </ul>
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('_catalogues_deloeuvre', {'id':entity.id,'idoeuvre':co.oeuvres.id}) }}"><i class="fa fa-times fa-4 orange"></i></a>
+                        <a href="{{ path('_admin_catalogues_deloeuvre', {'id':entity.id,'idoeuvre':co.oeuvres.id}) }}"><i class="fa fa-times fa-4 orange"></i></a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -13,5 +13,6 @@ services:
         class: Encyclopedia\LibraryBundle\Listener\LanguagesListener
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest } 
-        arguments: [ @service_container, [ 'en', 'fr' ] ]
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+        arguments: [ @doctrine.orm.entity_manager, @service_container, [ 'en', 'fr' ] ]
             

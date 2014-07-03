@@ -3,24 +3,24 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>header.fhtagn</source>
-                <target>Parce que Fhtagn nous concerne</target>
+                <source>index.title</source>
+                <target>Index of catalogue</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>header.links.about</source>
-                <target>A propos</target>
+                <source>index.categories</source>
+                <target>Categories</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>header.links.contact</source>
-                <target>Contact</target>
+                <source>index.findbyalpha</source>
+                <target>Find by alphabetical letter</target>
             </trans-unit>
             <trans-unit id="4">
-                <source>header.navigation.home</source>
-                <target>Accueil</target>
+                <source>index.search</source>
+                <target>Search by name</target>
             </trans-unit>
             <trans-unit id="5">
-                <source>header.navigation.catalogue</source>
-                <target>Catalogue</target>
+                <source>index.lastentries</source>
+                <target>15 last entries</target>
             </trans-unit>
         </body>
     </file>

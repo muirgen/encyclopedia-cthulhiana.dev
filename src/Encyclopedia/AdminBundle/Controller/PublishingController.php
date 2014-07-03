@@ -21,7 +21,7 @@ use Encyclopedia\LibraryBundle\Form\PublishingType;
 class PublishingController extends Controller {
 
     /**
-     * @Route("/", name="_publishing")
+     * @Route("/", name="_admin_publishing")
      * @Template()
      */
     public function indexAction() {
@@ -47,7 +47,7 @@ class PublishingController extends Controller {
      */
     private function publishingCreateForm(Publishing $entity) {
         $form = $this->createForm(new PublishingType(), $entity, array(
-            'action' => $this->generateUrl('_publishing_create'),
+            'action' => $this->generateUrl('_admin_publishing_create'),
             'method' => 'POST',
         ));
 
@@ -57,7 +57,7 @@ class PublishingController extends Controller {
     }
     
     /**
-     * @Route("/new", name="_publishing_new")
+     * @Route("/new", name="_admin_publishing_new")
      * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
      */
     public function newAction() {
@@ -72,7 +72,7 @@ class PublishingController extends Controller {
     }
     
     /**
-     * @Route("/create", name="_publishing_create")
+     * @Route("/create", name="_admin_publishing_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
      */
@@ -89,7 +89,7 @@ class PublishingController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_publishing_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_publishing_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -111,7 +111,7 @@ class PublishingController extends Controller {
      */
     private function publishingEditForm(Publishing $entity) {
         $form = $this->createForm(new PublishingType(), $entity, array(
-            'action' => $this->generateUrl('_publishing_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('_admin_publishing_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -121,7 +121,7 @@ class PublishingController extends Controller {
     }
     
     /**
-     * @Route("/edit/{id}", name="_publishing_edit")
+     * @Route("/edit/{id}", name="_admin_publishing_edit")
      * @Method("GET")
      * @Template()
      */
@@ -143,7 +143,7 @@ class PublishingController extends Controller {
     }
 
     /**
-     * @Route("/update/{id}", name="_publishing_update")
+     * @Route("/update/{id}", name="_admin_publishing_update")
      * @Method("PUT")
      * @Template("EncyclopediaAdminBundle:Publishing:edit.html.twig")
      */
@@ -174,7 +174,7 @@ class PublishingController extends Controller {
             /* And flush every thing */
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_publishing_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_publishing_edit', array('id' => $id)));
         }
 
         return array(
@@ -190,7 +190,7 @@ class PublishingController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/delete/{id}", name="_publishing_delete")
+     * @Route("/delete/{id}", name="_admin_publishing_delete")
      * @Template("EncyclopediaAdminBundle:Publishing:new.html.twig")
      */
     public function deleteAction(Request $request, $id) {
@@ -209,7 +209,7 @@ class PublishingController extends Controller {
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('_publishing'));
+        return $this->redirect($this->generateUrl('_admin_publishing'));
     }
 
     /**
@@ -221,7 +221,7 @@ class PublishingController extends Controller {
      */
     private function createDeleteForm($id) {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('_publishing_delete', array('id' => $id)))
+                        ->setAction($this->generateUrl('_admin_publishing_delete', array('id' => $id)))
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()

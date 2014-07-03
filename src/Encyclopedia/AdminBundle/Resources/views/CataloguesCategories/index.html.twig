@@ -3,11 +3,11 @@
 {% block body %}
 <h3>Catalogues Categories</h3>
 <div class="grid_0">
-    <a href="{{ path('_catalogues_categories_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a>
+    <a href="{{ path('_admin_catalogues_categories_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a>
     <h4>List of current categories</h4>
     <ul>
         {% for l in list %}
-        <li><a href="{{ path('_catalogues_categories_edit', {'id' : l.id } ) }}">{{ l.name }}</a></li>
+        <li><a href="{{ path('_admin_catalogues_categories_edit', {'id' : l.id } ) }}">{{ l.name }}</a></li>
         {% endfor %}
     </ul>
 </div>

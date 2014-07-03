@@ -1,7 +1,7 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body -%}
-<h3><a href="{{ path('_oeuvres') }}">Oeuvre</a> > Edit : {{ entity.name }}</h3>
+<h3><a href="{{ path('_admin_oeuvres') }}">Oeuvre</a> > Edit : {{ entity.name }}</h3>
 <div class="container_12 edit">
     <div class="grid_0 block">
         <fieldset><legend>Edit</legend>    
@@ -26,7 +26,7 @@
     {# Alias #}    
     <div class="grid_0 block">
         <fieldset><legend>Alias</legend>
-            <p><a href="{{ path('_oeuvres_alias_new',{'id_oeuvre' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
+            <p><a href="{{ path('_admin_oeuvres_alias_new',{'id_oeuvre' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
             {% if entity.alias|length > 0 %}
             <table class="list">
                 <tr>
@@ -35,7 +35,7 @@
                 </tr>
                 {% for alias in entity.alias %}
                 <tr>
-                    <td><a href="{{ path('_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
+                    <td><a href="{{ path('_admin_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
                     <td><img src="{{ asset('img/flags/'~alias.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
                 </tr>
                 {% endfor %}
@@ -54,7 +54,7 @@
                 <div class="grid_0">
                 {% for c in entity.cataloguesOeuvres %}
                     <span class="cloudItem">
-                        <a href="{{ path('_catalogues_edit', {'id': c.catalogues.id}) }}">{{ c.catalogues.name }}</a> | {{ c.catalogues.category.name }}
+                        <a href="{{ path('_admin_catalogues_edit', {'id': c.catalogues.id}) }}">{{ c.catalogues.name }}</a> | {{ c.catalogues.category.name }}
                         {# test if the related catalogue's item has been seen for the first time in the oeuvre #}
                         {% if c.firstAppearance == 1 %}
                             | <i class="fa fa-eye"></i>
@@ -88,7 +88,7 @@
                     {% for p in entity.publishing %}
                     <tr>
                         <td>{{ p.classification }}</td>
-                        <td><a href="{{ path('_publishing_edit', {'id': p.id}) }}">{{ p.title }}</a></td>
+                        <td><a href="{{ path('_admin_publishing_edit', {'id': p.id}) }}">{{ p.title }}</a></td>
                         <td>{{ p.subtitle }}</td>
                         <td>{{ p.publishYear }}</td>
                         <td><img src="{{ asset('img/flags/'~p.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>

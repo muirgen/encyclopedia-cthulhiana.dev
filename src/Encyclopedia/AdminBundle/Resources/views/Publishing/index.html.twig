@@ -3,7 +3,7 @@
 {% block body -%}
 <h3>Publishing</h3>
 <div class="grid_0">
-<div style="float:left; width:100%"><a href="{{ path('_publishing_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
+<div style="float:left; width:100%"><a href="{{ path('_admin_publishing_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
 <h4>Last entries</h4>    
 <table class="records_list" style="border:1px solid c0c0c0;">
     <thead>
@@ -26,8 +26,8 @@
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td><a href="{{ path('_publishing_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td><a href="{{ path('_publishing_edit', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
+            <td><a href="{{ path('_admin_publishing_edit', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td><a href="{{ path('_admin_publishing_edit', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
             <td>{{ entity.subtitle }}</td>
             <td>{{ entity.author }}</td>
             <td>{{ entity.collection }}</td>

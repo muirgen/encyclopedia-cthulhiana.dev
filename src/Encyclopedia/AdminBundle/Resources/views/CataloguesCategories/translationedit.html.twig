@@ -1,7 +1,7 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body %}
-<h3><a href="{{ path('_catalogues_categories') }}">Catalogue Categories</a> > <a href="{{ path('_catalogues_categories_edit', {'id' : entity.category.id } ) }}">{{ entity.category.name }}</a> > Translation > Edit : {{ entity.nameTrans }}</h3>
+<h3><a href="{{ path('_admin_catalogues_categories') }}">Catalogue Categories</a> > <a href="{{ path('_admin_catalogues_categories_edit', {'id' : entity.category.id } ) }}">{{ entity.category.name }}</a> > Translation > Edit : {{ entity.nameTrans }}</h3>
 <div class="container_12 edit">
     <div class="grid_6 block">
         <fieldset><legend>Edit</legend>    

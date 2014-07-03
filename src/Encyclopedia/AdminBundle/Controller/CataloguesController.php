@@ -22,7 +22,7 @@ use Encyclopedia\LibraryBundle\Entity\Catalogues;
 class CataloguesController extends Controller {
 
     /**
-     * @Route("/", name="_catalogues")
+     * @Route("/", name="_admin_catalogues")
      * @Template()
      */
     public function indexAction() {
@@ -46,7 +46,7 @@ class CataloguesController extends Controller {
     private function cataloguesCreateForm(Catalogues $entity){
         
         $form = $this->createForm(new CataloguesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_create'),
+            'action' => $this->generateUrl('_admin_catalogues_create'),
             'method' => 'POST',
         ));
 
@@ -56,7 +56,7 @@ class CataloguesController extends Controller {
     }
         
     /**
-     * @Route("/new", name="_catalogues_new")
+     * @Route("/new", name="_admin_catalogues_new")
      * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
      */
     public function newAction() {
@@ -72,7 +72,7 @@ class CataloguesController extends Controller {
     }
     
     /**
-     * @Route("/create", name="_catalogues_create")
+     * @Route("/create", name="_admin_catalogues_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
      */
@@ -89,7 +89,7 @@ class CataloguesController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -110,7 +110,7 @@ class CataloguesController extends Controller {
     private function cataloguesEditForm(Catalogues $entity)
     {
         $form = $this->createForm(new CataloguesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('_admin_catalogues_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
         
@@ -120,7 +120,7 @@ class CataloguesController extends Controller {
     }
     
     /**
-     * @Route("/edit/{id}", name="_catalogues_edit")
+     * @Route("/edit/{id}", name="_admin_catalogues_edit")
      * @Method("GET")
      * @Template()
      */
@@ -143,7 +143,7 @@ class CataloguesController extends Controller {
     }
 
     /**
-     * @Route("/update/{id}", name="_catalogues_update")
+     * @Route("/update/{id}", name="_admin_catalogues_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Catalogues:edit.html.twig")
      */
@@ -178,7 +178,7 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/autocomplete-search", name="_catalogues_autocomplete_search")
+     * @Route("/autocomplete-search", name="_admin_catalogues_autocomplete_search")
      * @Method("GET")
      */
     public function autocompleteSearchAction(Request $request) {
@@ -208,7 +208,7 @@ class CataloguesController extends Controller {
     }
 
     /**
-     * @Route("/search", name="_catalogues_search")
+     * @Route("/search", name="_admin_catalogues_search")
      * @Method("POST")
      */
     public function searchAction(Request $request) {
@@ -220,7 +220,7 @@ class CataloguesController extends Controller {
          * Redirect to the edit form for the id.
          */
         if ($id_catalogue) {
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id_catalogue)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id_catalogue)));
         }
 
         /**
@@ -235,7 +235,7 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/{idcatalogue}/addrelated", name="_catalogues_addrelated")
+     * @Route("/{idcatalogue}/addrelated", name="_admin_catalogues_addrelated")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
@@ -264,7 +264,7 @@ class CataloguesController extends Controller {
             
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $idcatalogue)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $idcatalogue)));
             
         }
         
@@ -273,7 +273,7 @@ class CataloguesController extends Controller {
     }
     
     /**
-     * @Route("/{idcatalogue}/delrelated/{idrelated}", name="_catalogues_delrelated")
+     * @Route("/{idcatalogue}/delrelated/{idrelated}", name="_admin_catalogues_delrelated")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
@@ -300,7 +300,7 @@ class CataloguesController extends Controller {
             
             $em->flush();
             
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $idcatalogue)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $idcatalogue)));
         }
         
         return array('error' => $error);
@@ -311,7 +311,7 @@ class CataloguesController extends Controller {
      **************************************************/
     
     /**
-     * @Route("/{id}/addoeuvre", name="_catalogues_addoeuvre")
+     * @Route("/{id}/addoeuvre", name="_admin_catalogues_addoeuvre")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
@@ -342,7 +342,7 @@ class CataloguesController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
             
         }
         
@@ -351,7 +351,7 @@ class CataloguesController extends Controller {
     }
     
     /**
-     * @Route("/{id}/deloeuvre/{idoeuvre}", name="_catalogues_deloeuvre")
+     * @Route("/{id}/deloeuvre/{idoeuvre}", name="_admin_catalogues_deloeuvre")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
@@ -371,7 +371,7 @@ class CataloguesController extends Controller {
             $em->remove($entity);
             $em->flush();
             
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
         }
         
         return array('error' => $error);

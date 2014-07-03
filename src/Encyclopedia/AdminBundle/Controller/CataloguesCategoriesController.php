@@ -25,7 +25,7 @@ use Encyclopedia\LibraryBundle\Form\CataloguesCategoriesTransType;
 class CataloguesCategoriesController extends Controller{
     
     /**
-     * @Route("/", name="_catalogues_categories")
+     * @Route("/", name="_admin_catalogues_categories")
      * @Template()
      */
     public function indexAction(){
@@ -48,7 +48,7 @@ class CataloguesCategoriesController extends Controller{
     private function cataloguesCategoriesCreateForm(CataloguesCategories $entity){
         
         $form = $this->createForm(new CataloguesCategoriesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_categories_create'),
+            'action' => $this->generateUrl('_admin_catalogues_categories_create'),
             'method' => 'POST',
         ));
 
@@ -58,7 +58,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/new", name="_catalogues_categories_new")
+     * @Route("/new", name="_admin_catalogues_categories_new")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:edit.html.twig")
      */
     public function newAction(){
@@ -73,7 +73,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/create", name="_catalogues_categories_create")
+     * @Route("/create", name="_admin_catalogues_categories_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:edit.html.twig")
      */
@@ -90,7 +90,7 @@ class CataloguesCategoriesController extends Controller{
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_categories_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_catalogues_categories_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -111,7 +111,7 @@ class CataloguesCategoriesController extends Controller{
     private function cataloguesCategoriesEditForm(CataloguesCategories $entity)
     {
         $form = $this->createForm(new CataloguesCategoriesType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_categories_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('_admin_catalogues_categories_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
         
@@ -121,7 +121,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/edit/{id}", name="_catalogues_categories_edit")
+     * @Route("/edit/{id}", name="_admin_catalogues_categories_edit")
      * @Method("GET")
      * @Template()
      */
@@ -144,7 +144,7 @@ class CataloguesCategoriesController extends Controller{
     }
 
     /**
-     * @Route("/update/{id}", name="_catalogues_categories_update")
+     * @Route("/update/{id}", name="_admin_catalogues_categories_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:edit.html.twig")
      */
@@ -165,7 +165,7 @@ class CataloguesCategoriesController extends Controller{
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_categories_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_categories_edit', array('id' => $id)));
         }
 
         return array(
@@ -186,7 +186,7 @@ class CataloguesCategoriesController extends Controller{
     private function cataloguesCategoriesTransCreateForm(CataloguesCategoriesTrans $entity){
         
         $form = $this->createForm(new CataloguesCategoriesTransType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_categories_trans_create'),
+            'action' => $this->generateUrl('_admin_catalogues_categories_trans_create'),
             'method' => 'POST',
         ));
 
@@ -196,7 +196,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/translation/new/category-{id_category}", name="_catalogues_categories_trans_new")
+     * @Route("/translation/new/category-{id_category}", name="_admin_catalogues_categories_trans_new")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:translationedit.html.twig")
      */
     public function newTranslationAction($id_category){
@@ -215,7 +215,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/translation/create", name="_catalogues_categories_trans_create")
+     * @Route("/translation/create", name="_admin_catalogues_categories_trans_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:translationedit.html.twig")
      */
@@ -232,7 +232,7 @@ class CataloguesCategoriesController extends Controller{
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_categories_trans_edit', array('id_category' => $entity->getCategory()->getId(),'id_lang' => $entity->getLanguages()->getId())));
+            return $this->redirect($this->generateUrl('_admin_catalogues_categories_trans_edit', array('id_category' => $entity->getCategory()->getId(),'id_lang' => $entity->getLanguages()->getId())));
         }
 
         return array(
@@ -253,7 +253,7 @@ class CataloguesCategoriesController extends Controller{
     private function cataloguesCategoriesTransEditForm(CataloguesCategoriesTrans $entity, $id_category, $id_lang)
     {
         $form = $this->createForm(new CataloguesCategoriesTransType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_categories_trans_update', array('id_category' => $id_category, 'id_lang' => $id_lang)),
+            'action' => $this->generateUrl('_admin_catalogues_categories_trans_update', array('id_category' => $id_category, 'id_lang' => $id_lang)),
             'method' => 'POST',
         ));
         
@@ -263,7 +263,7 @@ class CataloguesCategoriesController extends Controller{
     }
     
     /**
-     * @Route("/translation/edit/category-{id_category}/lang-{id_lang}", name="_catalogues_categories_trans_edit")
+     * @Route("/translation/edit/category-{id_category}/lang-{id_lang}", name="_admin_catalogues_categories_trans_edit")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:translationedit.html.twig")
      */
@@ -286,7 +286,7 @@ class CataloguesCategoriesController extends Controller{
     }
 
     /**
-     * @Route("/translation/update/category-{id_category}/lang-{id_lang}", name="_catalogues_categories_trans_update")
+     * @Route("/translation/update/category-{id_category}/lang-{id_lang}", name="_admin_catalogues_categories_trans_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesCategories:translationedit.html.twig")
      */
@@ -307,7 +307,7 @@ class CataloguesCategoriesController extends Controller{
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_categories_trans_edit', array('id_category' => $id_category, 'id_lang' => $id_lang)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_categories_trans_edit', array('id_category' => $id_category, 'id_lang' => $id_lang)));
         }
 
         return array(

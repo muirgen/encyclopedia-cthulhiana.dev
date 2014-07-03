@@ -22,7 +22,7 @@ use Encyclopedia\LibraryBundle\Entity\Oeuvres;
 class OeuvresController extends Controller{
     
     /**
-     * @Route("/", name="_oeuvres")
+     * @Route("/", name="_admin_oeuvres")
      * @Template()
      */
     public function indexAction(){
@@ -46,7 +46,7 @@ class OeuvresController extends Controller{
     private function oeuvresCreateForm(Oeuvres $entity){
         
         $form = $this->createForm(new OeuvresType(), $entity, array(
-            'action' => $this->generateUrl('_oeuvres_create'),
+            'action' => $this->generateUrl('_admin_oeuvres_create'),
             'method' => 'POST',
         ));
 
@@ -56,7 +56,7 @@ class OeuvresController extends Controller{
     }
     
     /**
-     * @Route("/new", name="_oeuvres_new")
+     * @Route("/new", name="_admin_oeuvres_new")
      * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
     public function newAction(){
@@ -71,7 +71,7 @@ class OeuvresController extends Controller{
     }
     
     /**
-     * @Route("/create", name="_oeuvres_create")
+     * @Route("/create", name="_admin_oeuvres_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
@@ -88,7 +88,7 @@ class OeuvresController extends Controller{
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_oeuvres_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -108,7 +108,7 @@ class OeuvresController extends Controller{
     private function oeuvresEditForm(Oeuvres $entity)
     {
         $form = $this->createForm(new OeuvresType(), $entity, array(
-            'action' => $this->generateUrl('_oeuvres_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('_admin_oeuvres_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
         
@@ -118,7 +118,7 @@ class OeuvresController extends Controller{
     }
     
    /**
-     * @Route("/edit/{id}", name="_oeuvres_edit")
+     * @Route("/edit/{id}", name="_admin_oeuvres_edit")
      * @Method("GET")
      * @Template()
      */
@@ -144,7 +144,7 @@ class OeuvresController extends Controller{
     }
 
     /**
-     * @Route("/update/{id}", name="_oeuvres_update")
+     * @Route("/update/{id}", name="_admin_oeuvres_update")
      * @Method("PUT")
      * @Template("EncyclopediaAdminBundle:Oeuvres:edit.html.twig")
      */
@@ -175,7 +175,7 @@ class OeuvresController extends Controller{
             /* And flush every thing */
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_oeuvres_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_oeuvres_edit', array('id' => $id)));
         }
 
         return array(
@@ -189,7 +189,7 @@ class OeuvresController extends Controller{
      **************************************************/
     
     /**
-     * @Route("/autocomplete-search", name="_oeuvres_autocomplete_search")
+     * @Route("/autocomplete-search", name="_admin_oeuvres_autocomplete_search")
      * @Method("GET")
      */
     public function autocompleteSearchAction(Request $request) {
@@ -218,7 +218,7 @@ class OeuvresController extends Controller{
     }
 
     /**
-     * @Route("/search", name="_oeuvres_search")
+     * @Route("/search", name="_admin_oeuvres_search")
      * @Method("POST")
      */
     public function searchAction(Request $request) {

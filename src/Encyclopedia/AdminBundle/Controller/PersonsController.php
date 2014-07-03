@@ -22,7 +22,7 @@ use Encyclopedia\LibraryBundle\Entity\Persons;
 class PersonsController extends Controller{
     
     /**
-     * @Route("/", name="_persons")
+     * @Route("/", name="_admin_persons")
      * @Template()
      */
     public function indexAction() {
@@ -46,7 +46,7 @@ class PersonsController extends Controller{
     private function personsCreateForm(Persons $entity){
         
         $form = $this->createForm(new PersonsType(), $entity, array(
-            'action' => $this->generateUrl('_persons_create'),
+            'action' => $this->generateUrl('_admin_persons_create'),
             'method' => 'POST',
         ));
 
@@ -56,7 +56,7 @@ class PersonsController extends Controller{
     }
     
     /**
-     * @Route("/new", name="_persons_new")
+     * @Route("/new", name="_admin_persons_new")
      * @Template("EncyclopediaAdminBundle:Persons:edit.html.twig")
      */
     public function newAction() {
@@ -72,7 +72,7 @@ class PersonsController extends Controller{
     }
     
     /**
-     * @Route("/create", name="_persons_create")
+     * @Route("/create", name="_admin_persons_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Persons:edit.html.twig")
      */
@@ -89,7 +89,7 @@ class PersonsController extends Controller{
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_persons_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_persons_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -110,7 +110,7 @@ class PersonsController extends Controller{
     private function personsEditForm(Persons $entity)
     {
         $form = $this->createForm(new PersonsType(), $entity, array(
-            'action' => $this->generateUrl('_persons_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('_admin_persons_update', array('id' => $entity->getId())),
             'method' => 'POST',
         ));
         
@@ -120,7 +120,7 @@ class PersonsController extends Controller{
     }
     
     /**
-     * @Route("/edit/{id}", name="_persons_edit")
+     * @Route("/edit/{id}", name="_admin_persons_edit")
      * @Method("GET")
      * @Template()
      */
@@ -143,7 +143,7 @@ class PersonsController extends Controller{
     }
 
     /**
-     * @Route("/update/{id}", name="_persons_update")
+     * @Route("/update/{id}", name="_admin_persons_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:Persons:edit.html.twig")
      */
@@ -164,7 +164,7 @@ class PersonsController extends Controller{
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_persons_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_persons_edit', array('id' => $id)));
         }
 
         return array(
@@ -178,7 +178,7 @@ class PersonsController extends Controller{
      **************************************************/
     
     /**
-     * @Route("/autocomplete-search", name="_persons_autocomplete_search")
+     * @Route("/autocomplete-search", name="_admin_persons_autocomplete_search")
      * @Method("GET")
      */
     public function autocompleteSearchAction(Request $request) {
@@ -199,7 +199,7 @@ class PersonsController extends Controller{
     }
 
     /**
-     * @Route("/search", name="_persons_search")
+     * @Route("/search", name="_admin_persons_search")
      * @Method("POST")
      */
     public function searchAction(Request $request) {
@@ -211,7 +211,7 @@ class PersonsController extends Controller{
          * Redirect to the edit form for the id.
          */
         if ($id_person) {
-            return $this->redirect($this->generateUrl('_persons_edit', array('id' => $id_person)));
+            return $this->redirect($this->generateUrl('_admin_persons_edit', array('id' => $id_person)));
         }
 
         /**

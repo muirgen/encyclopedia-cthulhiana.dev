@@ -4,15 +4,23 @@
         <body>
             <trans-unit id="1">
                 <source>header.fhtagn</source>
-                <target>(Because Fhtagn matters!)</target>
+                <target>Because Fhtagn matter</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>header.navigation.about</source>
+                <source>header.links.about</source>
                 <target>About</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>header.navigation.contact</source>
+                <source>header.links.contact</source>
                 <target>Contact</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>header.navigation.home</source>
+                <target>Home</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>header.navigation.catalogue</source>
+                <target>Catalogue</target>
             </trans-unit>
         </body>
     </file>

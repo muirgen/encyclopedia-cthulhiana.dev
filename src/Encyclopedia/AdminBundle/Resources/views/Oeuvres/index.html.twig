@@ -12,7 +12,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('_oeuvres_autocomplete_search') }}",
+                    url: "{{ path('_admin_oeuvres_autocomplete_search') }}",
                     dataType: 'json',
                     data: {
                         oeuvre: request.term
@@ -46,17 +46,17 @@
 <h4>Where are referenced catalogue's items</h4>
 <div class="grid_0">
     <div style="float:left; width:17%;">
-        <form action="{{ path('_oeuvres_search') }}" method="POST" id="autocomplete_search">
+        <form action="{{ path('_admin_oeuvres_search') }}" method="POST" id="autocomplete_search">
             <label for="filter_oeuvre">Search</label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> <input type="submit" name="submit_search" value="Ok" />
         </form>
     </div>
-    <div style="float:left; width:17%"><a href="{{ path('_oeuvres_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
+    <div style="float:left; width:17%"><a href="{{ path('_admin_oeuvres_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
 </div>
 <div class="grid_0">
     <h4>Last 15 entries</h4>
     <ul>
         {% for le in lastentries %}
-        <li><a href="{{ path('_oeuvres_edit', {'id' : le.id}) }}">{{ le.name }} ({{ le.format }})</a></li>
+        <li><a href="{{ path('_admin_oeuvres_edit', {'id' : le.id}) }}">{{ le.name }} ({{ le.format }})</a></li>
         {% endfor %}
     </ul>
 </div>

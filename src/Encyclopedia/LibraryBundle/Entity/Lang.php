@@ -42,7 +42,14 @@ class Lang {
      * @ORM\Column(name="language_code", type="string", length=5, nullable=false)
      */
     protected $languageCode;
-
+    
+    /**
+     * @var boolean
+     * 
+     * @ORM\Column(name="public", type="boolean", length=1, nullable=true)
+     */
+    protected $public;
+    
     /**
      * Get id
      *
@@ -120,5 +127,28 @@ class Lang {
     public function getLanguageCode()
     {
         return $this->languageCode;
+    }
+    
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     * @return Lang
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean 
+     */
+    public function getPublic()
+    {
+        return $this->public;
     }
 }

@@ -56,7 +56,6 @@ class CataloguesAlias {
      * @ORM\Column(name="note", type="text")
      */
     protected $note;
-    
 
     /**
      * Get id
@@ -182,4 +181,6 @@ class CataloguesAlias {
     {
         return $this->languages;
     }
+    
+    
 }

@@ -33,7 +33,7 @@ class OeuvresAliasController extends Controller {
     private function oeuvresAliasCreateForm(OeuvresAlias $entity, $id_oeuvre) {
 
         $form = $this->createForm(new OeuvresAliasType(), $entity, array(
-            'action' => $this->generateUrl('_oeuvres_alias_create',array('id_oeuvre' => $id_oeuvre)),
+            'action' => $this->generateUrl('_admin_oeuvres_alias_create',array('id_oeuvre' => $id_oeuvre)),
             'method' => 'POST',
         ));
 
@@ -43,7 +43,7 @@ class OeuvresAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-oeuvre-{id_oeuvre}/new", name="_oeuvres_alias_new")
+     * @Route("/id-oeuvre-{id_oeuvre}/new", name="_admin_oeuvres_alias_new")
      * @Template("EncyclopediaAdminBundle:OeuvresAlias:edit.html.twig")
      */
     public function newAction($id_oeuvre) {
@@ -64,7 +64,7 @@ class OeuvresAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-oeuvre-{id_oeuvre}/create", name="_oeuvres_alias_create")
+     * @Route("/id-oeuvre-{id_oeuvre}/create", name="_admin_oeuvres_alias_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:OeuvresAlias:edit.html.twig")
      */
@@ -84,7 +84,7 @@ class OeuvresAliasController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_oeuvres_alias_edit', array('id_oeuvre' => $id_oeuvre, 'id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_oeuvres_alias_edit', array('id_oeuvre' => $id_oeuvre, 'id' => $entity->getId())));
         }
 
         return array(
@@ -106,7 +106,7 @@ class OeuvresAliasController extends Controller {
     private function oeuvresAliasEditForm(OeuvresAlias $entity, $id_oeuvre)
     {
         $form = $this->createForm(new OeuvresAliasType(), $entity, array(
-            'action' => $this->generateUrl('_oeuvres_alias_update', array('id' => $entity->getId(),'id_oeuvre' => $id_oeuvre)),
+            'action' => $this->generateUrl('_admin_oeuvres_alias_update', array('id' => $entity->getId(),'id_oeuvre' => $id_oeuvre)),
             'method' => 'POST',
         ));
         
@@ -116,7 +116,7 @@ class OeuvresAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-oeuvre-{id_oeuvre}/edit/{id}/", name="_oeuvres_alias_edit")
+     * @Route("/id-oeuvre-{id_oeuvre}/edit/{id}/", name="_admin_oeuvres_alias_edit")
      * @Method("GET")
      * @Template()
      */
@@ -141,7 +141,7 @@ class OeuvresAliasController extends Controller {
     }
 
     /**
-     * @Route("/id-oeuvre-{id_oeuvre}/update/{id}", name="_oeuvres_alias_update")
+     * @Route("/id-oeuvre-{id_oeuvre}/update/{id}", name="_admin_oeuvres_alias_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:OeuvresAlias:edit.html.twig")
      */
@@ -163,7 +163,7 @@ class OeuvresAliasController extends Controller {
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_oeuvres_alias_edit', array('id' => $id, 'id_oeuvre' => $id_oeuvre)));
+            return $this->redirect($this->generateUrl('_admin_oeuvres_alias_edit', array('id' => $id, 'id_oeuvre' => $id_oeuvre)));
         }
 
         return array(

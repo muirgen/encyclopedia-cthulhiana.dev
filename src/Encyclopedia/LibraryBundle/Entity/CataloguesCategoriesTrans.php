@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CataloguesCategoriesTrans
  *
  * @ORM\Table(name="catalogues_categories_trans")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Encyclopedia\LibraryBundle\Repository\CataloguesCategoriesTransRepository")
  * 
  */
 class CataloguesCategoriesTrans {

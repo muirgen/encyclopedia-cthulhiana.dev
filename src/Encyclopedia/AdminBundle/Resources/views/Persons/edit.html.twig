@@ -1,7 +1,7 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block body %}
-<h3><a href="{{ path('_persons') }}">Persons</a> > Edit : {{ entity.name }}</h3>
+<h3><a href="{{ path('_admin_persons') }}">Persons</a> > Edit : {{ entity.name }}</h3>
 <div class="container_12 edit">
     <div class="grid_6 block">
         <fieldset><legend>Edit</legend>    
@@ -16,7 +16,7 @@
     {% if entity.id %}
     <div class="grid_6 block">
         <fieldset><legend>Alias</legend>
-            <p><a href="{{ path('_persons_alias_new',{'id_person' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
+            <p><a href="{{ path('_admin_persons_alias_new',{'id_person' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
             {% if entity.alias|length > 0 %}
             <table class="list">
                 <tr>
@@ -24,7 +24,7 @@
                 </tr>
                 {% for alias in entity.alias %}
                 <tr>
-                    <td><a href="{{ path('_persons_alias_edit',{'id_person' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
+                    <td><a href="{{ path('_admin_persons_alias_edit',{'id_person' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
                 </tr>
                 {% endfor %}
             </table>

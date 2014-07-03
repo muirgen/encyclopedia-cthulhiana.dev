@@ -33,7 +33,7 @@ class PersonsAliasController extends Controller {
     private function personsAliasCreateForm(PersonsAlias $entity, $id_person) {
 
         $form = $this->createForm(new PersonsAliasType(), $entity, array(
-            'action' => $this->generateUrl('_persons_alias_create',array('id_person' => $id_person)),
+            'action' => $this->generateUrl('_admin_persons_alias_create',array('id_person' => $id_person)),
             'method' => 'POST',
         ));
 
@@ -43,7 +43,7 @@ class PersonsAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-person-{id_person}/new", name="_persons_alias_new")
+     * @Route("/id-person-{id_person}/new", name="_admin_persons_alias_new")
      * @Template("EncyclopediaAdminBundle:PersonsAlias:edit.html.twig")
      */
     public function newAction($id_person) {
@@ -64,7 +64,7 @@ class PersonsAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-person-{id_person}/create", name="_persons_alias_create")
+     * @Route("/id-person-{id_person}/create", name="_admin_persons_alias_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:PersonsAlias:edit.html.twig")
      */
@@ -84,7 +84,7 @@ class PersonsAliasController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_persons_alias_edit', array('id_person' => $id_person, 'id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_persons_alias_edit', array('id_person' => $id_person, 'id' => $entity->getId())));
         }
 
         return array(
@@ -106,7 +106,7 @@ class PersonsAliasController extends Controller {
     private function personsAliasEditForm(PersonsAlias $entity, $id_person)
     {
         $form = $this->createForm(new PersonsAliasType(), $entity, array(
-            'action' => $this->generateUrl('_persons_alias_update', array('id' => $entity->getId(),'id_person' => $id_person)),
+            'action' => $this->generateUrl('_admin_persons_alias_update', array('id' => $entity->getId(),'id_person' => $id_person)),
             'method' => 'POST',
         ));
         
@@ -116,7 +116,7 @@ class PersonsAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-person-{id_person}/edit/{id}/", name="_persons_alias_edit")
+     * @Route("/id-person-{id_person}/edit/{id}/", name="_admin_persons_alias_edit")
      * @Method("GET")
      * @Template()
      */
@@ -141,7 +141,7 @@ class PersonsAliasController extends Controller {
     }
 
     /**
-     * @Route("/id-person-{id_person}/update/{id}", name="_persons_alias_update")
+     * @Route("/id-person-{id_person}/update/{id}", name="_admin_persons_alias_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:PersonsAlias:edit.html.twig")
      */
@@ -163,7 +163,7 @@ class PersonsAliasController extends Controller {
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_persons_alias_edit', array('id' => $id, 'id_person' => $id_person)));
+            return $this->redirect($this->generateUrl('_admin_persons_alias_edit', array('id' => $id, 'id_person' => $id_person)));
         }
 
         return array(

@@ -24,22 +24,27 @@ class DefaultController extends Controller
 {
     
     /**
-     * @Route("/{_locale}/", name="_homepage", defaults={"_locale" = "en"}, requirements={"_locale" = "en|de|fr"})
+     * @Route("/{_locale}/", name="_homepage", defaults={"_locale" = "en"}, requirements={"_locale" = "[a-z]{2}"})
      * @Route("/", name="_homepagewithoutlocale")
      * @Template()
      */
     public function indexAction()
     {
+    
         return $this->render('EncyclopediaFrontBundle:Default:index.html.twig');
     }
     
     public function randomIndexAction(){
         
+        $idLocale = $this->get('kernel.listener.languages')->getIdLang();
         $em = $this->getDoctrine()->getManager();
-        $randomIndex = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByRand();
+        $ri = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByRand($idLocale);
         
         return $this->render('EncyclopediaFrontBundle:Default:randomIndex.html.twig',
-                array('randomIndex' => $randomIndex));
-        
+                    array('ri' => $ri)
+                
+                );
+                
     }
+    
 }

@@ -9,39 +9,65 @@ html{
 }
 body{
     font-family:verdana, arial, sans-serif;
-    color:#444444;
+    color:#777776; //old #444444;
     padding:0;
     margin:0;
 }
 h1, h2, h3, h4{
     font-family: 'Vollkorn', serif;
+    color:#595958;
 }
 h1{
-    color:#fff;
     font-size:2.2em;
     font-weight: lighter;
 }
 h2{
-    color:#5a5a5a;
     font-size:1.8em;
     font-weight: lighter;
-    border-left:4px solid #9cb418;
     padding-left:0.5%;
+    border-left:4px solid #9cb418;
 }
 h3{
-    color:#5a5a5a;
+    //color:#5a5a5a;
     font-size:1.6em;
     font-weight: lighter;
+    border-bottom:1px solid #d8d9d7;
 }
 h4{
     font-size:1.4em;
     font-weight: lighter;
 }
+/****************************************************/
+/* Class special to change color, text orientation */
+/**************************************************/
+.green{
+    color:#9cb418;
+}
+.right{
+    text-align: right;
+}
+.floatleft{
+    text-align:left;
+}
+.oblique{
+    font-style:oblique;
+}
+.mini{
+    font-size:0.8em;
+}
+.indent{
+    text-indent: 20%;
+}
+/*************************************************/
+
 .header{
-    background-color:#6a6a6a;
+    background-color:#6b6b6a;
     max-width:100%;
     overflow:hidden;
-    color:#dadada;
+    color:#d8d9d7;
+}
+.header h1{ 
+    color:#fff;
 }
 .header .title{
     z-index:3;
@@ -53,6 +79,7 @@ h4{
 }
 .header .boxLinks{
     float:right;
+    font-size:1.1em;
 }
 .header .boxLinks .flags ul{
     list-style-type: none;
@@ -68,7 +95,7 @@ h4{
 .header .boxLinks .internalLinks ul{
     list-style-type: none;
     padding: 0;
-    margin: 2,5% 0 0 0;
+    margin: 2.5% 0;
 }
 .header .boxLinks .internalLinks ul li{
     margin-left: 0;
@@ -81,6 +108,9 @@ h4{
     float:right;
     overflow:hidden;
 }
+/*.header .randomIndex .fhtagn span{
+    
+}*/
 .header .randomIndex .lettrine:before{
     color:#9cb418;
 }
@@ -100,7 +130,7 @@ h4{
 .menu{
     z-index:1;
     position:relative;
-    background-color:#4c4c4c;
+    background-color:#4c4d4c;
     color:#FFFFFF;
     font-size:1em;
     margin-top:2%;
@@ -131,33 +161,68 @@ h4{
     position:relative;
     background-color:#fff;
 }
-
+.corpus .box .blockList{
+    margin-bottom:5%;
+}
+.corpus .box .listLetter{
+    width:100%;
+    text-align:center;
+    margin-bottom:3%;
+}
+.corpus .box .listLetter span{
+    color:#fff;  
+}
+.corpus .box .listLetter span a.selectedGrey:link, .corpus .box .listLetter span a.selectedGrey:visited{
+    background-color:#777776;
+}
+.corpus .box .listLetter span a, .corpus .box .listLetter span a:link, .corpus .box .listLetter span a:visited{
+    background-color:#d8d9d7;
+    color:inherit;
+    padding:0.5% 1% 0.5% 1%;
+    text-decoration: none;
+}
+.corpus .box .listLetter span a:hover{
+    background-color:#777776;
+    color:inherit;
+}
+.corpus .box .blockList input[type="text"]{
+    border:1px solid #d8d9d7;
+    width:100%;
+    color:#777776;
+}
+.corpus .box .blockList ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.corpus .box .blockList ul li{
+    margin-left: 0;
+}
+.corpus .box .resultItem{
+    width:100%;
+    display: table;
+    table-layout: fixed;
+}
+.corpus .box .item{
+    font-size:1.1em;
+    padding:0 0.5% 0 0.5%;
+    margin:0;
+    width:32.33%;
+    max-width:32.33%;
+    display:table-cell;
+    vertical-align: middle;
+}
+.corpus .box .item:hover{
+    background-color:#d8d9d7;
+}
+.corpus .box .item span{
+    display: block;
+    width: 100%;
+}
 .boxText{
     padding:0.5%;
     border-left:4px dotted #9cb418;
 }
-
-/**
-* Special class char for cthulhian icon !
-**/
-.place:before{
-    content: "\0050";
-    font-family: 'cthulhuianv2medium', serif;
-}
-.messenger:before{
-    content: "\004D";
-    font-family: 'cthulhuianv2medium', serif;
-}
-.creatures:before{
-    content: "\0043";
-    font-family: 'cthulhuianv2medium', serif;
-}
-.eldergods:before{
-    content: "\0032";
-    font-family: 'cthulhuianv2medium', serif;
-}
-
-
 
 /*
 * Media Screen
@@ -196,5 +261,24 @@ h4{
     }
     .header .menu ul{
         margin:0;
+    }
+    .corpus .box{
+        width:100%;
+    }
+    .corpus .box .listLetter {
+        line-height: 2.5em; 
+    }
+    .corpus .box .resultItem{
+        width:98%;
+        padding-bottom:5%;
+    }
+    .corpus .box .resultItem .item{
+        font-size:1.1em;
+        padding:0 0.5% 0 0.5%;
+        margin:0;
+        width:inherit;
+        max-width:99%;
+        display:block;
+        border:1px solid black;
     }
 }

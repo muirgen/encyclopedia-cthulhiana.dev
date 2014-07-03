@@ -1,6 +1,81 @@
 {% extends "EncyclopediaFrontBundle::layout.html.twig" %}
 
+{% block title -%} - Catalogue Index{% endblock %}
+{% block keywords -%}catalogue,index{% endblock %}
+
 {% block body -%}
-    index of catalogue
+<div class="container_12">  
     
+    {# Block on the left side of content #}
+    <div class="grid_0">
+        <div class="grid_6"><h2>{% trans from "catalogues" %}index.title{% endtrans %}</h2></div>
+    </div>    
+    <div class="grid_3 box">
+        <div class="grid_16 blockList">
+        <h3>{% trans from "catalogues" %}index.categories{% endtrans %}</h3>
+        {% if listCategories|length > 0 %}
+            <ul class="cthulhu-ul">
+            {% for lc in listCategories %}
+                <li class="{{ lc.category.name|categorytoclass }}"><span>{{ lc.nameTrans }}</span></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+    </div>
+    
+    {# block center with the alpha letter and the results of search by index #}    
+    <div class="grid_6 box">
+        <h3>{% trans from "catalogues" %}index.findbyalpha{% endtrans %}</h3>
+        <div class="listLetter">
+            {% for letter in range('A', 'Z') %}
+                <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+            {% endfor %}
+        </div>
+        <div class="grid_16 resultItem">
+            <h4>Index {{ currentLetter }}</h4>
+            {% if items|length > 0 %} 
+                
+                {% set i = 0 %}
+ 
+                {% for item in items %}
+                    <div class="grid_4 item">
+                        <i class="cthulhuian cthulhu-lg green {{ item['cc_name']|categorytoclass }}"></i>
+                        {% filter replace({'(': '<span class="mini indent">(', ' alias )': ' alias )</span>'})|raw %}
+                        {{ item['c_name']}}
+                        {% endfilter %}
+                        <span class="oblique mini green left indent">{{ item['cct_name_trans']}}</span>
+                    </div>
+                                        
+                    {% if( i%3 == 0) %} 
+                        <br style="clear:both;" />
+                    {% endif %}  
+                    
+                    {% set i = loop %}
+                        
+                {% endfor %}
+
+            {% else %}
+                <p>no results for current index letter</p>
+            {% endif %}
+        </div>    
+    </div>
+        
+    {# Block right side of the content #}    
+    <div class="grid_3 box">
+        <div class="grid_16 blockList">
+            <h3 class="right">{% trans from "catalogues" %}index.search{% endtrans %}</h3>
+            <input type="text" value="ex: cthulhu, arkham"/>
+        </div>
+        <div class="grid_16 blockList">
+        <h3 class="right">{% trans from "catalogues" %}index.lastentries{% endtrans %}</h3>
+        {% if lastEntries|length > 0 %}
+            <ul>
+            {% for le in lastEntries %}
+                <li class="right"><i class="cthulhuian cthulhu-lg {{ le.category.name|categorytoclass }}"></i> {{ le.name }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+    </div>    
+</div>    
 {% endblock %}    

@@ -32,7 +32,7 @@ class CataloguesAliasController extends Controller {
     private function cataloguesAliasCreateForm(CataloguesAlias $entity, $id_catalogue) {
 
         $form = $this->createForm(new CataloguesAliasType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_alias_create',array('id_catalogue' => $id_catalogue)),
+            'action' => $this->generateUrl('_admin_catalogues_alias_create',array('id_catalogue' => $id_catalogue)),
             'method' => 'POST',
         ));
 
@@ -42,7 +42,7 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/new", name="_catalogues_alias_new")
+     * @Route("/id-catalogue-{id_catalogue}/new", name="_admin_catalogues_alias_new")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
     public function newAction($id_catalogue) {
@@ -63,7 +63,7 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/create", name="_catalogues_alias_create")
+     * @Route("/id-catalogue-{id_catalogue}/create", name="_admin_catalogues_alias_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
@@ -83,7 +83,7 @@ class CataloguesAliasController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_alias_edit', array('id_catalogue' => $id_catalogue, 'id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('_admin_catalogues_alias_edit', array('id_catalogue' => $id_catalogue, 'id' => $entity->getId())));
         }
 
         return array(
@@ -105,7 +105,7 @@ class CataloguesAliasController extends Controller {
     private function cataloguesAliasEditForm(CataloguesAlias $entity, $id_catalogue)
     {
         $form = $this->createForm(new CataloguesAliasType(), $entity, array(
-            'action' => $this->generateUrl('_catalogues_alias_update', array('id' => $entity->getId(),'id_catalogue' => $id_catalogue)),
+            'action' => $this->generateUrl('_admin_catalogues_alias_update', array('id' => $entity->getId(),'id_catalogue' => $id_catalogue)),
             'method' => 'POST',
         ));
         
@@ -115,7 +115,7 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/edit/{id}/", name="_catalogues_alias_edit")
+     * @Route("/id-catalogue-{id_catalogue}/edit/{id}/", name="_admin_catalogues_alias_edit")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
@@ -140,7 +140,7 @@ class CataloguesAliasController extends Controller {
     }
 
     /**
-     * @Route("/id-catalogue-{id_catalogue}/update/{id}", name="_catalogues_alias_update")
+     * @Route("/id-catalogue-{id_catalogue}/update/{id}", name="_admin_catalogues_alias_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
@@ -162,7 +162,7 @@ class CataloguesAliasController extends Controller {
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_alias_edit', array('id' => $id, 'id_catalogue' => $id_catalogue)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_alias_edit', array('id' => $id, 'id_catalogue' => $id_catalogue)));
         }
 
         return array(

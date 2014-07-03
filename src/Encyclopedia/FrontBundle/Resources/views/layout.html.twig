@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Encyclopedia Cthulhiana - Administration</title>
-        {% block stylesheets %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>The Cthulhu Mythos Encyclopedia {% block title %}{% endblock %}</title>
+        <meta name="keywords" content="Encyclopedia, Cthulhiana, {% block keywords %}{% endblock %}" /> 
         <link href="{{ asset('css/960-grid/min/reset.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/960-grid/min/text.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/960-grid/grid.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet" />  
         <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.10.4.custom.min.css') }}" rel="stylesheet" />
         <link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css">
-        <link href="{{ asset('css/font-cthulhuian/stylesheet.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/font-cthulhuian/cthulhuian.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/encyclopedia.css') }}" media="screen and (color)" rel="stylesheet"/>
-        {% endblock %}
-        {% block javascripts %}
+        {% block stylesheets %}{% endblock %}
         <script src="{{ asset('js/libs/jquery-2.0.2.min.js') }}"></script>
-        {% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
         <div class="container">
@@ -29,26 +29,26 @@
                 <div class="boxLinks grid_3">
                     <div class="flags grid_16">
                         <ul>
-                            <li><a href="{{ path('_homepage', {'_locale':'en'}) }}"><img src="{{ asset('img/flags/us.png') }}" width="20px" height="20px" /></a></li>
-                            <li><a href="{{ path('_homepage', {'_locale':'fr'}) }}"><img src="{{ asset('img/flags/fr.png') }}" width="20px" height="20px" /></a></li>
+                            <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}"><img src="{{ asset('img/flags/en.png') }}" width="20px" height="20px" /></a></li>
+                            <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'})) }}"><img src="{{ asset('img/flags/fr.png') }}" width="20px" height="20px" /></a></li>
                         </ul>
                     </div>
                     <div class="internalLinks grid_16">
                         <ul>
-                            <li>{% trans from "header" %}header.navigation.about{% endtrans %}</li>
-                            <li>{% trans from "header" %}header.navigation.contact{% endtrans %}</li>
+                            <li>{% trans from "header" %}header.links.about{% endtrans %}</li>
+                            <li>{% trans from "header" %}header.links.contact{% endtrans %}</li>
                         </ul>
                     </div>
                 </div>
                 <div class="randomIndex container_12">
-                    <div class="grid_5"><h3>Ia! Ia! Cthulhu Fhtagn!</h3><br/>{% trans from "header" %}header.fhtagn{% endtrans %}</div>
+                    <div class="grid_5" class="fhtagn"><h2>Ia! Ia! Cthulhu Fhtagn!</h2><br/><span class="cthulhuian">{% trans from "header" %}header.fhtagn{% endtrans %}</span></div>
                     <div class="grid_7">{{ render(controller('EncyclopediaFrontBundle:Default:randomIndex')) }}</div>
                 </div>        
                 <div class="menu grid_0">
                 <ul>
-                    <li><a href="{{ path('_homepage') }}">{% trans from "navigation" %}home{% endtrans %}</a></li>
+                    <li><a href="{{ path('_homepage') }}">{% trans from "header" %}header.navigation.home{% endtrans %}</a></li>
                     <li class="pipe"> | </li>
-                    <li><a href="{{ path('_catalogues') }}">{% trans from "navigation" %}index{% endtrans %}</a></li>
+                    <li><a href="{{ path('_catalogues') }}">{% trans from "header" %}header.navigation.catalogue{% endtrans %}</a></li>
                 </ul>
                 </div>
                 
@@ -59,7 +59,7 @@
                    
             {% endblock %}
             </div>
-            <div class="footer">
+            <div class="footer container_11">
                 Cthulhuian Font by StapletonMcTavish (http://stapletonmctavish.deviantart.com/art/Cthulhuian-Font-with-working-file-450664130)
             </div>
         </div>

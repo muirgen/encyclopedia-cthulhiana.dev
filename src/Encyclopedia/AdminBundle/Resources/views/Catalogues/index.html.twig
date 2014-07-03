@@ -12,7 +12,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('_catalogues_autocomplete_search') }}",
+                    url: "{{ path('_admin_catalogues_autocomplete_search') }}",
                     dataType: 'json',
                     data: {
                         catalogue: request.term
@@ -45,17 +45,17 @@
 <h3>Catalogue</h3>
 <div class="grid_0">
     <div style="float:left; width:17%;">
-        <form action="{{ path('_catalogues_search') }}" method="POST" id="autocomplete_search">
+        <form action="{{ path('_admin_catalogues_search') }}" method="POST" id="autocomplete_search">
             <label for="filter_catalogue">Search</label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" /> <input type="hidden" id="id_catalogue" name="id_catalogue" value="" /> <input type="submit" name="submit_search" value="Ok" />
         </form>
     </div>
-    <div style="float:left; width:17%"><a href="{{ path('_catalogues_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
+    <div style="float:left; width:17%"><a href="{{ path('_admin_catalogues_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a></div>
 </div>
 <div class="grid_0">
     <h4>Last 15 entries</h4>
     <ul>
         {% for le in lastentries %}
-        <li><a href="{{ path('_catalogues_edit', {'id' : le.id}) }}">{{ le.name }} ({{ le.category.name }})</a></li>
+        <li><a href="{{ path('_admin_catalogues_edit', {'id' : le.id}) }}">{{ le.name }} ({{ le.category.name }})</a></li>
         {% endfor %}
     </ul>
 </div>
