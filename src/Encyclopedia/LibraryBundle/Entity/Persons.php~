@@ -1,6 +1,6 @@
 <?php
 
-namespace Encyclopedia\LibraryBundle\Entity;
+namespace Encyclopedia\AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Persons
  *
  * @ORM\Table(name="persons")
- * @ORM\Entity(repositoryClass="Encyclopedia\LibraryBundle\Repository\PersonsRepository")
+ * @ORM\Entity(repositoryClass="Encyclopedia\AdminBundle\Repository\PersonsRepository")
  * 
  */
 class Persons {
@@ -88,10 +88,10 @@ class Persons {
     /**
      * Add alias
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\PersonsAlias $alias
+     * @param \Encyclopedia\AdminBundle\Entity\PersonsAlias $alias
      * @return Persons
      */
-    public function addAlias(\Encyclopedia\LibraryBundle\Entity\PersonsAlias $alias)
+    public function addAlias(\Encyclopedia\AdminBundle\Entity\PersonsAlias $alias)
     {
         $this->alias[] = $alias;
 
@@ -101,9 +101,9 @@ class Persons {
     /**
      * Remove alias
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\PersonsAlias $alias
+     * @param \Encyclopedia\AdminBundle\Entity\PersonsAlias $alias
      */
-    public function removeAlias(\Encyclopedia\LibraryBundle\Entity\PersonsAlias $alias)
+    public function removeAlias(\Encyclopedia\AdminBundle\Entity\PersonsAlias $alias)
     {
         $this->alias->removeElement($alias);
     }
@@ -121,10 +121,10 @@ class Persons {
     /**
      * Add oeuvres
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\Oeuvres $oeuvres
+     * @param \Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres
      * @return Persons
      */
-    public function addOeuvre(\Encyclopedia\LibraryBundle\Entity\Oeuvres $oeuvres)
+    public function addOeuvre(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
     {
         $this->oeuvres[] = $oeuvres;
 
@@ -134,9 +134,9 @@ class Persons {
     /**
      * Remove oeuvres
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\Oeuvres $oeuvres
+     * @param \Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres
      */
-    public function removeOeuvre(\Encyclopedia\LibraryBundle\Entity\Oeuvres $oeuvres)
+    public function removeOeuvre(\Encyclopedia\AdminBundle\Entity\Oeuvres $oeuvres)
     {
         $this->oeuvres->removeElement($oeuvres);
     }

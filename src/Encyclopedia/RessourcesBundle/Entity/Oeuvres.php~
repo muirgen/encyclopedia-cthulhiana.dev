@@ -1,0 +1,100 @@
+<?php
+
+namespace Encyclopedia\RessourcesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Oeuvres
+ *
+ * @ORM\Table(name="oeuvres", indexes={@ORM\Index(name="name", columns={"name", "date"})})
+ * @ORM\Entity
+ */
+class Oeuvres
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=250, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="format", type="string", length=250, nullable=true)
+     */
+    private $format;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="idOeuvre")
+     * @ORM\JoinTable(name="catalogues_oeuvres",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $idCatalogue;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Persons", inversedBy="idOeuvre")
+     * @ORM\JoinTable(name="oeuvres_persons",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_person", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $idPerson;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Publishing", inversedBy="idOeuvre")
+     * @ORM\JoinTable(name="oeuvres_publishing",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_publishing", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $idPublishing;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idCatalogue = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->idPerson = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->idPublishing = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}

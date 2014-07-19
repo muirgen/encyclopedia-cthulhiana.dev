@@ -1,0 +1,47 @@
+<?php
+
+namespace Encyclopedia\AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Lang
+ *
+ * @ORM\Table(name="lang")
+ * @ORM\Entity
+ * 
+ */
+class Lang {
+   
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="name", type="string", length=32, nullable=false)
+     */
+    protected $name;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="iso_code", type="string", length=2, nullable=false)
+     */
+    protected $isoCode;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="language_code", type="string", length=5, nullable=false)
+     */
+    protected $languageCode;
+    
+   
+}

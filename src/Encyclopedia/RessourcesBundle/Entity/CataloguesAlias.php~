@@ -1,0 +1,66 @@
+<?php
+
+namespace Encyclopedia\RessourcesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CataloguesAlias
+ *
+ * @ORM\Table(name="catalogues_alias", indexes={@ORM\Index(name="id_catalogue", columns={"id_catalogue"}), @ORM\Index(name="id_lang", columns={"id_lang"})})
+ * @ORM\Entity
+ */
+class CataloguesAlias
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=250, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="note", type="text", nullable=false)
+     */
+    private $note;
+
+    /**
+     * @var \Catalogues
+     *
+     * @ORM\ManyToOne(targetEntity="Catalogues")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
+     * })
+     */
+    private $idCatalogue;
+
+    /**
+     * @var \Lang
+     *
+     * @ORM\ManyToOne(targetEntity="Lang")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
+     * })
+     */
+    private $idLang;
+
+
+}

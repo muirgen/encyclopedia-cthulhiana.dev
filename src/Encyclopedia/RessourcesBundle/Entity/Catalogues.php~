@@ -1,0 +1,82 @@
+<?php
+
+namespace Encyclopedia\RessourcesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Catalogues
+ *
+ * @ORM\Table(name="catalogues", indexes={@ORM\Index(name="name", columns={"name"}), @ORM\Index(name="category", columns={"category"}), @ORM\Index(name="id_person", columns={"id_person"})})
+ * @ORM\Entity
+ */
+class Catalogues
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=250, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var \Persons
+     *
+     * @ORM\ManyToOne(targetEntity="Persons")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_person", referencedColumnName="id")
+     * })
+     */
+    private $idPerson;
+
+    /**
+     * @var \CataloguesCategories
+     *
+     * @ORM\ManyToOne(targetEntity="CataloguesCategories")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
+     * })
+     */
+    private $category;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Oeuvres", mappedBy="idCatalogue")
+     */
+    private $idOeuvre;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Catalogues", inversedBy="idCatalogue")
+     * @ORM\JoinTable(name="catalogues_related",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_related", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $idRelated;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idOeuvre = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->idRelated = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}

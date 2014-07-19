@@ -1,0 +1,52 @@
+<?php
+
+namespace Encyclopedia\RessourcesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OeuvresAlias
+ *
+ * @ORM\Table(name="oeuvres_alias", indexes={@ORM\Index(name="name", columns={"name"}), @ORM\Index(name="id_oeuvre", columns={"id_oeuvre"}), @ORM\Index(name="id_lang", columns={"id_lang"})})
+ * @ORM\Entity
+ */
+class OeuvresAlias
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=250, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var \Oeuvres
+     *
+     * @ORM\ManyToOne(targetEntity="Oeuvres")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     * })
+     */
+    private $idOeuvre;
+
+    /**
+     * @var \Lang
+     *
+     * @ORM\ManyToOne(targetEntity="Lang")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
+     * })
+     */
+    private $idLang;
+
+
+}
