@@ -1,0 +1,127 @@
+<?php
+
+namespace Encyclopedia\AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Publishing
+ *
+ * @ORM\Table(name="publishing", indexes={@ORM\Index(name="title", columns={"title", "author"}), @ORM\Index(name="id_lang", columns={"id_lang"})})
+ * @ORM\Entity
+ */
+class Publishing
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=250, nullable=false)
+     */
+    private $title;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="subtitle", type="string", length=250, nullable=true)
+     */
+    private $subtitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="author", type="string", length=250, nullable=false)
+     */
+    private $author;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collection", type="string", length=250, nullable=true)
+     */
+    private $collection;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collection_number", type="string", length=100, nullable=true)
+     */
+    private $collectionNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="publisher", type="string", length=250, nullable=true)
+     */
+    private $publisher;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="publish_month", type="string", length=50, nullable=true)
+     */
+    private $publishMonth;
+    
+    /**
+     * @var \Year
+     * 
+     * @ORM\Column(name="publish_year", columnDefinition="YEAR")
+     */
+    private $publishYear;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="classification", type="string", length=250, nullable=false)
+     */
+    private $classification;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_number", type="string", length=30, nullable=true)
+     */
+    private $typeNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ref_number", type="string", length=250, nullable=true)
+     */
+    private $refNumber;
+
+    /**
+     * @var \Lang
+     *
+     * @ORM\ManyToOne(targetEntity="Lang")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
+     * })
+     */
+    private $languages;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Oeuvres", inversedBy="publishing", cascade={"persist","remove"})
+     * @ORM\JoinTable(name="oeuvres_publishing",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_publishing", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $oeuvres;
+    
+    
+}

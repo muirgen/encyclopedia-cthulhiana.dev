@@ -1,0 +1,90 @@
+<?php
+
+namespace Encyclopedia\AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Oeuvres
+ *
+ * @ORM\Table(name="oeuvres")
+ * @ORM\Entity(repositoryClass="Encyclopedia\AdminBundle\Repository\OeuvresRepository")
+ * 
+ */
+class Oeuvres {
+   
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="name", type="string", nullable=false)
+     */
+    protected $name;
+
+    /**
+     * @var \Year
+     * 
+     * @ORM\Column(name="date", columnDefinition="YEAR")
+     */
+    protected $date;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="format", type="string")
+     */
+    protected $format;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="OeuvresAlias", mappedBy="oeuvres")
+     */
+    protected $alias;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="CataloguesOeuvres", mappedBy="oeuvres")
+     */
+    protected $cataloguesOeuvres;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\ManyToMany(targetEntity="Persons", inversedBy="oeuvres", cascade={"persist","remove"})
+     * @ORM\JoinTable(name="oeuvres_persons",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_person", referencedColumnName="id")
+     *   }
+     * )
+     */
+    protected $persons;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Publishing", inversedBy="oeuvres")
+     * @ORM\JoinTable(name="oeuvres_publishing",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_publishing", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $publishing;
+    
+}
