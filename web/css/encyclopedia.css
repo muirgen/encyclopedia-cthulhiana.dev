@@ -168,18 +168,23 @@ h4{
     width:100%;
     text-align:center;
     margin-bottom:3%;
+    overflow: hidden;
 }
 .corpus .box .listLetter span{
     color:#fff;  
 }
 .corpus .box .listLetter span a.selectedGrey:link, .corpus .box .listLetter span a.selectedGrey:visited{
     background-color:#777776;
+    padding:0.5% 1% 0.5% 1%;
+    display: inline-block;
 }
 .corpus .box .listLetter span a, .corpus .box .listLetter span a:link, .corpus .box .listLetter span a:visited{
     background-color:#d8d9d7;
     color:inherit;
     padding:0.5% 1% 0.5% 1%;
+    margin:0 0 0.5% 0;
     text-decoration: none;
+    display: inline-block;
 }
 .corpus .box .listLetter span a:hover{
     background-color:#777776;

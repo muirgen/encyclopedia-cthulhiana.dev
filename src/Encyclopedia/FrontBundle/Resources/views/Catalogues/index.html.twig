@@ -26,11 +26,20 @@
     {# block center with the alpha letter and the results of search by index #}    
     <div class="grid_6 box">
         <h3>{% trans from "catalogues" %}index.findbyalpha{% endtrans %}</h3>
+        
         <div class="listLetter">
             {% for letter in range('A', 'Z') %}
                 <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
             {% endfor %}
         </div>
+        Russian Alphabetical order
+        {% set russianLetter = russianAlphaLetter() %}
+        <div class="listLetter">
+            {% for letter in russianLetter %}
+                <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+            {% endfor %}
+        </div>
+        
         <div class="grid_16 resultItem">
             <h4>Index {{ currentLetter }}</h4>
             {% if items|length > 0 %} 
