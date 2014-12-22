@@ -98,7 +98,7 @@ class CataloguesRepository extends EntityRepository {
         //$results = $this->findOneBy(array('id' => $rid));
         
         $qb = $this->createQueryBuilder('c');
-        $qb->Select('c.id,c.name,cc.name as category, cct.name_trans as translation')
+        $qb->Select('c.id,c.name,cc.name as category, cct.nameTrans as translation')
                 ->leftJoin('c.category', 'cc')
                 ->leftJoin('cc.translation', 'cct', 'WITH', 'cct.languages = :idlang')
                 ->setParameter('idlang', $idlocale)
@@ -111,40 +111,54 @@ class CataloguesRepository extends EntityRepository {
         return $results;
     }
     
-    public function findByNameFirstLetterLike($letter,$lang){
+    public function findByNameFirstLetterLike($letter,$locale){
         
-        $sql = 'SELECT catalogues.id, catalogues.name as name, cc.name as category, cct.name_trans as nameTrans '
-                . ' FROM catalogues'
-                . ' LEFT JOIN catalogues_categories as cc ON (cc.id = catalogues.category)'
-                . ' LEFT JOIN catalogues_categories_trans as cct ON (cct.id_category = catalogues.category AND cct.id_lang = ?) '
-                . ' WHERE catalogues.name LIKE ? '
-                . ' UNION '
-                . ' SELECT id_catalogue as id, '
-                . ' CONCAT( catalogues_alias.name,  "( ", catalogues.name, " alias )" ) AS name, '
+        $localEntity = $this->getEntityManager()->getRepository('EncyclopediaLibraryBundle:Lang')->findOneBy(array('isoCode' => $locale));
+        
+        $lang = $localEntity->getId();
+        
+        $sql = 'SELECT c.id, '
+                . ' IF((ct.idx_name_trans != NULL OR CHAR_LENGTH(ct.idx_name_trans > 1)) AND (UPPER(ct.idx_name_trans) REGEXP UPPER("^'.$letter.'") OR LOWER(ct.idx_name_trans) REGEXP LOWER("^'.$letter.'") )  ,ct.idx_name_trans,c.idx_name) as name,'
                 . ' cc.name as category, '
-                . ' cct.name_trans as nameTrans'
-                . ' FROM catalogues_alias '
-                . ' LEFT JOIN catalogues ON (catalogues_alias.id_catalogue = catalogues.id) '
-                . ' LEFT JOIN catalogues_categories as cc ON (cc.id = catalogues.category) '
-                . ' LEFT JOIN catalogues_categories_trans as cct ON (cct.id_category = catalogues.category AND cct.id_lang = ?) '
-                . ' WHERE catalogues_alias.name LIKE ? '
+                . ' IF((cct.name_trans != NULL OR CHAR_LENGTH(cct.name_trans > 1)),cct.name_trans,cc.name) as categoryTrans '
+                . ' FROM catalogues c '
+                . ' LEFT JOIN catalogues_trans ct ON (ct.id_catalogue = c.id AND ct.iso_code = ?) '
+                . ' LEFT JOIN catalogues_categories  cc ON (cc.id = c.category) '
+                . ' LEFT JOIN catalogues_categories_trans as cct ON (cct.id_category = c.category AND cct.id_lang = ?) '
+                . ' WHERE c.idx_name LIKE ? OR ct.idx_name_trans LIKE ? '
+                . ' UNION '
+                . ' SELECT ca.id_catalogue as id, '
+                . ' CONCAT(IF((cat.idx_name_trans != NULL OR CHAR_LENGTH(cat.idx_name_trans > 1)) AND (UPPER(cat.idx_name_trans) REGEXP UPPER("^'.$letter.'") OR LOWER(cat.idx_name_trans) REGEXP LOWER("^'.$letter.'") ) ,cat.idx_name_trans,ca.idx_name)," ( ",c.idx_name," alias )") AS name, '
+                . ' cc.name as category, '
+                . ' IF((cct.name_trans != NULL OR CHAR_LENGTH(cct.name_trans > 1)),cct.name_trans,cc.name) as categoryTrans'
+                . ' FROM catalogues_alias ca '
+                . ' LEFT JOIN catalogues_alias_trans cat ON (cat.id_alias = ca.id AND cat.iso_code = ?) '
+                . ' LEFT JOIN catalogues c ON (ca.id_catalogue = c.id) '
+                . ' LEFT JOIN catalogues_categories cc ON (cc.id = c.category) '
+                . ' LEFT JOIN catalogues_categories_trans cct ON (cct.id_category = c.category AND cct.id_lang = ?) '
+                . ' WHERE ca.idx_name LIKE ? OR cat.idx_name_trans LIKE ?'
                 ;
 
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult('EncyclopediaLibraryBundle:Catalogues', 'c');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:CataloguesTrans', 'ct');
         $rsm->addEntityResult('EncyclopediaLibraryBundle:CataloguesCategories', 'cc');
         $rsm->addEntityResult('EncyclopediaLibraryBundle:CataloguesCategoriesTrans', 'cct');
         $rsm->addFieldResult('c', 'id', 'id');
         $rsm->addFieldResult('c', 'name', 'name');
         $rsm->addFieldResult('cc', 'category', 'name');
-        $rsm->addFieldResult('cct', 'nameTrans', 'name_trans');
+        $rsm->addFieldResult('cct', 'categoryTrans', 'nameTrans');
 
         $query = $this->_em->createNativeQuery($sql, $rsm);
 
-        $query->setParameter(1, $lang);
-        $query->setParameter(2, $letter . '%');
-        $query->setParameter(3, $lang);
+        $query->setParameter(1, $locale);
+        $query->setParameter(2, $lang);
+        $query->setParameter(3, $letter . '%');
         $query->setParameter(4, $letter . '%');
+        $query->setParameter(5, $locale);
+        $query->setParameter(6, $lang);
+        $query->setParameter(7, $letter . '%');
+        $query->setParameter(8, $letter . '%');
 
         $results = $query->getScalarResult();
         

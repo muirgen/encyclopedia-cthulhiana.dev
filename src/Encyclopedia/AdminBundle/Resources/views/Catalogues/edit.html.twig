@@ -1,237 +1,360 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/libs/jquery-migrate-1.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/libs/jquery.editinplace.js') }}"></script>
+    <script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+    <script src="{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/libs/tinymce/tinymce.min.js') }}"></script>
+{% endblock %}
+
 {% block body -%}
-<script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
-{% if entity.id %}
-<script>
-    $(document).ready(function() {
-        
-        $('#filter_oeuvre').autocomplete({
-            minLength: 3,
-            my: 'bottom',
-            at: 'top',
-            source: function( request, response ) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ path('_admin_oeuvres_autocomplete_search') }}",
-                    dataType: 'json',
-                    data: {
-                        oeuvre: request.term,
-                        id_catalogue: {{ entity.id }},
-                        action: 'addcatalogueitem'
+    {% if entity.id %}
+        <script>
+            $(document).ready(function() {
+
+                $('.edit_translation').editInPlace({
+                    //callback: function(unused, enteredText) { return enteredText; },
+                    url: "{{ path('_admin_catalogues_translation_update', { 'id' : entity.id } ) }}",
+                    show_buttons: true,
+                    saving_image: "{{ asset('img/admin/ajax-loader.gif') }}"
+                });
+
+                $('.edit_translation_idx').editInPlace({
+                    //callback: function(unused, enteredText) { return enteredText; },
+                    url: "{{ path('_admin_catalogues_translation_update_idx', { 'id' : entity.id , 'idx' : 'ok'} ) }}",
+                    show_buttons: true,
+                    saving_image: "{{ asset('img/admin/ajax-loader.gif') }}"
+                });
+
+                $('#filter_oeuvre').autocomplete({
+                    minLength: 3,
+                    my: 'bottom',
+                    at: 'top',
+                    source: function(request, response) {
+                        $.ajax({
+                            type: 'GET',
+                            url: "{{ path('_admin_oeuvres_autocomplete_search') }}",
+                            dataType: 'json',
+                            data: {
+                                oeuvre: request.term,
+                                id_catalogue:{{ entity.id }},
+                                action: 'addcatalogueitem'
+                            },
+                            success: function(data) {
+                                response($.map(data, function(item) {
+                                    return {
+                                        value : item.name,
+                                        id: item.id
+                                    }
+                                }));
+                            },
+                            maxRows: 15
+                        })
                     },
-                    success: function(data) {
-                        response($.map(data, function(item) {
-                            return {
-				value : item.name,
-				id: item.id
-                            }
-                        }));
+                    select: function(event, ui) {
+                        $('#id_oeuvre').val(ui.item.id);
+                        openInfoBox('Oeuvre');
+                    }
+                }).on('click', function(){
+                    $(this).val('');
+                    $('id_oeuvre').val('');
+                });
+                
+                $('#filter_catalogue').autocomplete({
+                    minLength: 3,
+                    my: 'bottom',
+                    at: 'top',
+                    source: function(request, response) {
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ path('_admin_catalogues_autocomplete_search') }}",
+                            dataType: 'json',
+                            data: {
+                                catalogue: request.term,
+                                id_catalogue:{{ entity.id }},
+                                action: 'addrelateditem'
+                            },
+                            success: function(data) {
+                                response($.map(data, function(item) {
+                                    return {
+                                        value : item.name,
+                                        id: item.id
+                                    }
+                                }));
+                            },
+                            maxRows: 15
+                        })
                     },
-                    maxRows: 15
-                })
-            },
-            select: function( event, ui ) { 
-                $('#id_oeuvre').val(ui.item.id);
-                openInfoBox('Oeuvre');
-            }
-        }).on('click', function(){
-		$(this).val('');
-                $('id_oeuvre').val('');
+                    select: function(event, ui) {
+                        $('#id_related').val(ui.item.id);
+                    }
+                }).on('click', function(){
+                    $(this).val('');
+                    $('id_related').val('');
+                });
+
+                $('textarea.tinymce').tinymce({
+                    script_url : '{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}', 
+                    theme: 'modern',
+                    theme_modern_toolbar_location : "top",
+                    theme_modern_toolbar_align : "left",
+                    theme_modern_statusbar_location : "bottom"
+                });
+            
             });
             
-        $('#filter_catalogue').autocomplete({
-            minLength: 3,
-            my: 'bottom',
-            at: 'top',
-            source: function( request, response ) {
-                $.ajax({
-                    type: "GET",
-                    url: "{{ path('_admin_catalogues_autocomplete_search') }}",
-                    dataType: 'json',
-                    data: {
-                        catalogue: request.term,
-                        id_catalogue: {{ entity.id }},
-                        action: 'addrelateditem'
-                    },
-                    success: function(data) {
-                        response($.map(data, function(item) {
-                            return {
-				value : item.name,
-				id: item.id
-                            }
-                        }));
-                    },
-                    maxRows: 15
-                })
-            },
-            select: function( event, ui ) { 
-                $('#id_related').val(ui.item.id); 
-            }
-        }).on('click', function(){
-		$(this).val('');
-                $('id_related').val('');
-            });    
-
-    });
-</script>
-{% endif %}
-
-{# to come back at the top of page #}
-<a name="top"></a>
-
-{# breadcrumb #}
-<h3><a href="{{ path('_catalogues') }}">Catalogue</a> > Edit : {{ entity.name }}</h3>
-
-{# navigation submenu #}
-<p><a href="#relateditems">Related Items</a> | <a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
-
-{# page informations #}
-<div class="container_12 edit">
-    <div class="grid_6 block">
-        <fieldset><legend>Edit</legend>    
-        {{ form_start(edit_form) }}
-        {{ form_errors(edit_form) }}
-
-        {{ form_row(edit_form.name) }}
-        {{ form_row(edit_form.category) }}
-        {{ form_row(edit_form.idPerson) }}
-
-        {{ form_end(edit_form) }}
-        </fieldset>
-    </div>
-    
-    {# if entity.id exist, it's not a creation for a new item, deploy all related features #}
-    
-    {% if entity.id %}
-        
-    {# Related Items #}
-    <div class="grid_0 block" id="blockRelatedItems"><a name="relateditems"></a>
-        <fieldset><legend>Related items</legend>
-            
-            {# the form to add a related catalogue item to the current catalogue item #}
-            <span id="spanOpenRelatedItems" style="display:block;"><a href="javascript:openDiv('RelatedItems');" id="eventOnRelatedItems"><i class="fa fa-plus-circle fa-3"></i> Add a related item</a></span>
-            <div class="grid_6" id="hiddenDivRelatedItems" style="display:none;">
-                <form action="{{ path('_admin_catalogues_addrelated', {'idcatalogue': entity.id}) }}" method="POST" class="formAdding">
-                    <label for="filter_catalogue">Catalogue item: </label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" autocomplete="off" /> <input type="hidden" id="id_related" name="id_related" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
-                </form>
-                <br />
-                <span id="spanCloseRelatedItems" style="display:block; clear: both;"><a href="javascript:closeDiv('RelatedItems'),clearFields('RelatedItems');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related item</a></span>
-            </div>
-            {# End of the form #}
-            
-            {# test if related items exist in the entity, and deploy them #}
-            {% if entity.relatedItems|length > 0 %}
-                <div class="grid_0">
-                {% for ri in entity.relatedItems %}
-                    <span class="cloudItem"><a href="{{ path('_admin_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_admin_catalogues_delrelated', {'idcatalogue':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
-                {% endfor %}
-                </div>
-            {% endif %}
-            {# end of the if #}
-        </fieldset>    
-    </div> 
-    {# End of related items #}
-    
-    {# Alias #}
-    <div class="grid_0 block"><a name="alias"></a>
-        <fieldset><legend>Alias</legend>
-            <p><a href="{{ path('_admin_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
-            {% if entity.alias|length > 0 %}
-            <table class="list">
-                <tr>
-                    <th>Alias</th>
-                    <th>Country</th>
-                    <th>Description</th>
-                </tr>
-                {% for alias in entity.alias %}
-                <tr>
-                    <td><a href="{{ path('_admin_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
-                    <td><img src="{{ asset('img/flags/'~alias.languages.isoCode~'.png') }}" width="20px" height="20px" /></td>
-                    <td class="tableText">{{ alias.description|raw }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            {% endif %}
-        </fieldset>
-        <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
-    </div>
-    {# End Alias #}
-    
-    {# Oeuvres related #}
-    <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
-        <fieldset><legend>Oeuvres</legend>
-            
-            {# the form to add an oeuvre to the current catalogue item #}
-            <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
-            <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
-                <form action="{{ path('_admin_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
-                    <p><label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" autocomplete="off" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> </p>
-                    <p><label for="firstappearance">First appearance: </label> <input type="radio" name="firstappearance" value="1" /> Yes <input type="radio" name="firstappearance" value="0" checked="checked" /> No </p>
-                    <input type="submit" name="submit_add" value="Add" class="smallButton" />
-                </form>
-                <br />
-                <span id="spanCloseOeuvre" style="display:block; clear: both;"><a href="javascript:closeDiv('Oeuvre'),clearFields('Oeuvre');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related oeuvre</a></span>
-            </div>
-            {# end of the form #}
-            
-            {# test if oeuvres exist in the entity, and deploy them #}
-            {% if entity.cataloguesOeuvres|length > 0 %}
-            <table class="list">
-                <tr>
-                    <th>Name</th>
-                    <th>Year</th>
-                    <th>First appearance</th>
-                    <th>Format</th>
-                    <th>Author</th>
-                    <th>Publishing</th>
-                    <th>Del.</th>
-                </tr>
-                {% for co in entity.cataloguesOeuvres %}
-                <tr>
-                    <td><a href="{{ path('_admin_oeuvres_edit', {'id': co.oeuvres.id}) }}">{{ co.oeuvres.name }}</a></td>
-                    <td>{{ co.oeuvres.date }}</td>
-                    <td>
-                        {# test if the related catalogue's item has been seen for the first time in the oeuvre #}
-                        {% if co.firstAppearance == 1 %}
-                            <i class="fa fa-eye"></i>
-                        {% endif %}
-                        {# end of the if for the firstAppearance #}
-                    </td>
-                    <td>{{ co.oeuvres.format }}</td>
-                    <td>
-                        {% if co.oeuvres.persons|length > 0 %}
-                        <ul>
-                            {% for person in co.oeuvres.persons %}
-                            <li>{{ person.name }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if co.oeuvres.publishing|length > 0 %}
-                        <ul>
-                            {% for publishing in co.oeuvres.publishing %}
-                                <li><a href="{{ path('_admin_publishing_edit', {'id': publishing.id }) }}">{{ publishing.title }} ( {{publishing.classification }} )</a></li>                                
-                            {% endfor %}    
-                        </ul>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ path('_admin_catalogues_deloeuvre', {'id':entity.id,'idoeuvre':co.oeuvres.id}) }}"><i class="fa fa-times fa-4 orange"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            {% endif %}
-            {# end of the if block #}
-        </fieldset>
-        <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
-    </div>
-   {# End of oeuvres related #}    
-   
+        </script>
     {% endif %}
-   
-</div>
+
+    {# to come back at the top of page #}
+    <a name="top"></a>
+
+    {# breadcrumb #}
+    <h3><a href="{{ path('_admin_catalogues') }}">Catalogue</a> > Edit : {{ entity.name }}</h3>
+
+    {# navigation submenu #}
+    <p><a href="#articleContent">Articles content</a> | <a href="#relateditems">Related Items</a> | <a href="#alias">Alias</a> | <a href="#oeuvres">Oeuvres</a></p>
+
+    {# page informations #}
+    <div class="container_12 edit">
+
+        {# Edit form #}
+        <div class="grid_6 block">
+            <fieldset><legend>Edit</legend>    
+                {{ form_start(edit_form) }}
+                {{ form_errors(edit_form) }}
+
+                {{ form_row(edit_form.name) }}
+                {{ form_row(edit_form.idxName) }}
+                {{ form_row(edit_form.category) }}
+                {{ form_row(edit_form.person) }}
+
+                {{ form_end(edit_form) }}
+            </fieldset>
+        </div>
+
+        {# if entity.id exist, it's not a creation for a new item, deploy all related features #}
+
+        {% if entity.id %}
+
+            {# Add a Translation form #}
+            <div class="grid_6 block">    
+                <fieldset><legend>Add translation</legend>
+                    <form action="{{ path('_admin_catalogues_translation_create', {'id': entity.id} ) }}" method="post">
+                        <div><label for="nameTrans">Translation:</label> <input type="text" name="nameTrans" id="nameTrans" /></div>
+                        <div><label for="idxNameTrans">Index Translation:</label> <input type="text" name="idxNameTrans" id="idxNameTrans" /></div>
+                        <div><label for="isoCode">Language:</label> 
+                            <select name="isoCode">
+                                {% for country in countries %}
+                                    <option value="{{ country.isoCode }}">{{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><button type="submit">Create</button></div>
+                    </form>
+                </fieldset>
+            </div>
+
+            {# Translation's name of item #}
+            <div class="grid_6 block">
+                <fieldset><legend>Available translations</legend>
+                    {% if entity.translation|length > 0 %}
+                        <table>
+                            <tr>
+                                <td>country</td>
+                                <td>Translation</td>
+                                <td>Index translation</td>
+                                <td>Del.</td>
+                            </tr>
+                            {% for trans in entity.translation %}
+                                <tr>
+                                    <td><img src="{{ asset('img/flags/'~trans.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                                    <td><div class="edit_translation" id="{{ trans.id }}">{{ trans.nameTrans }}</div></td>
+                                    <td><div class="edit_translation_idx" id="{{ trans.id }}">{{ trans.idxNameTrans }}</div></td>
+                                    <td><a href="{{ path('_admin_catalogues_translation_delete', {'id' : entity.id, 'id_translation' : trans.id} ) }}"><i class="fa fa-times fa-4 orange"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </fieldset>
+            </div>
+
+            {# Posts Content with language by country iso_code #}
+            <div class="grid_0 block">
+                <div class="grid_6 block" id="blockPostContent"><a name="articlecontent"></a>
+                    <fieldset><legend>Add article content</legend>
+                        <form>
+                            <label for="articleContent">Content: </label> <textarea name="articleContent" id="articleContent" class="tinymce"></textarea>
+                            <div><label for="isoCode">Language:</label> 
+                                <select name="isoCode">
+                                    {% for country in countries %}
+                                        <option value="{{ country.isoCode }}">{{ country.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div><button type="submit">Create</button></div>
+                        </form>
+                    </fieldset>
+                    <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>              
+                </div>
+                <div class="grid_6 block" id="blockPostContent"><a name="postcontent"></a>
+                    <fieldset><legend>Available articles content</legend>
+                        {% if entity.articles|length > 0 %}
+                            <table>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>Article</td>
+                                    <td>Del.</td>
+                                </tr>
+                                {% for article in entity.articles %}
+                                    <tr>
+                                        <td><img src="{{ asset('img/flags/'~article.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                                        <td>{{ article.articleContent }}</td>
+                                        <td>del</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}        
+                    </fieldset>
+                </div>  
+            </div>
+            {# Related Items #}
+            <div class="grid_0 block" id="blockRelatedItems"><a name="relateditems"></a>
+                <fieldset><legend>Related items</legend>
+
+                    {# the form to add a related catalogue item to the current catalogue item #}
+                    <span id="spanOpenRelatedItems" style="display:block;"><a href="javascript:openDiv('RelatedItems');" id="eventOnRelatedItems"><i class="fa fa-plus-circle fa-3"></i> Add a related item</a></span>
+                    <div class="grid_6" id="hiddenDivRelatedItems" style="display:none;">
+                        <form action="{{ path('_admin_catalogues_addrelated', {'idcatalogue': entity.id}) }}" method="POST" class="formAdding">
+                            <label for="filter_catalogue">Catalogue item: </label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" autocomplete="off" /> <input type="hidden" id="id_related" name="id_related" value="" /> <input type="submit" name="submit_add" value="Add" class="smallButton" />
+                        </form>
+                        <br />
+                        <span id="spanCloseRelatedItems" style="display:block; clear: both;"><a href="javascript:closeDiv('RelatedItems'),clearFields('RelatedItems');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related item</a></span>
+                    </div>
+                    {# End of the form #}
+
+                    {# test if related items exist in the entity, and deploy them #}
+                    {% if entity.relatedItems|length > 0 %}
+                        <div class="grid_0">
+                            {% for ri in entity.relatedItems %}
+                                <span class="cloudItem"><a href="{{ path('_admin_catalogues_edit', {'id':ri.id}) }}">{{ ri.name }} ({{ ri.category.name }})</a> | <a href="{{ path('_admin_catalogues_delrelated', {'idcatalogue':entity.id,'idrelated':ri.id}) }}"><i class="fa fa-times fa-4 orange"></i></a></span>
+                                    {% endfor %}
+                        </div>
+                    {% endif %}
+                    {# end of the if #}
+                </fieldset>  
+                <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
+            </div> 
+            {# End of related items #}
+
+            {# Alias #}
+            <div class="grid_0 block"><a name="alias"></a>
+                <fieldset><legend>Alias</legend>
+                    <p><a href="{{ path('_admin_catalogues_alias_new',{'id_catalogue' : entity.id}) }}"><i class="fa fa-plus-circle fa-3"></i> Add a new alias</a></p>
+                    {% if entity.alias|length > 0 %}
+                        <table class="list">
+                            <tr>
+                                <th>Alias</th>
+                                <th>Translation</th>
+                                <th>Notes</th>
+                            </tr>
+                            {% for alias in entity.alias %}
+                                <tr>
+                                    <td><a href="{{ path('_admin_catalogues_alias_edit',{'id_catalogue' : entity.id,'id' : alias.id}) }}">{{ alias.name }}</a></td>
+                                    <td>
+                                        {% if alias.translation|length > 0 %}
+                                            <ul>
+                                                {% for trans in alias.translation %}
+                                                    <li><img src="{{ asset('img/flags/'~trans.isoCode~'.png') }}" width="20px" height="20px" /> {{ trans.nameTrans }}</li>
+                                                    {% endfor %}    
+                                            </ul>
+                                        {% endif %}    
+                                    </td>
+                                    <td class="tableText">{{ alias.note|raw }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </fieldset>
+                <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
+            </div>
+            {# End Alias #}
+
+            {# Oeuvres related #}
+            <div class="grid_0 block" id="blockOeuvre"><a name="oeuvres"></a>
+                <fieldset><legend>Oeuvres</legend>
+
+                    {# the form to add an oeuvre to the current catalogue item #}
+                    <span id="spanOpenOeuvre"><a href="javascript:openDiv('Oeuvre');" id="eventOnOeuvre"><i class="fa fa-plus-circle fa-3"></i> Add a related oeuvre</a></span>
+                    <div class="grid_6" id="hiddenDivOeuvre" style="display:none;">
+                        <form action="{{ path('_admin_catalogues_addoeuvre', {'id': entity.id}) }}" method="POST" class="formAdding">
+                            <p><label for="filter_oeuvre">Oeuvre title: </label> <input type="text" class="ui-autocomplete-input" id="filter_oeuvre" name="filter_oeuvre" value="" autocomplete="off" /> <input type="hidden" id="id_oeuvre" name="id_oeuvre" value="" /> </p>
+                            <p><label for="firstappearance">First appearance: </label> <input type="radio" name="firstappearance" value="1" /> Yes <input type="radio" name="firstappearance" value="0" checked="checked" /> No </p>
+                            <input type="submit" name="submit_add" value="Add" class="smallButton" />
+                        </form>
+                        <br />
+                        <span id="spanCloseOeuvre" style="display:block; clear: both;"><a href="javascript:closeDiv('Oeuvre'),clearFields('Oeuvre');"><i class="fa fa-plus-circle fa-3"></i> Close the box adding a related oeuvre</a></span>
+                    </div>
+                    {# end of the form #}
+
+                    {# test if oeuvres exist in the entity, and deploy them #}
+                    {% if entity.cataloguesOeuvres|length > 0 %}
+                        <table class="list">
+                            <tr>
+                                <th>Name</th>
+                                <th>Year</th>
+                                <th>First appearance</th>
+                                <th>Format</th>
+                                <th>Author</th>
+                                <th>Publishing</th>
+                                <th>Del.</th>
+                            </tr>
+                            {% for co in entity.cataloguesOeuvres %}
+                                <tr>
+                                    <td><a href="{{ path('_admin_oeuvres_edit', {'id': co.oeuvres.id}) }}">{{ co.oeuvres.name }}</a></td>
+                                    <td>{{ co.oeuvres.date }}</td>
+                                    <td>
+                                        {# test if the related catalogue's item has been seen for the first time in the oeuvre #}
+                                        {% if co.firstAppearance == 1 %}
+                                            <i class="fa fa-eye"></i>
+                                        {% endif %}
+                                        {# end of the if for the firstAppearance #}
+                                    </td>
+                                    <td>{{ co.oeuvres.format }}</td>
+                                    <td>
+                                        {% if co.oeuvres.persons|length > 0 %}
+                                            <ul>
+                                                {% for person in co.oeuvres.persons %}
+                                                    <li>{{ person.name }}</li>
+                                                    {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if co.oeuvres.publishing|length > 0 %}
+                                            <ul>
+                                                {% for publishing in co.oeuvres.publishing %}
+                                                    <li><a href="{{ path('_admin_publishing_edit', {'id': publishing.id }) }}">{{ publishing.title }} ( {{publishing.classification }} )</a></li>                                
+                                                    {% endfor %}    
+                                            </ul>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('_admin_catalogues_deloeuvre', {'id':entity.id,'idoeuvre':co.oeuvres.id}) }}"><i class="fa fa-times fa-4 orange"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                    {# end of the if block #}
+                </fieldset>
+                <p><a href="#top"><i class="fa fa-arrow-up fa-3"></i> Top</a></p>
+            </div>
+            {# End of oeuvres related #}    
+
+        {% endif %}
+
+    </div>
 
 {% endblock %}

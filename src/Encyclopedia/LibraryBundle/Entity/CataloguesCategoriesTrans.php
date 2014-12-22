@@ -33,7 +33,7 @@ class CataloguesCategoriesTrans {
      * @var string
      * @ORM\Column(name="name_trans", type="string", length=250, nullable=false)
      */
-    protected $name_trans;
+    protected $nameTrans;
     
     /**
      * Set name_trans
@@ -43,7 +43,7 @@ class CataloguesCategoriesTrans {
      */
     public function setNameTrans($nameTrans)
     {
-        $this->name_trans = $nameTrans;
+        $this->nameTrans = $nameTrans;
 
         return $this;
     }
@@ -55,7 +55,7 @@ class CataloguesCategoriesTrans {
      */
     public function getNameTrans()
     {
-        return $this->name_trans;
+        return $this->nameTrans;
     }
 
     /**

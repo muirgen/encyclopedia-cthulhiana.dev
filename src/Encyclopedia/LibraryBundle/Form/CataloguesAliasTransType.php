@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CataloguesAliasType extends AbstractType
+class CataloguesAliasTransType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,14 +15,10 @@ class CataloguesAliasType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('idxName','text', array('label' => 'Index name',
-                                          'required' => false))
-            ->add('note', 'textarea', array('required' => false))
-            ->add('catalogues','entity', array('class' => 'EncyclopediaLibraryBundle:Catalogues',
-                                                        'property' => 'name',
-                                                        'label' => 'Catalogue parent')        
-        );
+            ->add('isocode')
+            ->add('nameTrans')
+            ->add('alias')
+        ;
     }
     
     /**
@@ -31,7 +27,7 @@ class CataloguesAliasType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Encyclopedia\LibraryBundle\Entity\CataloguesAlias'
+            'data_class' => 'Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans'
         ));
     }
 
@@ -40,6 +36,6 @@ class CataloguesAliasType extends AbstractType
      */
     public function getName()
     {
-        return 'encyclopedia_LibraryBundle_cataloguesalias';
+        return 'encyclopedia_librarybundle_cataloguesaliastrans';
     }
 }

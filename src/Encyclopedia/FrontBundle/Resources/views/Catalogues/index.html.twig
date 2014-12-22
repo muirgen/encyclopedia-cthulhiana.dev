@@ -3,7 +3,55 @@
 {% block title -%} - Catalogue Index{% endblock %}
 {% block keywords -%}catalogue,index{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.10.4.custom.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
+{% endblock %}   
+
 {% block body -%}
+<script>
+    $(document).ready(function() {
+
+        $('#filter_search').autocomplete({
+            minLength: 3,
+            my: 'bottom',
+            at: 'top',
+            source: function( request, response ) {
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ path('_catalogues_autocomplete_search') }}",
+                    dataType: 'json',
+                    data: {
+                        catalogue: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+				value : item.name,
+				id: item.id
+                            }
+                        }));
+                    },
+                    maxRows: 15
+                })
+            },
+            select: function( event, ui ) { 
+                $('#id_catalogue').val(ui.item.id);
+                
+            },
+            close: function() { 
+		$('form#autocomplete_search').submit();
+            }
+        }).on('click', function(){
+		$(this).val('');
+                $('id_catalogue').val('');
+            });
+
+    });
+</script>
 <div class="container_12">  
     
     {# Block on the left side of content #}
@@ -32,6 +80,9 @@
                 <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
             {% endfor %}
         </div>
+        
+        {# if Russian is the language of browser, display cyrillic alphabatical order #}
+        {% if app.request.locale == 'ru' %}
         Russian Alphabetical order
         {% set russianLetter = russianAlphaLetter() %}
         <div class="listLetter">
@@ -39,6 +90,7 @@
                 <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
             {% endfor %}
         </div>
+        {% endif %}
         
         <div class="grid_16 resultItem">
             <h4>Index {{ currentLetter }}</h4>
@@ -52,7 +104,7 @@
                         {% filter replace({'(': '<span class="mini indent">(', ' alias )': ' alias )</span>'})|raw %}
                         {{ item['c_name']}}
                         {% endfilter %}
-                        <span class="oblique mini green left indent">{{ item['cct_name_trans']}}</span>
+                        <span class="oblique mini green left indent">{{ item['cct_nameTrans']}}</span>
                     </div>
                                         
                     {% if( i%3 == 0) %} 
@@ -73,7 +125,8 @@
     <div class="grid_3 box">
         <div class="grid_16 blockList">
             <h3 class="right">{% trans from "catalogues" %}index.search{% endtrans %}</h3>
-            <input type="text" value="ex: cthulhu, arkham"/>
+            <p class="right"><input type="text" id="filter_search" value="ex: cthulhu, arkham"/></p>
+            <p class="justify">{% trans from "catalogues" %}index.search.explanation{% endtrans %}</p>
         </div>
         <div class="grid_16 blockList">
         <h3 class="right">{% trans from "catalogues" %}index.lastentries{% endtrans %}</h3>

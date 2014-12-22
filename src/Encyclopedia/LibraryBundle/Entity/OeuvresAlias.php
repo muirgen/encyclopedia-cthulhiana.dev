@@ -33,7 +33,7 @@ class OeuvresAlias {
      * @ORM\ManyToOne(targetEntity="Oeuvres", inversedBy="alias")
      * @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
      */
-    private $oeuvres;
+    protected $oeuvres;
     
     /**
      * @var \Lang

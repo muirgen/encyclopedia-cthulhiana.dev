@@ -19,6 +19,10 @@
                 <target>Search by name</target>
             </trans-unit>
             <trans-unit id="5">
+                <source>index.search.explanation</source>
+                <target>To search an entity by her first letter, you have to remind you all the time that first letter is from the name. So for "The Black Pharao", the first letters of the search will be "Blac ...", because it's indexed in that way : "Black Pharao, the"</target>
+            </trans-unit>
+            <trans-unit id="6">
                 <source>index.lastentries</source>
                 <target>15 last entries</target>
             </trans-unit>

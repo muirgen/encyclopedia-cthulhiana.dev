@@ -27,6 +27,7 @@ class CataloguesController extends Controller {
     public function indexAction(Request $request, $letter = 'A') {
 
         $idLocale = $this->get('kernel.listener.languages')->getIdLang();
+        $isoCode = $this->getRequest()->getLocale();
 
         $em = $this->getDoctrine()->getManager();
 
@@ -36,12 +37,41 @@ class CataloguesController extends Controller {
         $lastEntries = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
                 ->findAllWithLimit(15);
         
-        $items = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByNameFirstLetterLike($letter,$idLocale);
-        
+        $items = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByNameFirstLetterLike($letter,$isoCode);
+
         return array('listCategories' => $listCategories,
                     'lastEntries' => $lastEntries,
                     'items' => $items,
                     'currentLetter' => $letter);
     }
 
+    /**
+     * @Route("/autocomplete-search", name="_catalogues_autocomplete_search")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function autocompleteSearchAction(Request $request){
+        
+        $termSearch = $request->get('catalogue');
+        $isoCode = $this->getRequest()->getLocale();
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByNameFirstLetterLike($termSearch,$isoCode);
+        
+        $array_props = array();
+        
+        foreach ($props as $key => $p):
+            $array_props[$key + 1] = array('id' => $p['c_id'], 'name' => $p['c_name']);
+        endforeach;
+        
+        //var_dump($array_props);
+        
+        //$error = null;
+        //return array('error' => $error);
+        
+        return new Response(json_encode($array_props));
+        
+    }
+    
 }

@@ -29,6 +29,13 @@ class Catalogues {
     protected $name;
     
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="idx_name", type="string", length=250, nullable=false)
+     */
+    protected $idxName;
+    
+    /**
      * @var \Category
      * 
      * @ORM\OneToOne(targetEntity="CataloguesCategories")
@@ -42,7 +49,7 @@ class Catalogues {
      * @ORM\OneToOne(targetEntity="Persons")
      * @ORM\JoinColumn(name="id_person", referencedColumnName="id")
      */
-    protected $idPerson;
+    protected $person;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -81,6 +88,20 @@ class Catalogues {
      */
     protected $relatedItems;
     
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="CataloguesTrans", mappedBy="catalogues")
+     */
+    protected $translation;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="CataloguesArticles", mappedBy="catalogues")
+     */
+    protected $articles;
+    
     
     /**
      * Constructor
@@ -91,6 +112,8 @@ class Catalogues {
         $this->cataloguesOeuvres = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cataloguesItems = new \Doctrine\Common\Collections\ArrayCollection();
         $this->relatedItems = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->translation = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -127,6 +150,29 @@ class Catalogues {
     }
 
     /**
+     * Set idxName
+     *
+     * @param string $idxName
+     * @return Catalogues
+     */
+    public function setIdxName($idxName)
+    {
+        $this->idxName = $idxName;
+
+        return $this;
+    }
+
+    /**
+     * Get idxName
+     *
+     * @return string 
+     */
+    public function getIdxName()
+    {
+        return $this->idxName;
+    }
+
+    /**
      * Set category
      *
      * @param \Encyclopedia\LibraryBundle\Entity\CataloguesCategories $category
@@ -150,26 +196,26 @@ class Catalogues {
     }
 
     /**
-     * Set idPerson
+     * Set person
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\Persons $idPerson
+     * @param \Encyclopedia\LibraryBundle\Entity\Persons $person
      * @return Catalogues
      */
-    public function setIdPerson(\Encyclopedia\LibraryBundle\Entity\Persons $idPerson = null)
+    public function setPerson(\Encyclopedia\LibraryBundle\Entity\Persons $person = null)
     {
-        $this->idPerson = $idPerson;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-     * Get idPerson
+     * Get person
      *
      * @return \Encyclopedia\LibraryBundle\Entity\Persons 
      */
-    public function getIdPerson()
+    public function getPerson()
     {
-        return $this->idPerson;
+        return $this->person;
     }
 
     /**
@@ -277,7 +323,7 @@ class Catalogues {
      * @param \Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems
      * @return Catalogues
      */
-    public function addRelatedItems(\Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems)
+    public function addRelatedItem(\Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems)
     {
         $this->relatedItems[] = $relatedItems;
 
@@ -289,10 +335,9 @@ class Catalogues {
      *
      * @param \Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems
      */
-    public function removeRelatedItems(\Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems)
+    public function removeRelatedItem(\Encyclopedia\LibraryBundle\Entity\Catalogues $relatedItems)
     {
         $this->relatedItems->removeElement($relatedItems);
-        
     }
 
     /**
@@ -303,5 +348,71 @@ class Catalogues {
     public function getRelatedItems()
     {
         return $this->relatedItems;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesTrans $translation
+     * @return Catalogues
+     */
+    public function addTranslation(\Encyclopedia\LibraryBundle\Entity\CataloguesTrans $translation)
+    {
+        $this->translation[] = $translation;
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesTrans $translation
+     */
+    public function removeTranslation(\Encyclopedia\LibraryBundle\Entity\CataloguesTrans $translation)
+    {
+        $this->translation->removeElement($translation);
+    }
+
+    /**
+     * Get translation
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslation()
+    {
+        return $this->translation;
+    }
+
+    /**
+     * Add articles
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesArticles $articles
+     * @return Catalogues
+     */
+    public function addArticle(\Encyclopedia\LibraryBundle\Entity\CataloguesArticles $articles)
+    {
+        $this->articles[] = $articles;
+
+        return $this;
+    }
+
+    /**
+     * Remove articles
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesArticles $articles
+     */
+    public function removeArticle(\Encyclopedia\LibraryBundle\Entity\CataloguesArticles $articles)
+    {
+        $this->articles->removeElement($articles);
+    }
+
+    /**
+     * Get articles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getArticles()
+    {
+        return $this->articles;
     }
 }

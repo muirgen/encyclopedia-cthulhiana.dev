@@ -77,7 +77,7 @@ class Oeuvres {
      *
      * @ORM\ManyToMany(targetEntity="Publishing", mappedBy="oeuvres")
      */
-    private $publishing;
+    protected $publishing;
     
     public function getOeuvreAndFormat() {
         return $this->getName() . ' ( ' . $this->getformat() . ' )';

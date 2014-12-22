@@ -58,6 +58,9 @@ h4{
 .indent{
     text-indent: 20%;
 }
+.justify{
+    text-align:justify;
+}
 /*************************************************/
 
 .header{
@@ -138,7 +141,7 @@ h4{
 .menu ul{
     list-style-type: none;
     padding: 0;
-    margin: 0 0 0 20%;
+    margin: 0 0 0 22%;
     display:inline;
 }
 .menu ul li{
@@ -192,7 +195,7 @@ h4{
 }
 .corpus .box .blockList input[type="text"]{
     border:1px solid #d8d9d7;
-    width:100%;
+    width:75%;
     color:#777776;
 }
 .corpus .box .blockList ul{
@@ -229,6 +232,52 @@ h4{
     border-left:4px dotted #9cb418;
 }
 
+/*
+* for jquery ui
+*/
+
+.ui-menu {
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+.ui-widget-content {
+	background: none;
+        border:1px solid #d8d9d7;
+	color: #777776;
+}
+.ui-widget-content a {
+	color: #777776;
+}
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+	background: none;
+        border:1px solid #d8d9d7;
+	font-weight: normal;
+	color: #777776;
+}
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited {
+	color: #777776;
+	text-decoration: none;
+}
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+	background: #777776;
+	font-weight: normal;
+	color: #fff;
+}
+.ui-corner-all{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
 /*
 * Media Screen
 */

@@ -1,10 +1,27 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
+{% block javascripts %}
+   <script src="{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}"></script>
+   <script src="{{ asset('js/libs/tinymce/tinymce.min.js') }}"></script> 
+   <script src="{{ asset('js/libs/jquery-migrate-1.2.1.min.js') }}"></script>
+   <script src="{{ asset('js/libs/jquery.editinplace.js') }}"></script>
+{% endblock %}
+
 {% block body %}
-<script src="{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}"></script>
-<script src="{{ asset('js/libs/tinymce/tinymce.min.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    
+        $('.edit_translation').editInPlace({
+            url: "{{ path('_admin_catalogues_alias_translation_update', {'id_catalogue' : catalogue.id, 'id' : entity.id } ) }}",
+            show_buttons: true,
+            saving_image: "{{ asset('img/admin/ajax-loader.gif') }}"
+        });
+        
+        $('.edit_translation_idx').editInPlace({
+            url: "{{ path('_admin_catalogues_alias_translation_update_idx', {'id_catalogue' : catalogue.id, 'id' : entity.id , 'idx' : 'ok' } ) }}",
+            show_buttons: true,
+            saving_image: "{{ asset('img/admin/ajax-loader.gif') }}"
+        });
     
         $('textarea.tinymce').tinymce({
             script_url : '{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}', 
@@ -19,7 +36,7 @@ $(document).ready(function() {
 </script>
 
 
-<h3><a href="{{ path('_admin_catalogues') }}">Catalogue</a> > Edit : <a href="{{ path('_admin_catalogues_edit', {'id' : catalogue.id}) }}">{{ catalogue.name }}</a> > Alias : {{ entity.name }}</h3>
+<h3><a href="{{ path('_admin_catalogues') }}">Catalogue</a> > Edit : <a href="{{ path('_admin_catalogues_edit', {'id' : catalogue.id} ) }}">{{ catalogue.name }}</a> > Alias : {{ entity.name }}</h3>
 <div class="container_12 edit">
     <div class="grid_6 block">
         <fieldset><legend>Edit</legend>    
@@ -27,13 +44,54 @@ $(document).ready(function() {
         {{ form_errors(edit_form) }}
 
         {{ form_row(edit_form.name) }}
-        {{ form_row(edit_form.languages) }}
+        {{ form_row(edit_form.idxName) }}
         {{ form_row(edit_form.catalogues) }}
-        {{ form_row(edit_form.description, { 'attr' : {'class' : 'tinymce'} }) }}
         {{ form_row(edit_form.note, { 'attr' : {'class' : 'tinymce'} }) }}
 
         {{ form_end(edit_form) }}
         </fieldset>
     </div>
+{% if entity.id %}
+    <div class="grid_6 block">
+        <fieldset><legend>Add translation</legend>
+            <form action="{{ path('_admin_catalogues_alias_translation_create', {'id_catalogue': catalogue.id, 'id': entity.id} ) }}" method="post">
+                <div><label for="nameTrans">Translation:</label> <input type="text" name="nameTrans" id="nameTrans" /></div>
+                <div><label for="idxNameTrans">Index Translation:</label> <input type="text" name="idxNameTrans" id="idxNameTrans" /></div>
+                <div><label for="isoCode">Language:</label> 
+                        <select name="isoCode">
+                            {% for country in countries %}
+                                <option value="{{ country.isoCode }}">{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                </div>
+                <div><button type="submit">Create</button></div>
+            </form>
+        </fieldset>
+        
+        <fieldset><legend>Available translations</legend>
+            {% if entity.translation|length > 0 %}
+            <table>
+                <tr>
+                    <td>Country</td>
+                    <td>Translation</td>
+                    <td>Index translation</td>
+                    <td>Del.</td>
+                {% for trans in entity.translation %}
+                    <tr>
+                        <td><img src="{{ asset('img/flags/'~trans.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                        <td><div class="edit_translation" id="{{ trans.id }}">{{ trans.nameTrans }}</div></td>
+                        <td><div class="edit_translation_idx" id="{{ trans.id }}">{{ trans.idxNameTrans }}</div></td>
+                        <td><a href="{{ path('_admin_catalogues_alias_translation_delete', {'id_catalogue' : catalogue.id, 'id' : entity.id, 'id_translation' : trans.id} ) }}"><i class="fa fa-times fa-4 orange"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+           {% endif %}
+        </fieldset>   
+    </div>  
+{% endif %}
+
+
 </div>
+
+
 {% endblock %}

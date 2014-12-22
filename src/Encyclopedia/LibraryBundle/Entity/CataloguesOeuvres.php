@@ -11,28 +11,27 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class CataloguesOeuvres {
-    
-
+   
     /** 
      * @ORM\ManyToOne(targetEntity="Catalogues", inversedBy="cataloguesOeuvres")
      * @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
      * @ORM\Id
      */
-    private $catalogues;
+    protected $catalogues;
     
     /** 
      * @ORM\ManyToOne(targetEntity="Oeuvres", inversedBy="cataloguesOeuvres")
      * @ORM\JoinColumn(name="id_oeuvre", referencedColumnName="id")
      * @ORM\Id
      */
-    private $oeuvres;
+    protected $oeuvres;
     
     /**
      * @var Boolean
      * 
      * @ORM\Column(name="first_appearance", type="boolean", nullable=false)
      */
-    private $firstAppearance;
+    protected $firstAppearance;
    
     /**
      * Set firstAppearance

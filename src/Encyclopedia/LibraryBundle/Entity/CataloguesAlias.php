@@ -30,25 +30,17 @@ class CataloguesAlias {
     protected $name;
     
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="idx_name", type="string", length=250, nullable=false)
+     */
+    protected $idxName;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Catalogues", inversedBy="alias")
      * @ORM\JoinColumn(name="id_catalogue", referencedColumnName="id")
      */
     private $catalogues;
-    
-    /**
-     * @var \Lang
-     * 
-     * @ORM\ManyToOne(targetEntity="Lang")
-     * @ORM\JoinColumn(name="id_lang", referencedColumnName="id")
-     */
-    protected $languages;
-    
-    /**
-     * @var text
-     * 
-     * @ORM\Column(name="description", type="text")
-     */
-    protected $description;
     
     /**
      * @var text
@@ -56,6 +48,22 @@ class CataloguesAlias {
      * @ORM\Column(name="note", type="text")
      */
     protected $note;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="CataloguesAliasTrans", mappedBy="alias")
+     */
+    protected $translation;
+        
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->translation = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -89,28 +97,28 @@ class CataloguesAlias {
     {
         return $this->name;
     }
-
+    
     /**
-     * Set description
+     * Set idxName
      *
-     * @param string $description
+     * @param string $idxName
      * @return CataloguesAlias
      */
-    public function setDescription($description)
+    public function setIdxName($idxName)
     {
-        $this->description = $description;
+        $this->idxName = $idxName;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get idxName
      *
      * @return string 
      */
-    public function getDescription()
+    public function getIdxName()
     {
-        return $this->description;
+        return $this->idxName;
     }
 
     /**
@@ -160,27 +168,35 @@ class CataloguesAlias {
     }
 
     /**
-     * Set languages
+     * Add translation
      *
-     * @param \Encyclopedia\LibraryBundle\Entity\Lang $languages
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans $translation
      * @return CataloguesAlias
      */
-    public function setLanguages(\Encyclopedia\LibraryBundle\Entity\Lang $languages = null)
+    public function addTranslation(\Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans $translation)
     {
-        $this->languages = $languages;
+        $this->translation[] = $translation;
 
         return $this;
     }
 
     /**
-     * Get languages
+     * Remove translation
      *
-     * @return \Encyclopedia\LibraryBundle\Entity\Lang 
+     * @param \Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans $translation
      */
-    public function getLanguages()
+    public function removeTranslation(\Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans $translation)
     {
-        return $this->languages;
+        $this->translation->removeElement($translation);
     }
-    
-    
+
+    /**
+     * Get translation
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslation()
+    {
+        return $this->translation;
+    }
 }

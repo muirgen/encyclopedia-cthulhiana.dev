@@ -8,15 +8,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+
 use Encyclopedia\LibraryBundle\Form\CataloguesAliasType;
 use Encyclopedia\LibraryBundle\Entity\CataloguesAlias;
+
+use Encyclopedia\LibraryBundle\Form\CataloguesAliasTransType;
+use Encyclopedia\LibraryBundle\Entity\CataloguesAliasTrans;
 
 /**
  * Description of CataloguesAliasController
  *
  * @author Jenny
  *
- * @Route("/catalogues/alias")
+ * @Route("/catalogues/{id_catalogue}/alias")
  */
 class CataloguesAliasController extends Controller {
     
@@ -42,7 +46,7 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/new", name="_admin_catalogues_alias_new")
+     * @Route("/new", name="_admin_catalogues_alias_new")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
     public function newAction($id_catalogue) {
@@ -63,7 +67,7 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/create", name="_admin_catalogues_alias_create")
+     * @Route("/create", name="_admin_catalogues_alias_create")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
@@ -78,6 +82,14 @@ class CataloguesAliasController extends Controller {
         
         $form->handleRequest($request);
 
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.
+        $idxName = $form->getData()->getIdxName();
+        
+        if( empty($idxName) ){
+            $name = $form->getData()->getName();
+            $form->getData()->setIdxName($name);
+        }
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -115,11 +127,11 @@ class CataloguesAliasController extends Controller {
     }
     
     /**
-     * @Route("/id-catalogue-{id_catalogue}/edit/{id}/", name="_admin_catalogues_alias_edit")
+     * @Route("/edit/{id}/", name="_admin_catalogues_alias_edit")
      * @Method("GET")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
-    public function editAction($id, $id_catalogue) {
+    public function editAction($id_catalogue, $id) {
         
         $em = $this->getDoctrine()->getManager();
         $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
@@ -132,19 +144,23 @@ class CataloguesAliasController extends Controller {
         
         $form = $this->cataloguesAliasEditForm($entity, $id_catalogue);
         
+        //List of iso_code available for countries in database, to locate the translation in the min form
+        $countries = $em->getRepository('EncyclopediaLibraryBundle:Lang')->findAll();
+        
         return array(
             'entity'      => $entity,
             'catalogue'   => $catalogue,
-            'edit_form'   => $form->createView()
+            'edit_form'   => $form->createView(),
+            'countries'   => $countries,
         );
     }
 
     /**
-     * @Route("/id-catalogue-{id_catalogue}/update/{id}", name="_admin_catalogues_alias_update")
+     * @Route("/update/{id}", name="_admin_catalogues_alias_update")
      * @Method("POST")
      * @Template("EncyclopediaAdminBundle:CataloguesAlias:edit.html.twig")
      */
-    public function updateAction(Request $request, $id, $id_catalogue){
+    public function updateAction(Request $request, $id_catalogue, $id){
         
         $em = $this->getDoctrine()->getManager();
         $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id_catalogue);
@@ -159,6 +175,14 @@ class CataloguesAliasController extends Controller {
 
         $form->handleRequest($request);
 
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.
+        $idxName = $form->getData()->getIdxName();
+        
+        if( empty($idxName) ){
+            $name = $form->getData()->getName();
+            $form->getData()->setIdxName($name);
+        }
+        
         if ($form->isValid()) {
             $em->flush();
 
@@ -172,4 +196,106 @@ class CataloguesAliasController extends Controller {
         );
     }
     
+    /**************************************************
+     * TRANSLATION MANAGEMENT FOR CATALOGUES ALIAS ENTITY
+     **************************************************/
+    
+    /**
+     * @Route("/translation/{id}/create", name="_admin_catalogues_alias_translation_create")
+     * @Method("POST")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function createCataloguesAliasTranslationAction(Request $request, $id_catalogue, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $error = null;
+        
+        $alias = $em->getRepository('EncyclopediaLibraryBundle:CataloguesAlias')->find($id);
+        
+        $isoCode = $request->get('isoCode');
+        $nameTrans = $request->get('nameTrans');
+        $idxNameTrans = $request->get('idxNameTrans');
+        
+        $translation = new CataloguesAliasTrans();
+        $translation->setCatalogues($alias);
+        $translation->setIsocode($isoCode);
+        $translation->setNameTrans($nameTrans);
+        
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.       
+        if( empty($idxNameTrans) ){    
+            $translation->setIdxNameTrans($nameTrans);          
+        }
+
+        try {
+            $em->persist($translation);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_admin_catalogues_alias_edit', array('id_catalogue' => $id_catalogue, 'id' => $id)));
+        } catch (\Exception $e) {
+            $from_url = $this->getRequest()->headers->get('referer');
+            $error = '<i class="fa fa-exclamation-triangle"></i>Error during the creation process, correct the entry and try again<br/><p>'.$e->getMessage().'</p><br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        
+        return array('error' => $error);
+        
+    }
+    
+    /**
+     * @Route("/translation/{id}/update", name="_admin_catalogues_alias_translation_update")
+     * @Route("/translation/{id}/update/{idx}", name="_admin_catalogues_alias_translation_update_idx")
+     * @Method("POST")
+     */
+    public function updateCataloguesAliasTranslationAction(Request $request, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $element_id = $request->get('element_id');
+        $new_value = $request->get('update_value');
+        
+        $translation = $em->getRepository('EncyclopediaLibraryBundle:CataloguesAliasTrans')->find($element_id);
+        
+        if($translation){
+            
+            if(!$request->get('idx')){
+                $translation->setNameTrans($new_value);
+            }
+            else{
+                $translation->setIdxNameTrans($new_value);
+            }
+            
+            $em->persist($translation);
+            $em->flush();
+            
+        }
+        
+        return new Response($new_value);
+        
+    }
+    
+    /**
+     * @Route("/translation/{id}/delete/{id_translation}", name="_admin_catalogues_alias_translation_delete")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function deleteCataloguesTranslationAction(Request $request, $id_catalogue, $id, $id_translation){
+        
+        $em = $this->getDoctrine()->getManager();
+        $from_url = $this->getRequest()->headers->get('referer');
+        $error = null;
+        
+        $translation = $em->getRepository('EncyclopediaLibraryBundle:CataloguesAliasTrans')->find($id_translation);
+        
+        if($translation ){
+            
+            $em->remove($translation);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('_admin_catalogues_alias_edit', array('id_catalogue' => $id_catalogue, 'id' => $id)));
+        }
+        else{
+            
+            $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete action can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        return array('error' => $error);
+    }
 }

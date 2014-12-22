@@ -16,10 +16,12 @@ class CataloguesType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('idxName','text', array('label' => 'Index name',
+                                          'required' => false))
             ->add('category','entity', array('class' => 'EncyclopediaLibraryBundle:CataloguesCategories',
                                                         'property' => 'name',
                                                        ))
-            ->add('idPerson','entity', array('class' => 'EncyclopediaLibraryBundle:Persons',
+            ->add('person','entity', array('class' => 'EncyclopediaLibraryBundle:Persons',
                                                         'property' => 'name',
                                                         'label' => 'Creator'))
         ;

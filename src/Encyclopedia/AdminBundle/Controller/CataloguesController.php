@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Encyclopedia\LibraryBundle\Form\CataloguesType;
 use Encyclopedia\LibraryBundle\Entity\Catalogues;
 
+use Encyclopedia\LibraryBundle\Form\CataloguesArticlesType;
+use Encyclopedia\LibraryBundle\Entity\CataloguesArticles;
+
+use Encyclopedia\LibraryBundle\Entity\CataloguesTrans;
+
 /**
  * Description of CataloguesController
  *
@@ -84,6 +89,14 @@ class CataloguesController extends Controller {
         
         $form->handleRequest($request);
 
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.
+        $idxName = $form->getData()->getIdxName();
+        
+        if( empty($idxName) ){
+            $name = $form->getData()->getName();
+            $form->getData()->setIdxName($name);
+        }
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -127,7 +140,7 @@ class CataloguesController extends Controller {
     public function editAction($id) {
         
         $em = $this->getDoctrine()->getManager();
-
+        
         $entity = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
 
         if (!$entity) {
@@ -136,9 +149,13 @@ class CataloguesController extends Controller {
         
         $form = $this->cataloguesEditForm($entity);
 
+        //List of iso_code available for countries in database, to locate the translation in the min form
+        $countries = $em->getRepository('EncyclopediaLibraryBundle:Lang')->findAll();
+        
         return array(
             'entity'      => $entity,
-            'edit_form'   => $form->createView()
+            'edit_form'   => $form->createView(),
+            'countries'   => $countries,
         );
     }
 
@@ -160,78 +177,135 @@ class CataloguesController extends Controller {
         $form = $this->cataloguesEditForm($entity);
 
         $form->handleRequest($request);
-
+        
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.
+        $idxName = $form->getData()->getIdxName();
+        
+        if( empty($idxName) ){   
+            $name = $form->getData()->getName();
+            $form->getData()->setIdxName($name); 
+        }
+        
         if ($form->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('_catalogues_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
         }
 
+        //List of iso_code available for countries in database, to locate the translation in the min form
+        $countries = $em->getRepository('EncyclopediaLibraryBundle:Lang')->findAll();
+        
         return array(
             'entity'      => $entity,
-            'edit_form'   => $form->createView()
+            'edit_form'   => $form->createView(),
+            'countries'   => $countries
         );
     }
     
     /**************************************************
-     * SEARCH FOR ENTITY
+     * TRANSLATION MANAGEMENT FOR CATALOGUES ENTITY
      **************************************************/
     
     /**
-     * @Route("/autocomplete-search", name="_admin_catalogues_autocomplete_search")
-     * @Method("GET")
+     * @Route("/translation/{id}/create", name="_admin_catalogues_translation_create")
+     * @Method("POST")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
      */
-    public function autocompleteSearchAction(Request $request) {
-
-        $termSearch = $request->query->get('catalogue');
-        $id_catalogue = $request->query->get('id_catalogue');
-        $action = $request->query->get('action');
-
+    public function createCataloguesTranslationAction(Request $request, $id){
+        
         $em = $this->getDoctrine()->getManager();
         
-        if($action == 'addrelateditem'){
-            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
-                    ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
+        $error = null;
+        
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
+        
+        $isoCode = $request->get('isoCode');
+        $nameTrans = $request->get('nameTrans');
+        $idxNameTrans = $request->get('idxNameTrans');
+        
+        $translation = new CataloguesTrans();
+        $translation->setCatalogues($catalogue);
+        $translation->setIsocode($isoCode);
+        $translation->setNameTrans($nameTrans);
+        
+        //Check if value of idx_name (Indexed name) is empty. If it's empty fill up with the value of name.       
+        if( empty($idxNameTrans) ){    
+            $translation->setIdxNameTrans($nameTrans);          
         }
-        else{
-            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
-                    ->findByAutocompleteWithAlias($termSearch);
+
+        try {
+            $em->persist($translation);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
+        } catch (\Exception $e) {
+            $from_url = $this->getRequest()->headers->get('referer');
+            $error = '<i class="fa fa-exclamation-triangle"></i>Error during the creation process, correct the entry and try again<br/><p>'.$e->getMessage().'</p><br/><a href="'.$from_url.'">Back to the item</a>';
         }
         
-        $array_props = array();
-
-        foreach ($props as $key => $p):
-            $array_props[$key + 1] = array('id' => $p['ca_id'], 'name' => $p['ca_name']);
-        endforeach;
-
-        return new Response(json_encode($array_props));
+        return array('error' => $error);
+        
     }
-
+    
     /**
-     * @Route("/search", name="_admin_catalogues_search")
+     * @Route("/translation/{id}/update", name="_admin_catalogues_translation_update")
+     * @Route("/translation/{id}/update/{idx}", name="_admin_catalogues_translation_update_idx")
      * @Method("POST")
      */
-    public function searchAction(Request $request) {
-
-        $id_catalogue = $request->request->get('id_catalogue');
-
-        /**
-         * if $id_catalogue is referenced in the form submitted (choice of item inside the autocomplete list)
-         * Redirect to the edit form for the id.
-         */
-        if ($id_catalogue) {
-            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id_catalogue)));
+    public function updateCataloguesTranslationAction(Request $request, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $element_id = $request->get('element_id');
+        $new_value = $request->get('update_value');
+        
+        $translation = $em->getRepository('EncyclopediaLibraryBundle:CataloguesTrans')->find($element_id);
+        
+        if($translation){
+            
+            if(!$request->get('idx')){
+                $translation->setNameTrans($new_value);
+            }
+            else{
+                $translation->setIdxNameTrans($new_value);
+            }
+            
+            $em->persist($translation);
+            $em->flush();
+            
         }
-
-        /**
-         * if $id_catalogue not referenced, so display a list of proposal choice from the database
-         * related with the input value submited
-         */
-        return new Response('search');
+        
+        return new Response($new_value);
+    }
+    
+    /**
+     * @Route("/translation/{id}/delete/{id_translation}", name="_admin_catalogues_translation_delete")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function deleteCataloguesTranslationAction(Request $request, $id, $id_translation){
+        
+        $em = $this->getDoctrine()->getManager();
+        $from_url = $this->getRequest()->headers->get('referer');
+        $error = null;
+        
+        $translation = $em->getRepository('EncyclopediaLibraryBundle:CataloguesTrans')->find($id_translation);
+        
+        if($translation ){
+            
+            $em->remove($translation);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
+        }
+        else{
+            
+            $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete action can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        return array('error' => $error);
     }
     
     /**************************************************
-     * Add and delete a related item
+     * ADD AND DELETE A RELATED ITEM
      **************************************************/
     
     /**
@@ -307,7 +381,7 @@ class CataloguesController extends Controller {
     }
     
     /**************************************************
-     * Add and delete an oeuvre attached to an item
+     * ADD AND DELETE AN OEUVRE ATTACHED TO AN ITEM
      **************************************************/
     
     /**
@@ -377,5 +451,61 @@ class CataloguesController extends Controller {
         return array('error' => $error);
     }
     
+    /**************************************************
+     * SEARCH FOR ENTITY
+     **************************************************/
+    
+    /**
+     * @Route("/autocomplete-search", name="_admin_catalogues_autocomplete_search")
+     * @Method("GET")
+     */
+    public function autocompleteSearchAction(Request $request) {
+
+        $termSearch = $request->query->get('catalogue');
+        $id_catalogue = $request->query->get('id_catalogue');
+        $action = $request->query->get('action');
+
+        $em = $this->getDoctrine()->getManager();
+        
+        if($action == 'addrelateditem'){
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
+                    ->findByAutocompleteWithAliasExceptIdCatalogue($termSearch, $id_catalogue);
+        }
+        else{
+            $props = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
+                    ->findByAutocompleteWithAlias($termSearch);
+        }
+        
+        $array_props = array();
+
+        foreach ($props as $key => $p):
+            $array_props[$key + 1] = array('id' => $p['ca_id'], 'name' => $p['ca_name']);
+        endforeach;
+
+        return new Response(json_encode($array_props));
+    }
+
+    /**
+     * @Route("/search", name="_admin_catalogues_search")
+     * @Method("POST")
+     */
+    public function searchAction(Request $request) {
+
+        $id_catalogue = $request->request->get('id_catalogue');
+
+        /**
+         * if $id_catalogue is referenced in the form submitted (choice of item inside the autocomplete list)
+         * Redirect to the edit form for the id.
+         */
+        if ($id_catalogue) {
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id_catalogue)));
+        }
+
+        /**
+         * if $id_catalogue not referenced, so display a list of proposal choice from the database
+         * related with the input value submited
+         */
+        return new Response('search');
+    }
     
 }
