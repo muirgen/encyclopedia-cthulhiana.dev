@@ -305,6 +305,114 @@ class CataloguesController extends Controller {
     }
     
     /**************************************************
+     * ARTICLES MANAGEMENT FOR CATALOGUES ENTITY
+     **************************************************/
+    
+    /**
+     * @Route("/article/{id}/create", name="_admin_catalogues_article_create")
+     * @Method("POST")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function createCataloguesArticleAction(Request $request, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $error = null;
+        
+        $catalogue = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->find($id);
+        
+        $isoCode = $request->get('isoCode');
+        $articleContent = $request->get('articleContent');
+        
+        $article = new CataloguesArticles();
+        $article->setCatalogues($catalogue);
+        $article->setIsocode($isoCode);
+        $article->setArticleContent($articleContent);
+        
+        try {
+            $em->persist($article);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
+        } catch (\Exception $e) {
+            $from_url = $this->getRequest()->headers->get('referer');
+            $error = '<i class="fa fa-exclamation-triangle"></i>Error during the creation process, correct the entry and try again<br/><p>'.$e->getMessage().'</p><br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        
+        return array('error' => $error);
+        
+    }
+    
+    /**
+     * @Route("/article/{id}/edit", name="_admin_catalogues_article_edit")
+     * @Method("GET")
+     */
+    public function editCataloguesArticleAction(Request $request, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository('EncyclopediaLibraryBundle:CataloguesArticles')->find($id);
+        
+        return array('article' => $article);
+        
+    }
+    
+    /**
+     * @Route("/article/{id}/update", name="_admin_catalogues_article_update")
+     * @Method("POST")
+     */
+    public function updateCataloguesArticleAction(Request $request, $id){
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $element_id = $request->get('element_id');
+        $new_value = $request->get('update_value');
+        
+        $translation = $em->getRepository('EncyclopediaLibraryBundle:CataloguesTrans')->find($element_id);
+        
+        if($translation){
+            
+            if(!$request->get('idx')){
+                $translation->setNameTrans($new_value);
+            }
+            else{
+                $translation->setIdxNameTrans($new_value);
+            }
+            
+            $em->persist($translation);
+            $em->flush();
+            
+        }
+        
+        return new Response($new_value);
+    }
+    
+    /**
+     * @Route("/article/{id}/delete/{id_article}", name="_admin_catalogues_article_delete")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     */
+    public function deleteCataloguesArticleAction(Request $request, $id, $id_article){
+        
+        $em = $this->getDoctrine()->getManager();
+        $from_url = $this->getRequest()->headers->get('referer');
+        $error = null;
+        
+        $article = $em->getRepository('EncyclopediaLibraryBundle:CataloguesArticles')->find($id_article);
+        
+        if($article){
+            
+            $em->remove($article);
+            $em->flush();
+            
+            return $this->redirect($this->generateUrl('_admin_catalogues_edit', array('id' => $id)));
+        }
+        else{
+            
+            $error = '<i class="fa fa-exclamation-triangle"></i> The selected items are not registered, and the delete action can\'t go further<br/><a href="'.$from_url.'">Back to the item</a>';
+        }
+        return array('error' => $error);
+    }
+    
+    /**************************************************
      * ADD AND DELETE A RELATED ITEM
      **************************************************/
     

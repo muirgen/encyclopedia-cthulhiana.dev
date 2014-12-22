@@ -1,18 +1,20 @@
 {% extends "EncyclopediaAdminBundle::layout.html.twig" %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/libs/jquery-migrate-1.2.1.min.js') }}"></script>
-    <script src="{{ asset('js/libs/jquery.editinplace.js') }}"></script>
-    <script src="{{ asset('js/libs/jquery-ui-1.10.4.custom.min.js') }}"></script>
-    <script src="{{ asset('js/libs/tinymce/jquery.tinymce.min.js') }}"></script>
-    <script src="{{ asset('js/libs/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery-migrate-1.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.editinplace.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery-ui-1.10.4.custom.min.js') }}"></script>
+    <script src="{{ asset('js/lib/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/lib/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.cthulhiana.modalbox.js') }}"></script>
 {% endblock %}
 
 {% block body -%}
     {% if entity.id %}
         <script>
             $(document).ready(function() {
-
+                                
+                //Edit in place function for translation.
                 $('.edit_translation').editInPlace({
                     //callback: function(unused, enteredText) { return enteredText; },
                     url: "{{ path('_admin_catalogues_translation_update', { 'id' : entity.id } ) }}",
@@ -26,7 +28,8 @@
                     show_buttons: true,
                     saving_image: "{{ asset('img/admin/ajax-loader.gif') }}"
                 });
-
+                
+                //Autocomplete for oeuvre title (table oeuvres)
                 $('#filter_oeuvre').autocomplete({
                     minLength: 3,
                     my: 'bottom',
@@ -61,6 +64,7 @@
                     $('id_oeuvre').val('');
                 });
                 
+                //Autocomplete for item name (table catalogues)
                 $('#filter_catalogue').autocomplete({
                     minLength: 3,
                     my: 'bottom',
@@ -102,8 +106,12 @@
                     theme_modern_statusbar_location : "bottom"
                 });
             
-            });
             
+                //Lightbox
+                $('.cthulhiana_modal').cthulhianaModalBox({'title':'Edit Article'});
+            
+            });
+
         </script>
     {% endif %}
 
@@ -184,7 +192,7 @@
             <div class="grid_0 block">
                 <div class="grid_6 block" id="blockPostContent"><a name="articlecontent"></a>
                     <fieldset><legend>Add article content</legend>
-                        <form>
+                        <form action="{{ path('_admin_catalogues_article_create', {'id': entity.id} ) }}" method="post">
                             <label for="articleContent">Content: </label> <textarea name="articleContent" id="articleContent" class="tinymce"></textarea>
                             <div><label for="isoCode">Language:</label> 
                                 <select name="isoCode">
@@ -205,13 +213,15 @@
                                 <tr>
                                     <td>Country</td>
                                     <td>Article</td>
+                                    <td>Edit</td>
                                     <td>Del.</td>
                                 </tr>
                                 {% for article in entity.articles %}
                                     <tr>
                                         <td><img src="{{ asset('img/flags/'~article.isoCode~'.png') }}" width="20px" height="20px" /></td>
-                                        <td>{{ article.articleContent }}</td>
-                                        <td>del</td>
+                                        <td>{{ article.articleContent|raw }}</td>
+                                        <td><a href="{{ path('_admin_catalogues_article_edit', {'id' : article.id} ) }}" class="cthulhiana_modal"><i class="fa fa-pencil-square-o"></i></a></td>
+                                        <td><a href="{{ path('_admin_catalogues_article_delete', {'id' : entity.id, 'id_article' : article.id} ) }}"><i class="fa fa-times fa-4 orange"></i></a></td>
                                     </tr>
                                 {% endfor %}
                             </table>
