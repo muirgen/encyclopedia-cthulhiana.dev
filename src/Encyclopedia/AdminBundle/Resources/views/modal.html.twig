@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Encyclopedia Cthulhiana - Administration</title>
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet" />  
+        <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.10.4.custom.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/admin.css') }}" rel="stylesheet" />
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="col-lg-12">
+            {% block body %}
+
+            {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

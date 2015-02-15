@@ -1,24 +1,30 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Encyclopedia Cthulhiana - Administration Login</title>
-    </head>
-    <body>
-         <div class="header">
-            <h1>Encyclopedia Cthulhiana</h1>
-            <h2>Administration - Login</h2>
-        </div> 
+{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+{% block body %}
+    <div class="col-lg-8 col-lg-push-2 loginBox">
         {% if error %}
-        <div>{{ error.message }}</div>
+            <div class="alert alert-danger" role="alert">{{ error.message }}</div>
         {% endif %}
 
-        <form action="{{ path('_admin_login_check') }}" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" />
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password" />
+        <form action="{{ path('_admin_login_check') }}" method="post" class="form-horizontal">
             <input type="hidden" name="_target_path" value="/admin" />
-            <button type="submit">login</button>
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password:</label>
+                <div class="col-sm-10">
+                    <input type="password" id="password" name="_password" required="required" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">  
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">login</button>
+                </div>
+            </div>    
         </form>
-    </body>
-</html>
+    </div>        
+{% endblock %}
+

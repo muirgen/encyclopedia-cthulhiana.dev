@@ -246,7 +246,7 @@ class CataloguesCategoriesController extends Controller{
      **************************************************/
     
     /**
-    * Creates a form to edit a CataloguesCategories entity.
+    * Creates a form to edit a CataloguesCategoriesTrans entity.
     * @param CataloguesCategories $entity The entity
     * @return \Symfony\Component\Form\Form The form
     */
@@ -294,7 +294,7 @@ class CataloguesCategoriesController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'lang' => $id_lang));
+        $entity = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')->findOneBy(array('category' => $id_category,'languages' => $id_lang));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find CatalogueCategoriesTrans entity.');

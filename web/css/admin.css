@@ -1,6 +1,5 @@
 body{
     font-family: arial, verdana, sans-serif; 
-    font-size:0.9em;
     color:#6a6a6a;
 }
 a:link, a:hover, a:visited{
@@ -22,46 +21,34 @@ h4{
     font-size:1.4em;
     font-weight: lighter;
 }
-.menu{
-    background-color:#9ab11a;
-    color:#FFFFFF;
-}
-.menu ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+
+.header h1, .header h2{
     display:inline;
 }
-.menu ul li{
-    margin-left: 0;
-    padding:1% 2% 1% 2%;
-    display:inline-block;
+.breadcrumb {
+    background-color: #fff;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0px;
 }
-.menu ul li a:link, .menu ul li a:hover, .menu ul li a:visited{
-    color:#FFFFFF;
-    text-decoration: none;
+.breadcrumb h2{
+    font-size: 14px;
 }
-.menu ul li.pipe{
-    padding:1%;
+.row{
+    /*padding:0;*/
 }
-
 .corpus{
     margin-top: 1%;
     z-index: 1;
     position:relative;
+    padding:0;
 }
 
 .block{
     z-index: 1;
 }
+
 /** Edit form specs **/
-.edit div{
-    width:100%;
-}
-.edit fieldset{
-    border:1px solid #e9e9e9;
-    padding:1%;
-}
 .edit fieldset legend{
     font-size:1.2em;
     padding: 0 1% 0 1%;
@@ -97,7 +84,7 @@ h4{
 }
 
 .edit input[type="text"],input[type="password"], select, textarea{
-    border:1px solid #9ab11a;
+    /*border:1px solid #9ab11a;*/
     font-size:0.9em;
     color:#6a6a6a;
     width:40%;
@@ -133,8 +120,8 @@ table{
     width:100%;
 }
 table tr th{
-    background-color:#9ab11a;
-    color:#FFFFFF;
+    /*background-color:#9ab11a;
+    color:#FFFFFF;*/
 }
 table tr td{
     text-align: left;
@@ -220,4 +207,11 @@ table.records_list tr td.tableText p{
 	padding: 0;
 	margin: 0;
         font-size: 0.9em;
+}
+
+/*
+Login overwriting class
+*/
+.loginBox .form-control{
+    width:40%;
 }

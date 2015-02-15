@@ -1,14 +1,27 @@
-{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+{% extends "EncyclopediaAdminBundle::main.html.twig" %}
 
 {% block body %}
-<h3>Catalogues Categories</h3>
-<div class="grid_0">
-    <a href="{{ path('_admin_catalogues_categories_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a>
-    <h4>List of current categories</h4>
-    <ul>
-        {% for l in list %}
-        <li><a href="{{ path('_admin_catalogues_categories_edit', {'id' : l.id } ) }}">{{ l.name }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+   <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="/">Accueil</a></li>
+            <li>Catalogue Categories</li>
+        </ol>
+    </div>
+    <div class="row">
+        <h2>Catalogue categories</h2>
+    </div>    
+    <div class="row">
+        <div class="col-lg-6 left">
+            <h4>Actions</h4>
+            <a href="{{ path('_admin_catalogues_categories_new') }}"><i class="fa fa-plus-circle fa-3"></i> Add a new entry</a>
+        </div>
+        <div class="col-lg-6 right">
+            <h4>List of current categories</h4>
+            <ul>
+                {% for l in list %}
+                    <li><a href="{{ path('_admin_catalogues_categories_edit', {'id' : l.id } ) }}">{{ l.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

@@ -2,41 +2,23 @@
 <html>
     <head>
         <title>Encyclopedia Cthulhiana - Administration</title>
-        <link href="{{ asset('css/960-grid/min/reset.css') }}" rel="stylesheet" />
-        <link href="{{ asset('css/960-grid/min/text.css') }}" rel="stylesheet" />
-        <link href="{{ asset('css/960-grid/grid.css') }}" rel="stylesheet" />
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet" />  
         <link href="{{ asset('css/jquery/smoothness/jquery-ui-1.10.4.custom.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet" />
         {% block stylesheets %}{% endblock %}
         <script src="{{ asset('js/lib/jquery-2.0.2.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('js/jsfunctionbackend.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </head>
     <body>
-        <div class="container">
-            <div class="header container_11">
-                <h1>Encyclopedia Cthulhiana</h1>
-                <h2>Administration</h2>
+        <div class="container-fluid">
+            <div class="col-lg-12 page-header  header">
+                <h1>Encyclopedia Cthulhiana - Administration</h1>
             </div> 
-            <div class="menu container_11">
-                <ul>
-                    <li>Accueil</li>
-                    <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_persons')}}">Persons</a></li>
-                     <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_catalogues_categories')}}">Catalogues Categories</a></li>
-                    <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_catalogues')}}">Catalogues</a></li>
-                    <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_oeuvres')}}">Oeuvres</a></li>
-                    <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_publishing')}}">Publishing</a></li>
-                    <li class="pipe">|</li>
-                    <li><a href="{{ path('_admin_logout') }}">Logout</a></li>
-                </ul>
-            </div>
-            <div class="corpus container_11">
+            {% block menu %}{% endblock %}
+            <div class="col-lg-12">
             {% block body %}
 
             {% endblock %}

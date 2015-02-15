@@ -1,4 +1,4 @@
-{% extends "EncyclopediaAdminBundle::layout.html.twig" %}
+{% extends "EncyclopediaAdminBundle::main.html.twig" %}
 
 {% block javascripts %}
     <script src="{{ asset('js/lib/jquery-ui-1.10.4.custom.min.js') }}"></script>
@@ -46,7 +46,7 @@
     });
 </script>
 <h3>Catalogue</h3>
-<div class="grid_0">
+<div class="row">
     <div style="float:left; width:17%;">
         <form action="{{ path('_admin_catalogues_search') }}" method="POST" id="autocomplete_search">
             <label for="filter_catalogue">Search</label> <input type="text" class="ui-autocomplete-input" id="filter_catalogue" name="filter_catalogue" value="" /> <input type="hidden" id="id_catalogue" name="id_catalogue" value="" /> <input type="submit" name="submit_search" value="Ok" />
