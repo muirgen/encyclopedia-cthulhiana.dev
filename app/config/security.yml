@@ -1,3 +1,5 @@
+parameters:
+    languages: "(en|fr)"
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
@@ -30,11 +32,11 @@ security:
                 invalidate_session: false
             http_basic:
                 realm: "Secured Admin Area"      
-
+        
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/%languages%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/%languages%/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         
