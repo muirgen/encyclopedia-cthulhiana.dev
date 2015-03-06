@@ -1,0 +1,16 @@
+Encyclopedia\LibraryBundle\Entity\Language:
+    properties:
+        language:
+            - NotNull: ~
+        isoCode:
+            - NotNull: ~
+            - Regex:
+                pattern: "/^([a-z]+){2}$/"
+                match:   true
+                message: Only a code with two caracters alpha, is allowed (en|de|fr|es...)
+        languageCode:
+            - NotNull: ~
+            - Regex:
+                pattern: "/^([a-z]+){2}-([a-z]+){2}$/"
+                match:   true
+                message: Only a code with two caracters alpha and a dashen, is allowed (en-en|de-de|fr-fr|es-es...)        

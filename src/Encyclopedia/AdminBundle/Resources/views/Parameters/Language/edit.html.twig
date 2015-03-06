@@ -1,0 +1,63 @@
+{% extends "EncyclopediaAdminBundle::modal.html.twig" %}
+
+{% block body %}
+    <div class="row">
+        <h3>Form</h3>
+        {{ form_start(form, {attr: {'class':'form-horizontal'} } ) }}
+
+        {% if form_errors is defined %}
+            <div class="alert alert-danger" role="alert">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            {{ form_label(form.language, 'Language name (vo)' ,{'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-xs-10">
+                {{ form_widget(form.language, {attr:{'class':'form-control'}} ) }}
+                
+                {% if form_errors is defined %}
+                <div class="col-xs-10 alert alert-danger" role="alert">{{ form_errors(form.language) }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.isoCode, 'Code Iso (2 letters)' ,{'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-xs-10">
+                {{ form_widget(form.isoCode, {attr:{'class':'form-control'}} ) }}
+                
+                {% if form_errors is defined %}
+                    <div class="col-xs-10 alert alert-danger" role="alert">{{ form_errors(form.isoCode) }}</div>
+                {% endif %}
+            </div>
+        </div>
+       <div class="form-group">
+            {{ form_label(form.languageCode, 'Code language (xx-xx)' ,{'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-xs-10">
+                {{ form_widget(form.languageCode, {attr:{'class':'form-control'}} ) }}
+                
+                {% if form_errors is defined %}
+                    <div class="col-xs-10 alert alert-danger" role="alert">{{ form_errors(form.languageCode) }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.public, 'Public (for encyclopedia website)' ,{'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+            <div class="col-xs-10">
+                {{ form_errors(form.public) }}
+                {% for child in form.public %}
+                    <div class="radio-inline">
+                        <label>{{ form_widget(child) }} {{ form_label(child) }}</label>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {{ form_row(form.submit) }}
+            </div>
+        </div>
+        
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

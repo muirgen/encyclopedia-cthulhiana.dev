@@ -2,6 +2,7 @@
 namespace Encyclopedia\LibraryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Language
@@ -22,21 +23,21 @@ class Language {
     
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Language name must not be empty")
      * @ORM\Column(name="str_language", type="string", length=50, nullable=false)
      */
     private $language;
     
     /**
      * @var string
-     *
+     * @Assert\Regex(pattern="/^([a-z]+){2}$/", match=true, message="Only a code with two caracters alpha, is allowed (en|de|fr|es...)")
      * @ORM\Column(name="str_iso_code", type="string", length=2, nullable=false)
      */
     private $isoCode;
     
     /**
      * @var string
-     *
+     * @Assert\Regex(pattern="/^([a-z]+){2}-([a-z]+){2}$/", match=true, message="Only a code with two caracters alpha and a dashen, is allowed (en-en|de-de|fr-fr|es-es...)")
      * @ORM\Column(name="str_language_code", type="string", length=5, nullable=false)
      */
     private $languageCode;
@@ -44,7 +45,7 @@ class Language {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="public", type="boolean", length=1, nullable=false, options={"default":0})
+     * @ORM\Column(name="bol_public", type="boolean", length=1, nullable=false, options={"default":0})
      */
     private $public;
     

@@ -1,0 +1,99 @@
+{% extends "EncyclopediaAdminBundle::main.html.twig" %}
+
+{% block body %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{{ path('encyclopedia_admin_homepage') }}">Home</a></li>
+            <li>Parameters</li>
+            <li class="active">Languages</li>
+        </ol>
+    </div>
+    <div class="row">
+        <h2>Languages</h2>
+        <div class="col-lg-12 block"><a href="{{ path('_admin_parameters_languages_create') }}" class="in_modal" alt="Add a language" data-toggle="modal" data-target="#formInModal"><i class="fa fa-plus-circle"></i> Add a new language</a></div>
+        <div class="col-lg-6 left nopadding">
+            <h3>Public languages</h3>
+            <div class="blockContent col-lg-11">
+                <table class="table-striped">
+                {% for public in publicLanguage %}
+                    <tr>
+                        <td><img src="{{ asset('img/flags/'~public.isoCode~'.png') }}"/></td>
+                        <td>{{ public.language }}</td>
+                        <td>{{ public.isoCode }}</td>
+                        <td>{{ public.languageCode }}</td>
+                        <td><a href=""><i class="fa fa-pencil-square-o fa-2x"></i></a>
+                    </tr>
+                {% endfor %}  
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6 right nopadding">
+            <h3>Translation languages for encyclopedia entries</h3>
+            <div class="blockContent col-lg-11">
+                <table class="table-striped">
+                {% for lexicon in lexiconLanguage %}
+                    <tr>
+                        <td><img src="{{ asset('img/flags/'~lexicon.isoCode~'.png') }}"/></td>
+                        <td>{{ lexicon.language }}</td>
+                        <td>{{ lexicon.isoCode }}</td>
+                        <td>{{ lexicon.languageCode }}</td>
+                        <td><a href=""><i class="fa fa-pencil-square-o fa-2x"></i></a>
+                    </tr>
+                {% endfor %}  
+                </table>
+            </div>
+        </div>
+    </div>    
+    <!-- Modal -->
+    <div class="modal fade" id="formInModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="formInModalLabel"></h4>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>        
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+    $( document ).ready(function() {
+        $('a.in_modal').on('click', function(e){
+            e.preventDefault();
+            url = this.href;
+            title = $(this).attr('alt');
+            $('.modal-body').html('<iframe width="100%" height="100%" frameborder="0" scrolling="yes" allowtransparency="true" src="'+url+'"></iframe>');
+            $('.modal-title').text(title);
+            $('#formInModal').modal({show:true});
+            return false;
+        });
+        
+        $('#formInModal').on('show.bs.modal', function () {
+ 
+            $(this).find('.modal-dialog').css({
+                      width:'40%x', //choose your width
+                      height:'80%', 
+                      'padding':'0'
+               });
+            $(this).find('.modal-content').css({
+                      height:'100%', 
+                      'border-radius':'4',
+                      'padding':'0'
+               });
+            $(this).find('.modal-body').css({
+                      width:'auto',
+                      height:'100%', 
+                      'padding':'0'
+               });
+        });
+        
+        $('#formInModal').on('hide.bs.modal', function(){
+            window.location.reload();
+        });
+    });
+    
+    </script>
+{% endblock %}  

@@ -34,23 +34,31 @@ h4{
 .breadcrumb h2{
     font-size: 14px;
 }
-.row{
-    /*padding:0;*/
-}
+
 .corpus{
     z-index: 1;
     position:relative;
 }
 .corpus .row .left{
     float:left;
-    padding:0;
 }
 .corpus .row .right{
     float:right;
+}
+.nopadding{
     padding:0;
+}
+.column-50p{
+    width:50%;
+    float:left;
+    overflow:hidden;
+}
+.blockContent{
+    width:100%;
 }
 .block{
     z-index: 1;
+    padding:0;
 }
 
 /** Edit form specs **/
