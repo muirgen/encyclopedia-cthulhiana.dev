@@ -38,12 +38,13 @@ class LanguageController extends Controller {
     }    
     
     /**
-     * @Route("/create", name="_admin_parameters_languages_create")
+     * @Route("/new", name="_admin_parameters_languages_new")
      * @Template("EncyclopediaAdminBundle:Parameters/Language:edit.html.twig")
      */
-    public function createAction(){
+    public function newAction(){
         
         $language = new Language();
+        $language->setPublic(false);
         $form = $this->languageCreateForm($language, 'Create');
         
         return array('form' => $form->createView());
@@ -51,7 +52,27 @@ class LanguageController extends Controller {
     }
     
     /**
-     * @Route("/save", name="_admin_parameters_languages_save")
+     * @Route("/edit/{id}", name="_admin_parameters_languages_edit")
+     * @Method("GET")
+     * @Template("EncyclopediaAdminBundle:Parameters/Language:edit.html.twig")
+     */
+    public function editAction($id){
+        
+        $em = $this->getDoctrine()->getManager();
+        $language = $em->getRepository('EncyclopediaLibraryBundle:Language')->find($id);
+        
+        if (!$language) {
+            throw $this->createNotFoundException('Unable to find Language entity.');
+        }
+        
+        $form = $this->languageCreateForm($language, 'Update');
+        
+        return array('form' => $form->createView());
+        
+    }
+    
+    /**
+     * @Route("/create", name="_admin_parameters_languages_create")
      * @Route("/update/{id}", name="_admin_parameters_languages_update")
      * @Template("EncyclopediaAdminBundle:Parameters/Language:edit.html.twig")
      */
@@ -88,7 +109,7 @@ class LanguageController extends Controller {
      */
     private function languageCreateForm(Language $entity, $labelBtn){
         
-        $urlAction = $this->generateUrl('_admin_parameters_languages_save');
+        $urlAction = $this->generateUrl('_admin_parameters_languages_create');
         $refId = $entity->getId();
         if($refId){
            $urlAction = $this->generateUrl('_admin_parameters_languages_update', array('id' => $refId)); 

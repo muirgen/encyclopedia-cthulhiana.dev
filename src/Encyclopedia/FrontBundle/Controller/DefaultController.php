@@ -36,7 +36,7 @@ class DefaultController extends Controller
     
     public function randomIndexAction(){
         
-        $idLocale = $this->get('kernel.listener.languages')->getIdLang();
+        $idLocale = $this->get('kernel.listener.languages')->getIdLanguage();
         $em = $this->getDoctrine()->getManager();
         $ri = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByRand($idLocale);
         

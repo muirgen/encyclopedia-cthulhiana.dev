@@ -11,11 +11,10 @@ class BooleanFieldType extends AbstractType
     {
         $resolver->setDefaults(array(
             'choices' => array(
-                0 => 'No',
-                1 => 'Yes',
+                false => 'No',
+                true => 'Yes',
             ),
             'expanded' => true,
-            'data' => 0,
             'required'  => true
         ));
     }

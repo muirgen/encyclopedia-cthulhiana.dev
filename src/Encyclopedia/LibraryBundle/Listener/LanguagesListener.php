@@ -23,11 +23,11 @@ class LanguagesListener {
     
     protected $em;
     
-    public function __construct(EntityManager $em, $container, $availableLocales, $idlang = 2) {
+    public function __construct(EntityManager $em, $container, $availableLocales, $idLanguage = 1) {
         
         $this->container = $container;
         $this->availableLocales = $availableLocales;
-        $this->idLang = $idlang;
+        $this->idLanguage = $idLanguage;
         $this->em = $em;
     }
 
@@ -120,14 +120,14 @@ class LanguagesListener {
                
             $locale = $req->attributes->get('_locale');
             
-            $entity = $this->em->getRepository('EncyclopediaLibraryBundle:Lang')->findOneBy(array('isoCode' => $locale,'public' => true));
+            $entity = $this->em->getRepository('EncyclopediaLibraryBundle:Language')->findOneBy(array('isoCode' => $locale,'public' => true));
             
-            if($entity) { $this->idLang = $entity->getId(); }
+            if($entity) { $this->idLanguage = $entity->getId(); }
             
         }
     }
     
-    public function getIdLang(){
-        return $this->idLang;
+    public function getIdLanguage(){
+        return $this->idLanguage;
     }
 }

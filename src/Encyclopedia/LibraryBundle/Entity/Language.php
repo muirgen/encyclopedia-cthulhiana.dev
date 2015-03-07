@@ -45,7 +45,7 @@ class Language {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="bol_public", type="boolean", length=1, nullable=false, options={"default":0})
+     * @ORM\Column(name="bol_public", type="boolean", length=1, nullable=false, options={"default":false})
      */
     private $public;
     

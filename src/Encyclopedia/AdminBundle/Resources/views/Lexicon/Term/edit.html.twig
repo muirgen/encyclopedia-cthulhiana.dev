@@ -1,0 +1,16 @@
+{% extends "EncyclopediaAdminBundle::main.html.twig" %}
+
+{% block body %}
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="{{ path('encyclopedia_admin_homepage') }}">Home</a></li>
+        <li>Lexicon</li>
+        <li>Terms</li>
+        <li class="active">Edit / Create</li>
+    </ol>
+</div>
+<div class="row">
+    <h2>Terms</h2>
+    <div class="col-lg-12 block"><a href="{{ path('_admin_lexicon_term_new') }}" class="in_modal" alt="Add a language" data-toggle="modal" data-target="#formInModal"><i class="fa fa-plus-circle"></i> Add a new term of the mythos</a></div>
+</div>    
+{% endblock %}
