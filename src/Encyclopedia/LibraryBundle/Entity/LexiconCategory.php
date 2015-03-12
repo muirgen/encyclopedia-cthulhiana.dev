@@ -28,6 +28,20 @@ class LexiconCategory {
      */
     private $category;
     
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * 
+     * @ORM\OneToMany(targetEntity="TranslationLexiconCategory", mappedBy="category")
+     */
+    protected $translation;
+   
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->translation = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -60,5 +74,38 @@ class LexiconCategory {
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\TranslationLexiconCategory $translation
+     * @return LexiconCategory
+     */
+    public function addTranslation(\Encyclopedia\LibraryBundle\Entity\TranslationLexiconCategory $translation)
+    {
+        $this->translation[] = $translation;
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param \Encyclopedia\LibraryBundle\Entity\TranslationLexiconCategory $translation
+     */
+    public function removeTranslation(\Encyclopedia\LibraryBundle\Entity\TranslationLexiconCategory $translation)
+    {
+        $this->translation->removeElement($translation);
+    }
+
+    /**
+     * Get translation
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslation()
+    {
+        return $this->translation;
     }
 }

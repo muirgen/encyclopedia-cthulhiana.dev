@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Sam 07 Mars 2015 à 15:27
+-- Généré le: Jeu 12 Mars 2015 à 08:45
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.4.3
 
@@ -538,7 +538,14 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `str_category` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Reference table storing for lexicon category' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Reference table storing for lexicon category' AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `tr_lexicon_category`
+--
+
+INSERT INTO `tr_lexicon_category` (`id`, `str_category`) VALUES
+(1, 'The Elder Gods');
 
 -- --------------------------------------------------------
 
@@ -586,46 +593,48 @@ CREATE TABLE IF NOT EXISTS `tr_reference` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `t_trans_lexicon`
+-- Structure de la table `tt_lexicon`
 --
 
-CREATE TABLE IF NOT EXISTS `t_trans_lexicon` (
+CREATE TABLE IF NOT EXISTS `tt_lexicon` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon` int(11) unsigned NOT NULL COMMENT 'Foreign key to lexicon id primary key',
   `str_iso_code` char(2) NOT NULL,
   `str_trans_term` varchar(250) NOT NULL COMMENT 'default translation term',
   PRIMARY KEY (`id`),
   KEY `fk_lexicon` (`fk_lexicon`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table storing translation for lexicon default terms' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation Table storing translation for lexion term' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `t_trans_lexicon_alias`
+-- Structure de la table `tt_lexicon_alias`
 --
 
-CREATE TABLE IF NOT EXISTS `t_trans_lexicon_alias` (
+CREATE TABLE IF NOT EXISTS `tt_lexicon_alias` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon_alias` int(11) unsigned NOT NULL,
   `str_iso_code` char(2) NOT NULL,
   `str_trans_term_alias` varchar(250) NOT NULL COMMENT 'default translation',
   PRIMARY KEY (`id`),
   KEY `fk_lexicon_alias` (`fk_lexicon_alias`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table storing translation alias for lexicon term' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation Table storing translation for lexion term alias' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `t_trans_lexicon_category`
+-- Structure de la table `tt_lexicon_category`
 --
 
-CREATE TABLE IF NOT EXISTS `t_trans_lexicon_category` (
+CREATE TABLE IF NOT EXISTS `tt_lexicon_category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon_category` int(11) unsigned NOT NULL,
+  `fk_language` int(11) unsigned NOT NULL,
   `str_trans_category` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_lexicon_category` (`fk_lexicon_category`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table storing translation for category' AUTO_INCREMENT=1 ;
+  KEY `fk_lexicon_category` (`fk_lexicon_category`),
+  KEY `fk_language` (`fk_language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation Table for lexicon category' AUTO_INCREMENT=1 ;
 
 --
 -- Contraintes pour les tables exportées
@@ -736,10 +745,17 @@ ALTER TABLE `tr_lexicon_definition`
   ADD CONSTRAINT `tr_lexicon_definition_ibfk_1` FOREIGN KEY (`fk_lexicon`) REFERENCES `tr_lexicon` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `t_trans_lexicon_alias`
+-- Contraintes pour la table `tt_lexicon_alias`
 --
-ALTER TABLE `t_trans_lexicon_alias`
-  ADD CONSTRAINT `t_trans_lexicon_alias_ibfk_1` FOREIGN KEY (`fk_lexicon_alias`) REFERENCES `tr_lexicon_alias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tt_lexicon_alias`
+  ADD CONSTRAINT `tt_lexicon_alias_ibfk_1` FOREIGN KEY (`fk_lexicon_alias`) REFERENCES `tr_lexicon_alias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `tt_lexicon_category`
+--
+ALTER TABLE `tt_lexicon_category`
+  ADD CONSTRAINT `tt_lexicon_category_ibfk_1` FOREIGN KEY (`fk_lexicon_category`) REFERENCES `tr_lexicon_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tt_lexicon_category_ibfk_2` FOREIGN KEY (`fk_language`) REFERENCES `tf_language` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

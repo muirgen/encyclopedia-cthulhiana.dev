@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use Encyclopedia\LibraryBundle\Entity\LexiconCategory;
+use Encyclopedia\LibraryBundle\Form\LexiconCategoryType;
 
 /**
  * Description of CategoryController
@@ -37,7 +38,9 @@ class CategoryController extends controller{
         $category = new LexiconCategory();
         $form = $this->lexiconCategoryCreateForm($category, 'Create');
         
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(),
+                        'nameOfAction' => 'New',
+                        'category' => $category);
         
     }
     
@@ -45,12 +48,16 @@ class CategoryController extends controller{
      * @Route("/edit/{id}", name="_admin_lexicon_category_edit")
      * @Template("EncyclopediaAdminBundle:Lexicon/Category:edit.html.twig")
      */
-    public function editAction(){
+    public function editAction($id){
        
-        $category = new LexiconCategory();
+        $em = $this->getDoctrine()->getManager();
+               
+        $category = $em->getRepository('EncyclopediaLibraryBundle:LexiconCategory')->find($id);
         $form = $this->lexiconCategoryCreateForm($category, 'Create');
         
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(),
+                        'nameOfAction' => 'Edit',
+                        'category' => $category);
         
     }
     
@@ -59,12 +66,33 @@ class CategoryController extends controller{
      * @Route("/update/{id}", name="_admin_lexicon_category_update")
      * @Template("EncyclopediaAdminBundle:Lexicon/Category:edit.html.twig")
      */
-    public function updateAction(){
+    public function updateAction(Request $request){
        
-        $category = new LexiconCategory();
-        $form = $this->lexiconCategoryCreateForm($category, 'Create');
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->get('id');
+
+        if(!$id){
+            $category = new LexiconCategory();
+            $btnForm = 'Create';
+            $nameOfAction = 'New';
+        }
+        else{
+            $category = $em->getRepository('EncyclopediaLibraryBundle:LexiconCategory')->findOneBy(array('id' => $id));
+            $btnForm = 'Update';
+            $nameOfAction = 'Edit';
+                
+        }
+
+        $form = $this->lexiconCategoryCreateForm($category, $btnForm);
+        $form->handleRequest($request);
         
-        return array('form' => $form->createView());
+        if ($form->isValid()) {
+            $em->persist($category);
+            $em->flush();
+        }
+        return array('form' => $form->createView(),
+                        'nameOfAction' => $nameOfAction,
+                        'category' => $category);
         
     }
      /**

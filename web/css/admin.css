@@ -48,11 +48,7 @@ h4{
 .nopadding{
     padding:0;
 }
-.column-50p{
-    width:50%;
-    float:left;
-    overflow:hidden;
-}
+
 .blockContent{
     width:100%;
 }

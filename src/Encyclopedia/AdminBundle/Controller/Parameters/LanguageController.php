@@ -82,15 +82,15 @@ class LanguageController extends Controller {
         
         $id = $request->get('id');
 
-            if(!$id){
-                $language = new Language();
-                $btnForm = 'Create';
-            }
-            else{
-                $language = $em->getRepository('EncyclopediaLibraryBundle:Language')->findOneBy(array('id' => $id));
-                $btnForm = 'Update';
+        if(!$id){
+            $language = new Language();
+            $btnForm = 'Create';
+        }
+        else{
+            $language = $em->getRepository('EncyclopediaLibraryBundle:Language')->findOneBy(array('id' => $id));
+            $btnForm = 'Update';
                 
-            }
+        }
 
         $form = $this->languageCreateForm($language, $btnForm);
         $form->handleRequest($request);
