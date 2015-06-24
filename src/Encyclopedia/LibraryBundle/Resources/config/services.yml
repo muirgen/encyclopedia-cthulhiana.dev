@@ -15,4 +15,8 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest } 
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
         arguments: [ @doctrine.orm.entity_manager, @service_container, [ 'en', 'fr' ] ]
-        
+    encyclopedia_library.custom.entity_hidden:
+        class: Encyclopedia\LibraryBundle\Form\Custom\EntityHiddenFieldType
+        tags:
+            - { name: form.type, alias: entity_hidden }
+        arguments: ["@doctrine.orm.entity_manager"]

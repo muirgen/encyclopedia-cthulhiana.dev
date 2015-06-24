@@ -166,6 +166,12 @@ table.records_list tr td.tableText p{
     line-height: 1.1em;
     margin: 0;
 }
+table tr td ul{
+    padding:0;
+    margin:0;
+    list-style-type: none;
+}
+
 
 /** Div wich appear with summary of item like oeuvres, auteurs, catalogues **/
 /** When a choice has been choose in drop down list. **/
@@ -223,4 +229,9 @@ Login overwriting class
 */
 .loginBox .form-control{
     width:40%;
+}
+
+/** Font disposition **/
+.txt-center{
+    text-align: center;
 }

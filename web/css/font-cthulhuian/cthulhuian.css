@@ -63,10 +63,10 @@
 .cthulhu-c3{
     font-size:3em;
 }
-.place:before{
+.places:before{
     content: "\0050";
 }
-.messenger:before{
+.thegreatones:before{
     content: "\004D";
 }
 .creatures:before{

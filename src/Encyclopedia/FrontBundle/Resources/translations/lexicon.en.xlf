@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="1">
                 <source>index.title</source>
-                <target>Index of catalogue</target>
+                <target>Index of lexicon</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>index.categories</source>

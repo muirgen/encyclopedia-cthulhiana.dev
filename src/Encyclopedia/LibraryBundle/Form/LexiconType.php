@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LexiconCategoryType extends AbstractType
+class LexiconType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,10 @@ class LexiconCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category')
+            ->add('term','text')
+            ->add('idxTerm','text')
+            ->add('category', 'entity', array('class' => 'Encyclopedia\LibraryBundle\Entity\LexiconCategory',
+                'choice_label' => 'category'))
         ;
     }
     
@@ -25,7 +28,7 @@ class LexiconCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Encyclopedia\LibraryBundle\Entity\LexiconCategory'
+            'data_class' => 'Encyclopedia\LibraryBundle\Entity\Lexicon'
         ));
     }
 
@@ -34,6 +37,6 @@ class LexiconCategoryType extends AbstractType
      */
     public function getName()
     {
-        return 'encyclopedia_librarybundle_lexiconcategory';
+        return 'encyclopedia_librarybundle_lexicon';
     }
 }

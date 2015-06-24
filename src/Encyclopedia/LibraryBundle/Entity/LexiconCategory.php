@@ -36,6 +36,14 @@ class LexiconCategory {
     protected $translation;
    
     /**
+     * to string
+     */
+    public function __toString()
+    {
+        return (string) $this->getId();
+    }
+    
+    /**
      * Constructor
      */
     public function __construct()

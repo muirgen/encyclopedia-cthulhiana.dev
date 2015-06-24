@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * TranslationLexiconCategory
  *
  * @ORM\Table(name="tt_lexicon_category", indexes={@ORM\Index(name="language", columns={"fk_language"}), @ORM\Index(name="category", columns={"fk_lexicon_category"} ) })
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Encyclopedia\LibraryBundle\Repository\TranslationLexiconCategoryRepository")
  */
 class TranslationLexiconCategory {
     
@@ -42,7 +42,7 @@ class TranslationLexiconCategory {
      * @Assert\NotBlank(message="Translation string must not be empty")
      * @ORM\Column(name="str_trans_category", type="string", length=250, nullable=false)
      */
-    private $strTransCategory;
+    private $translation;
 
     /**
      * Get id
@@ -60,9 +60,9 @@ class TranslationLexiconCategory {
      * @param string $strTransCategory
      * @return TranslationLexiconCategory
      */
-    public function setStrTransCategory($strTransCategory)
+    public function setTranslation($translation)
     {
-        $this->strTransCategory = $strTransCategory;
+        $this->translation = $translation;
 
         return $this;
     }
@@ -72,9 +72,9 @@ class TranslationLexiconCategory {
      *
      * @return string 
      */
-    public function getStrTransCategory()
+    public function getTranslation()
     {
-        return $this->strTransCategory;
+        return $this->translation;
     }
 
     /**

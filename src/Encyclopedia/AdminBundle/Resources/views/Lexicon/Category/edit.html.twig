@@ -5,14 +5,14 @@
         <ol class="breadcrumb">
             <li><a href="{{ path('encyclopedia_admin_homepage') }}">Home</a></li>
             <li>Lexicon</li>
-            <li>Categories</li>
+            <li><a href="{{ path('_admin_lexicon_category_index') }}">Categories</a></li>
             <li class="active">{{ nameOfAction }} Category</li>
         </ol>
     </div>
     <div class="row">
         <h2>{{ nameOfAction }} Category</h2>
         <div class="col-lg-6">
-            <h3>Form</h3>
+            <h3>Main information</h3>
             {{ form_start(form, {attr: {'class':'form-horizontal'} } ) }}
 
             {% if form_errors is defined %}
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-8">
-                    {{ form_row(form.submit) }}
+                    {{ form_widget(form.submit, { 'label': 'Save' }) }}
                 </div>
             </div> 
             {{ form_end(form) }}
@@ -42,26 +42,81 @@
         {% if category.id|length > 0 %}
             <div class="col-lg-6">
                 <h3>Translation</h3>
-                <div class="col-lg-12 block"><a href="{{ path('_admin_lexicon_category_new') }}"><i class="fa fa-plus-circle"></i> Add a new translation for category</a></div>
+                <div class="col-lg-12 block"><p><a href="{{ path('_admin_translation_lexicon_category_new', {'id_category' : category.id} ) }}" class="in_modal" alt="New translation for {{ category.category }}" data-toggle="modal" data-target="#formInModal"><i class="fa fa-plus-circle"></i> Add a new translation for category</a></p></div>
                 {% if category.translation|length > 0 %}
-                    <table class="table-striped">
+                    <table class="table table-striped">
                         <tr>
                             <th>Country</th>
                             <th>Translation</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th class="txt-center">Edit</th>
+                            <th class="txt-center">Delete</th>
                         </tr>
-                        {% for t in translation %}
+                        {% for t in category.translation %}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td><img src="{{ asset('img/flags/'~t.language.isoCode~'.png') }}" width="20px" height="20px" /></td>
+                                <td>{{ t.translation }}</td>
+                                <td class="txt-center"><a href="{{ path('_admin_translation_lexicon_category_edit', {'id' : t.id} ) }}" class="in_modal" alt="Edit translation for {{ category.category }}" data-toggle="modal" data-target="#formInModal"><i class="fa fa-pencil-square-o fa-1x"></i></a></td>
+                                <td class="txt-center"><a href="{{ path('_admin_translation_lexicon_category_delete', {'id' : t.id} ) }}" alt="Delete translation for {{ category.category }}"><i class="fa fa-trash-o fa-1x"></i></a></td>
                             </tr>
                         {% endfor %}
                     </table>
                 {% endif %}
             </div> 
         {% endif %}
-    </div>    
+    </div> 
+<!-- Modal -->
+<div class="modal fade" id="formInModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="formInModalLabel"></h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>     
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('a.in_modal').on('click', function(e) {
+            e.preventDefault();
+            url = this.href;
+            title = $(this).attr('alt');
+            $('.modal-body').html('<iframe width="100%" height="100%" frameborder="0" scrolling="yes" allowtransparency="true" src="' + url + '"></iframe>');
+            $('.modal-title').text(title);
+            $('#formInModal').modal({show: true});
+            return false;
+        });
+
+        $('#formInModal').on('show.bs.modal', function() {
+
+            $(this).find('.modal-dialog').css({
+                width: '40%x', //choose your width
+                height: '80%',
+                'padding': '0'
+            });
+            $(this).find('.modal-content').css({
+                height: '100%',
+                'border-radius': '4',
+                'padding': '0'
+            });
+            $(this).find('.modal-body').css({
+                width: 'auto',
+                height: '100%',
+                'padding': '0'
+            });
+        });
+
+        $('#formInModal').on('hide.bs.modal', function() {
+            window.location.reload();
+        });
+    });
+
+</script>
 {% endblock %}

@@ -19,8 +19,8 @@
                 <target>Accueil</target>
             </trans-unit>
             <trans-unit id="5">
-                <source>header.navigation.catalogue</source>
-                <target>Catalogue</target>
+                <source>header.navigation.lexicon</source>
+                <target>Lexicon</target>
             </trans-unit>
         </body>
     </file>

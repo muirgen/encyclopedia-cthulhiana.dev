@@ -22,7 +22,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: 'GET',
-                    url: "{{ path('_catalogues_autocomplete_search') }}",
+                    url: "{{ path('_lexicon_autocomplete_search') }}",
                     dataType: 'json',
                     data: {
                         catalogue: request.term
@@ -56,15 +56,15 @@
     
     {# Block on the left side of content #}
     <div class="grid_0">
-        <div class="grid_6"><h2>{% trans from "catalogues" %}index.title{% endtrans %}</h2></div>
+        <div class="grid_6"><h2>{% trans from "lexicon" %}index.title{% endtrans %}</h2></div>
     </div>    
     <div class="grid_3 box">
         <div class="grid_16 blockList">
-        <h3>{% trans from "catalogues" %}index.categories{% endtrans %}</h3>
+        <h3>{% trans from "lexicon" %}index.categories{% endtrans %}</h3>
         {% if listCategories|length > 0 %}
             <ul class="cthulhu-ul">
             {% for lc in listCategories %}
-                <li class="{{ lc.category.name|categorytoclass }}"><span>{{ lc.nameTrans }}</span></li>
+                <li class="{{ lc.category.category|categorytoclass }}"><span>{{ lc.translation }}</span></li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -73,11 +73,11 @@
     
     {# block center with the alpha letter and the results of search by index #}    
     <div class="grid_6 box">
-        <h3>{% trans from "catalogues" %}index.findbyalpha{% endtrans %}</h3>
+        <h3>{% trans from "lexicon" %}index.findbyalpha{% endtrans %}</h3>
         
         <div class="listLetter">
             {% for letter in range('A', 'Z') %}
-                <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+                <span><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
             {% endfor %}
         </div>
         
@@ -87,7 +87,7 @@
         {% set russianLetter = russianAlphaLetter() %}
         <div class="listLetter">
             {% for letter in russianLetter %}
-                <span><a href="{{ path('_catalogues',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+                <span><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
             {% endfor %}
         </div>
         {% endif %}
@@ -100,11 +100,11 @@
  
                 {% for item in items %}
                     <div class="grid_4 item">
-                        <i class="cthulhuian cthulhu-lg green {{ item['cc_name']|categorytoclass }}"></i>
-                        {% filter replace({'(': '<span class="mini indent">(', ' alias )': ' alias )</span>'})|raw %}
-                        {{ item['c_name']}}
-                        {% endfilter %}
-                        <span class="oblique mini green left indent">{{ item['cct_nameTrans']}}</span>
+                        <i class="cthulhuian cthulhu-lg green {{ item['lc_category']|categorytoclass }}"></i>
+                        {#% filter replace({'(': '<span class="mini indent">(', ' alias )': ' alias )</span>'})|raw %#}
+                        {{ item['l_term']}}
+                        {#% endfilter %#}
+                        <span class="oblique mini green left indent">{{ item['lc_category']}}</span>
                     </div>
                                         
                     {% if( i%3 == 0) %} 
@@ -124,16 +124,16 @@
     {# Block right side of the content #}    
     <div class="grid_3 box">
         <div class="grid_16 blockList">
-            <h3 class="right">{% trans from "catalogues" %}index.search{% endtrans %}</h3>
+            <h3 class="right">{% trans from "lexicon" %}index.search{% endtrans %}</h3>
             <p class="right"><input type="text" id="filter_search" value="ex: cthulhu, arkham"/></p>
-            <p class="justify">{% trans from "catalogues" %}index.search.explanation{% endtrans %}</p>
+            <p class="justify">{% trans from "lexicon" %}index.search.explanation{% endtrans %}</p>
         </div>
         <div class="grid_16 blockList">
-        <h3 class="right">{% trans from "catalogues" %}index.lastentries{% endtrans %}</h3>
+        <h3 class="right">{% trans from "lexicon" %}index.lastentries{% endtrans %}</h3>
         {% if lastEntries|length > 0 %}
             <ul>
             {% for le in lastEntries %}
-                <li class="right"><i class="cthulhuian cthulhu-lg {{ le.category.name|categorytoclass }}"></i> {{ le.name }}</li>
+                <li class="right"><i class="cthulhuian cthulhu-lg {{ le.category.category|categorytoclass }}"></i> {{ le.term }}</li>
             {% endfor %}
             </ul>
         {% endif %}

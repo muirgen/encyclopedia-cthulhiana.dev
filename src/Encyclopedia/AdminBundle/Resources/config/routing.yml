@@ -1,16 +1,16 @@
 encyclopedia_admin_homepage:
-    pattern:  /{_locale}/
+    path:  /{_locale}/
     defaults: { _controller: EncyclopediaAdminBundle:Default:index, _local: en }
 simple_admin_homepage:
-    pattern:  /
+    path:  /
     defaults: { _controller: EncyclopediaAdminBundle:Default:index }
 _admin_login:
-    pattern: /{_locale}/login
+    path: /{_locale}/login
     defaults: { _controller: EncyclopediaAdminBundle:Security:login }
 _admin_login_check:
-    pattern: /{_locale}/login_check
+    path: /{_locale}/login_check
 _admin_logout:
-    pattern: /{_locale}/logout
+    path: /{_locale}/logout
 # importe les routes d'un répertoire Controller
 admin:
     resource: "@EncyclopediaAdminBundle/Controller"

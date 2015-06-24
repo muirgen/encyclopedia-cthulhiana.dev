@@ -1,4 +1,29 @@
 /**
+ * Hide div role="alert" after a while of 2000 ms
+ * @param {type} div : div role="alert" in the screen
+ * @returns no return
+ */
+function hideAlertDiv(div){
+    $.each(div, function(i,v){
+        if($(this).css('display') != 'none'){
+            $(this).delay(2000).hide('slow');
+        }
+    });
+}
+
+/**
+ * Get the value in the input form role="default" to fillup the
+ * value of input form role="indexed".
+ */
+function fillUpIndexedInputValueFromDefaultInputValue(){
+    
+    $('form input[role="default"]').on('keyup', function(){
+        $('form input[role="indexed"]').val($(this).val());
+    });
+    
+}
+
+/**
  * Open and Close a Div width a mini form inside
  * (Ex : Adding an oeuvre to a catalogue item)
  * @param {type} envId

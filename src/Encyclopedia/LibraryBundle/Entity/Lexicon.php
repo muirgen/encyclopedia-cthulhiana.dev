@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Lexicon
  *
  * @ORM\Table(name="tr_lexicon", indexes={@ORM\Index(name="fk_lexicon_category", columns={"fk_lexicon_category"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Encyclopedia\LibraryBundle\Repository\LexiconRepository")
  */
 class Lexicon {
     
@@ -31,10 +31,17 @@ class Lexicon {
     
     /**
      * @var string
-     * @Assert\NotBlank(message="Language name must not be empty")
+     * @Assert\NotBlank(message="Term cannot be empty")
      * @ORM\Column(name="str_term", type="string", length=250, nullable=false)
      */
     private $term;
+    
+    /**
+     * @var string
+     * @Assert\NotBlank(message="Index term cannot be empty")
+     * @ORM\Column(name="idx_term", type="string", length=250, nullable=false)
+     */
+    private $idxTerm;
     
 
     /**
@@ -68,6 +75,29 @@ class Lexicon {
     public function getTerm()
     {
         return $this->term;
+    }
+    
+    /**
+     * Set term
+     *
+     * @param string $idxTerm
+     * @return Lexicon
+     */
+    public function setIdxTerm($idxTerm)
+    {
+        $this->idxTerm = $idxTerm;
+
+        return $this;
+    }
+
+    /**
+     * Get idxTerm
+     *
+     * @return string 
+     */
+    public function getIdxTerm()
+    {
+        return $this->idxTerm;
     }
 
     /**

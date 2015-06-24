@@ -11,5 +11,13 @@
 <div class="row">
     <h2>Terms</h2>
     <div class="col-lg-12 block"><a href="{{ path('_admin_lexicon_term_new') }}"><i class="fa fa-plus-circle"></i> Add a new term of the mythos</a></div>
+    <div class="col-lg-12 block">
+        <h3>15 last terms</h3>
+        <ul>
+            {% for l in list %}
+            <li><a href="{{ path('_admin_lexicon_term_edit', {'id' : l.id} ) }}"><i class="fa fa-pencil-square-o fa-1x"></i> {{ l.term }} ({{l.category.category}})</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>    
 {% endblock %}

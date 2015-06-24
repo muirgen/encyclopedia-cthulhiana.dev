@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Jeu 12 Mars 2015 à 08:45
+-- Généré le: Mer 24 Juin 2015 à 15:38
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.4.3
 
@@ -475,9 +475,20 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon_category` int(11) unsigned DEFAULT NULL,
   `str_term` varchar(250) NOT NULL COMMENT 'default term',
+  `idx_term` varchar(250) NOT NULL COMMENT 'indexed term',
   PRIMARY KEY (`id`),
   KEY `fk_lexicon_category` (`fk_lexicon_category`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Reference table storing terms for the lexicon' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Reference table storing terms for the lexicon' AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `tr_lexicon`
+--
+
+INSERT INTO `tr_lexicon` (`id`, `fk_lexicon_category`, `str_term`, `idx_term`) VALUES
+(1, 7, 'Arkham', 'Arkham'),
+(2, 5, 'Cultes des Goules', 'Cultes des Goules'),
+(3, 5, 'Unaussprechlichen Kulten', 'Unaussprechlichen Kulten'),
+(4, 3, 'Nyarlathotep', 'Nyarlathotep');
 
 --
 -- Déclencheurs `tr_lexicon`
@@ -500,7 +511,7 @@ str_idx_term
 VALUES (
 NEW.id,
 "Lexicon",
-NEW.str_term
+NEW.idx_term
 )
 //
 DELIMITER ;
@@ -509,7 +520,7 @@ DELIMITER //
 CREATE TRIGGER `After_update_tr_lexicon` AFTER UPDATE ON `tr_lexicon`
  FOR EACH ROW UPDATE tr_lexicon_index
 SET fk_entity = NEW.id,
-str_idx_term = NEW.str_term
+str_idx_term = NEW.idx_term
 WHERE fk_entity = OLD.id AND str_entity = "Lexicon"
 //
 DELIMITER ;
@@ -524,9 +535,45 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_alias` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon` int(11) unsigned NOT NULL,
   `str_term_alias` varchar(250) NOT NULL COMMENT 'default alias term',
+  `idx_term_alias` varchar(250) NOT NULL COMMENT 'indexed alias term',
   PRIMARY KEY (`id`),
   KEY `fk_lexicon` (`fk_lexicon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Reference table storing alias for lexicon terms' AUTO_INCREMENT=1 ;
+
+--
+-- Déclencheurs `tr_lexicon_alias`
+--
+DROP TRIGGER IF EXISTS `After_delete_tr_lexicon_alias`;
+DELIMITER //
+CREATE TRIGGER `After_delete_tr_lexicon_alias` AFTER DELETE ON `tr_lexicon_alias`
+ FOR EACH ROW DELETE FROM tr_lexicon_index WHERE fk_entity = OLD.id AND str_entity = "LexiconAlias"
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `After_insert_tr_lexicon_alias`;
+DELIMITER //
+CREATE TRIGGER `After_insert_tr_lexicon_alias` AFTER INSERT ON `tr_lexicon_alias`
+ FOR EACH ROW INSERT INTO 
+tr_lexicon_index (
+fk_entity, 
+str_entity, 
+str_idx_term
+) 
+VALUES (
+NEW.fk_lexicon,
+"LexiconAlias",
+NEW.idx_term_alias
+)
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `After_update_tr_lexicon_alias`;
+DELIMITER //
+CREATE TRIGGER `After_update_tr_lexicon_alias` AFTER UPDATE ON `tr_lexicon_alias`
+ FOR EACH ROW UPDATE tr_lexicon_index
+SET fk_entity = NEW.fk_lexicon,
+str_idx_term = NEW.idx_term_alias
+WHERE fk_entity = OLD.fk_lexicon AND str_entity = "LexiconAlias"
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -538,14 +585,21 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `str_category` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Reference table storing for lexicon category' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Reference table storing for lexicon category' AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `tr_lexicon_category`
 --
 
 INSERT INTO `tr_lexicon_category` (`id`, `str_category`) VALUES
-(1, 'The Elder Gods');
+(1, 'The Elder Gods'),
+(2, 'The Great Old Ones'),
+(3, 'The Outer Gods'),
+(4, 'The Great Ones'),
+(5, 'Books'),
+(6, 'Characters'),
+(7, 'Places'),
+(8, 'Creatures');
 
 -- --------------------------------------------------------
 
@@ -572,9 +626,20 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_index` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_entity` int(11) unsigned NOT NULL,
   `str_entity` varchar(50) NOT NULL,
-  `str_idx_term` varchar(250) NOT NULL,
+  `str_idx_term` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `str_iso_code` char(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `tr_lexicon_index`
+--
+
+INSERT INTO `tr_lexicon_index` (`id`, `fk_entity`, `str_entity`, `str_idx_term`, `str_iso_code`) VALUES
+(1, 1, 'Lexicon', 'Arkham', NULL),
+(2, 2, 'Lexicon', 'Cultes des Goules', NULL),
+(3, 3, 'Lexicon', 'Unaussprechlichen Kulten', NULL),
+(4, 4, 'Lexicon', 'Nyarlathotep', NULL);
 
 -- --------------------------------------------------------
 
@@ -614,10 +679,12 @@ CREATE TABLE IF NOT EXISTS `tt_lexicon` (
 CREATE TABLE IF NOT EXISTS `tt_lexicon_alias` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fk_lexicon_alias` int(11) unsigned NOT NULL,
+  `fk_lexicon` int(11) unsigned NOT NULL,
   `str_iso_code` char(2) NOT NULL,
   `str_trans_term_alias` varchar(250) NOT NULL COMMENT 'default translation',
   PRIMARY KEY (`id`),
-  KEY `fk_lexicon_alias` (`fk_lexicon_alias`)
+  KEY `fk_lexicon_alias` (`fk_lexicon_alias`),
+  KEY `fk_lexicon` (`fk_lexicon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation Table storing translation for lexion term alias' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -634,7 +701,29 @@ CREATE TABLE IF NOT EXISTS `tt_lexicon_category` (
   PRIMARY KEY (`id`),
   KEY `fk_lexicon_category` (`fk_lexicon_category`),
   KEY `fk_language` (`fk_language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation Table for lexicon category' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Translation Table for lexicon category' AUTO_INCREMENT=17 ;
+
+--
+-- Contenu de la table `tt_lexicon_category`
+--
+
+INSERT INTO `tt_lexicon_category` (`id`, `fk_lexicon_category`, `fk_language`, `str_trans_category`) VALUES
+(1, 1, 2, 'Les Anciens Dieux'),
+(2, 2, 2, 'Les Grands Anciens'),
+(3, 3, 2, 'Les Dieux Extérieurs'),
+(4, 4, 2, 'Divinités mineurs'),
+(5, 5, 2, 'Livres Impies'),
+(6, 6, 2, 'Personnages'),
+(7, 7, 2, 'Lieux'),
+(8, 8, 2, 'Créatures'),
+(9, 1, 1, 'The Elder Gods'),
+(10, 2, 1, 'The Great Old Ones'),
+(11, 3, 1, 'The Outer Gods'),
+(12, 4, 1, 'The Great Ones'),
+(13, 5, 1, 'Books'),
+(14, 6, 1, 'Characters'),
+(15, 7, 1, 'Places'),
+(16, 8, 1, 'Creatures');
 
 --
 -- Contraintes pour les tables exportées
@@ -748,6 +837,7 @@ ALTER TABLE `tr_lexicon_definition`
 -- Contraintes pour la table `tt_lexicon_alias`
 --
 ALTER TABLE `tt_lexicon_alias`
+  ADD CONSTRAINT `tt_lexicon_alias_ibfk_2` FOREIGN KEY (`fk_lexicon`) REFERENCES `tr_lexicon` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tt_lexicon_alias_ibfk_1` FOREIGN KEY (`fk_lexicon_alias`) REFERENCES `tr_lexicon_alias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

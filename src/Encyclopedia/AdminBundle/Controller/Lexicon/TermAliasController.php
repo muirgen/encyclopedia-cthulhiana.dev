@@ -9,45 +9,32 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
 
-use Encyclopedia\LibraryBundle\Entity\Lexicon;
-use Encyclopedia\LibraryBundle\Form\LexiconType;
+use Encyclopedia\LibraryBundle\Entity\LexiconAlias;
+use Encyclopedia\LibraryBundle\Form\LexiconAliasType;
 
 /**
- * Description of TermController
- * All the terms from lexicon are stored in the tr_lexicon table.
+ * Description of LexiconAliasController
+ * All the alias of terms from lexicon are stored in the tr_lexicon_alias table.
  * @author Jenny
- * @Route("{_locale}/lexicon/term", defaults={"_locale" = "en"}, requirements={"_locale" = "[a-z]{2}"} )
+ * @Route("{_locale}/lexicon/term/{term}/alias", defaults={"_locale" = "en"}, requirements={"_locale" = "[a-z]{2}"} )
  */
-class TermController extends controller{
-
-    /**
-     * @Route("/index", name="_admin_lexicon_term_index")
-     * @Template()
-     */
-    public function indexAction(){
-       
-        $em = $this->getDoctrine()->getManager();
-        $list = $em->getRepository('Encyclopedia\LibraryBundle\Entity\Lexicon')->findBy(array(), null, 15);
-        
-        return array('list' => $list);
-        
-    }
+class TermAliasController {
     
     /**
-     * @Route("/new", name="_admin_lexicon_term_new")
-     * @Template("EncyclopediaAdminBundle:Lexicon/Term:edit.html.twig")
+     * @Route("/new/", name="_admin_lexicon_alias_new")
+     * @Template("EncyclopediaAdminBundle:Lexicon/TermAlias:edit.html.twig")
      */
     public function newAction(){
         
-        $term = new Lexicon();
-        $form = $this->lexiconTermCreateForm($term, 'Create');
+        $alias = new LexiconAlias();
+        $form = $this->lexiconAliasCreateForm($alias, 'Create');
         
         return array('nameOfAction' => 'Create',
             'form' => $form->createView());
     }
     
     /**
-     * @Route("/edit/{id}", name="_admin_lexicon_term_edit")
+     * @Route("/edit/{id}", name="_admin_lexicon_alias_edit")
      * @Template()
      */
     public function editAction($id){
@@ -64,8 +51,8 @@ class TermController extends controller{
     }
     
     /**
-     * @Route("/create", name="_admin_lexicon_term_create")
-     * @Route("/update/{id}", name="_admin_lexicon_term_update")
+     * @Route("/create", name="_admin_lexicon_alias_create")
+     * @Route("/update/{id}", name="_admin_lexicon_alias_update")
      * @Template("EncyclopediaAdminBundle:Lexicon/Term:edit.html.twig")
      */
     public function updateAction(Request $request) {
@@ -97,22 +84,22 @@ class TermController extends controller{
             $this->addFlash('notice', $notice);
         }
 
-        return $this->redirect($this->generateUrl('_admin_lexicon_term_edit', array('id' => $lexiconTerm->getId())));
+        return $this->redirect($this->generateUrl('_admin_lexicon_alias_edit', array('id' => $lexiconTerm->getId())));
     }
     
     /**
      * Privates for internal functionnalities
      * Creation / Edition form function
      */
-    private function lexiconTermCreateForm(Lexicon $entity, $labelBtn) {
+    private function lexiconAliasCreateForm(LexiconAlias $entity, $labelBtn) {
 
-        $urlAction = $this->generateUrl('_admin_lexicon_term_create');
+        $urlAction = $this->generateUrl('_admin_lexicon_alias_create');
         $refId = $entity->getId();
         if ($refId) {
-            $urlAction = $this->generateUrl('_admin_lexicon_term_update', array('id' => $refId));
+            $urlAction = $this->generateUrl('_admin_lexicon_alias_update', array('id' => $refId));
         }
 
-        $form = $this->createForm(new LexiconType(), $entity, array(
+        $form = $this->createForm(new LexiconAliasType(), $entity, array(
             'action' => $urlAction,
             'method' => 'POST',
         ));
@@ -121,4 +108,5 @@ class TermController extends controller{
 
         return $form;
     }
+    
 }

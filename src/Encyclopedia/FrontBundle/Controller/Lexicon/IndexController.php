@@ -1,6 +1,6 @@
 <?php
 
-namespace Encyclopedia\FrontBundle\Controller;
+namespace Encyclopedia\FrontBundle\Controller\Lexicon;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,29 +15,28 @@ use Encyclopedia\LibraryBundle\Entity\Catalogues;
  *
  * @author Jenny
  *
- * @Route("{_locale}/catalogues", defaults={"_locale" = "en"}, requirements={"_locale" = "[a-z]{2}"})
+ * @Route("{_locale}/lexicon", defaults={"_locale" = "en"}, requirements={"_locale" = "[a-z]{2}"})
  */
-class CataloguesController extends Controller {
+class IndexController extends Controller {
     
     /**
-     * @Route("/index-{letter}", name="_catalogues", defaults={"letter" = "A"})
-     * @Route("/"), name="_catalogues"
-     * @Template()
+     * @Route("/index-{letter}", name="_lexicon", defaults={"letter" = "A"})
+     * @Route("/"), name="_lexicon"
+     * @Template("EncyclopediaFrontBundle:Lexicon:index.html.twig")
      */
-    public function indexAction(Request $request, $letter = 'A') {
+    public function indexAction($letter = 'A', $_locale) {
 
-        $idLocale = $this->get('kernel.listener.languages')->getIdLang();
-        $isoCode = $this->getRequest()->getLocale();
+        $idLocale = $this->get('kernel.listener.languages')->getIdLanguage();
+        $isoCode = $_locale;
 
         $em = $this->getDoctrine()->getManager();
 
-        $listCategories = $em->getRepository('EncyclopediaLibraryBundle:CataloguesCategoriesTrans')
-                ->findAllByLocaleId($idLocale);
-        
-        $lastEntries = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')
+        $listCategories = $em->getRepository('EncyclopediaLibraryBundle:TranslationLexiconCategory')->findAllByIdLocale($idLocale);
+
+        $lastEntries = $em->getRepository('EncyclopediaLibraryBundle:Lexicon')
                 ->findAllWithLimit(15);
         
-        $items = $em->getRepository('EncyclopediaLibraryBundle:Catalogues')->findByNameFirstLetterLike($letter,$isoCode);
+        $items = $em->getRepository('EncyclopediaLibraryBundle:Lexicon')->findByNameFirstLetterLike($letter,$isoCode);
 
         return array('listCategories' => $listCategories,
                     'lastEntries' => $lastEntries,
@@ -46,9 +45,9 @@ class CataloguesController extends Controller {
     }
 
     /**
-     * @Route("/autocomplete-search", name="_catalogues_autocomplete_search")
+     * @Route("/autocomplete-search", name="_lexicon_autocomplete_search")
      * @Method("GET")
-     * @Template("EncyclopediaAdminBundle:Catalogues:error.html.twig")
+     * @Template("EncyclopediaAdminBundle:Lexicon/Index:error.html.twig")
      */
     public function autocompleteSearchAction(Request $request){
         
