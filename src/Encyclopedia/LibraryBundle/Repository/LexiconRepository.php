@@ -119,19 +119,21 @@ class LexiconRepository extends EntityRepository {
         
         $sql = 'SELECT lexidx.fk_entity, '
                 . 'lexidx.str_idx_term, '
-                . 'tlexcat.str_trans_category as category '
+                . 'tlexcat.str_trans_category as category,'
+                . 'lexcat.str_category as root_category '
                 . 'FROM tr_lexicon_index lexidx '
-                . 'LEFT JOIN tr_lexicon lex ON (lexidx.fk_entity = lex.id)'
+                . 'LEFT JOIN tr_lexicon lex ON (lexidx.fk_entity = lex.id) '
+                . 'LEFT JOIN tr_lexicon_category lexcat ON (lex.fk_lexicon_category = lexcat.id) '
                 . 'LEFT JOIN tt_lexicon_category tlexcat ON (lex.fk_lexicon_category = tlexcat.fk_lexicon_category AND tlexcat.fk_language= ?) '
                 . 'WHERE (lexidx.str_iso_code = ? OR lexidx.str_iso_code IS NULL) '
                 . 'AND lexidx.str_idx_term LIKE ? ORDER BY lexidx.str_idx_term ASC';
         
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('EncyclopediaLibraryBundle:Lexicon', 'l');
-        $rsm->addEntityResult('EncyclopediaLibraryBundle:LexiconCategory', 'lc');
+        $rsm->addEntityResult('EncyclopediaLibraryBundle:Search\RstLexicon', 'l');
         $rsm->addFieldResult('l', 'fk_entity', 'id');
         $rsm->addFieldResult('l', 'str_idx_term', 'term');
-        $rsm->addFieldResult('lc', 'category', 'category');
+        $rsm->addFieldResult('l', 'root_category', 'rootCategory');
+        $rsm->addFieldResult('l', 'category', 'category');
         
         $query = $this->_em->createNativeQuery($sql, $rsm);
         $query->setParameter(1, $lang);

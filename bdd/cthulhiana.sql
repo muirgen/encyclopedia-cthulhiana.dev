@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 24 Juin 2015 à 15:38
+-- Généré le: Lun 13 Juillet 2015 à 11:44
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.4.3
 
@@ -538,7 +538,14 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_alias` (
   `idx_term_alias` varchar(250) NOT NULL COMMENT 'indexed alias term',
   PRIMARY KEY (`id`),
   KEY `fk_lexicon` (`fk_lexicon`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Reference table storing alias for lexicon terms' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Reference table storing alias for lexicon terms' AUTO_INCREMENT=2 ;
+
+--
+-- Contenu de la table `tr_lexicon_alias`
+--
+
+INSERT INTO `tr_lexicon_alias` (`id`, `fk_lexicon`, `str_term_alias`, `idx_term_alias`) VALUES
+(1, 4, 'Crawling Chaos', 'Crawling Chaos');
 
 --
 -- Déclencheurs `tr_lexicon_alias`
@@ -629,7 +636,7 @@ CREATE TABLE IF NOT EXISTS `tr_lexicon_index` (
   `str_idx_term` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `str_iso_code` char(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `tr_lexicon_index`
@@ -639,7 +646,8 @@ INSERT INTO `tr_lexicon_index` (`id`, `fk_entity`, `str_entity`, `str_idx_term`,
 (1, 1, 'Lexicon', 'Arkham', NULL),
 (2, 2, 'Lexicon', 'Cultes des Goules', NULL),
 (3, 3, 'Lexicon', 'Unaussprechlichen Kulten', NULL),
-(4, 4, 'Lexicon', 'Nyarlathotep', NULL);
+(4, 4, 'Lexicon', 'Nyarlathotep', NULL),
+(5, 4, 'LexiconAlias', 'Crawling Chaos', NULL);
 
 -- --------------------------------------------------------
 
@@ -837,8 +845,8 @@ ALTER TABLE `tr_lexicon_definition`
 -- Contraintes pour la table `tt_lexicon_alias`
 --
 ALTER TABLE `tt_lexicon_alias`
-  ADD CONSTRAINT `tt_lexicon_alias_ibfk_2` FOREIGN KEY (`fk_lexicon`) REFERENCES `tr_lexicon` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tt_lexicon_alias_ibfk_1` FOREIGN KEY (`fk_lexicon_alias`) REFERENCES `tr_lexicon_alias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tt_lexicon_alias_ibfk_1` FOREIGN KEY (`fk_lexicon_alias`) REFERENCES `tr_lexicon_alias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tt_lexicon_alias_ibfk_2` FOREIGN KEY (`fk_lexicon`) REFERENCES `tr_lexicon` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `tt_lexicon_category`

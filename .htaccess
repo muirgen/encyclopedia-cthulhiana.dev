@@ -19,7 +19,7 @@
 RewriteEngine On
 RewriteBase /web/
 
-RewriteCond %{REQUEST_URI} \.(css|gif|ico|jpg|js|png|swf|txt|pdf|doc|docx|mp3|svg|otf|eot|ttf|woff)$
+RewriteCond %{REQUEST_URI} \.(less|css|gif|ico|jpg|js|png|swf|txt|pdf|doc|docx|mp3|svg|otf|eot|ttf|woff)$
 RewriteRule ^(.*)$ $1 [QSA,L]
 
 RewriteCond %{REQUEST_URI} dev.php

@@ -52,14 +52,14 @@
 
     });
 </script>
-<div class="container_12">  
+
     
     {# Block on the left side of content #}
-    <div class="grid_0">
-        <div class="grid_6"><h2>{% trans from "lexicon" %}index.title{% endtrans %}</h2></div>
+    <div class="col-lg-12">
+        <h2>{% trans from "lexicon" %}index.title{% endtrans %}</h2>
     </div>    
-    <div class="grid_3 box">
-        <div class="grid_16 blockList">
+    <div class="col-lg-3 box">
+        <div class="blockList">
         <h3>{% trans from "lexicon" %}index.categories{% endtrans %}</h3>
         {% if listCategories|length > 0 %}
             <ul class="cthulhu-ul">
@@ -72,13 +72,15 @@
     </div>
     
     {# block center with the alpha letter and the results of search by index #}    
-    <div class="grid_6 box">
+    <div class="col-lg-6 box">
         <h3>{% trans from "lexicon" %}index.findbyalpha{% endtrans %}</h3>
         
         <div class="listLetter">
+            <ul>
             {% for letter in range('A', 'Z') %}
-                <span><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+                <li><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></li>
             {% endfor %}
+            </ul>
         </div>
         
         {# if Russian is the language of browser, display cyrillic alphabatical order #}
@@ -86,35 +88,27 @@
         Russian Alphabetical order
         {% set russianLetter = russianAlphaLetter() %}
         <div class="listLetter">
+            <ul>
             {% for letter in russianLetter %}
-                <span><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></span>
+                <li><a href="{{ path('_lexicon',{'letter': letter}) }}" {% if letter == currentLetter %} class="selectedGrey" {% endif %}>{{ letter }}</a></li>
             {% endfor %}
+            </ul>
         </div>
         {% endif %}
         
-        <div class="grid_16 resultItem">
+        <div class="resultItemByLetter">
             <h4>Index {{ currentLetter }}</h4>
             {% if items|length > 0 %} 
-                
-                {% set i = 0 %}
- 
+                <ul>
                 {% for item in items %}
-                    <div class="grid_4 item">
-                        <i class="cthulhuian cthulhu-lg green {{ item['lc_category']|categorytoclass }}"></i>
-                        {#% filter replace({'(': '<span class="mini indent">(', ' alias )': ' alias )</span>'})|raw %#}
-                        {{ item['l_term']}}
-                        {#% endfilter %#}
-                        <span class="oblique mini green left indent">{{ item['lc_category']}}</span>
-                    </div>
-                                        
-                    {% if( i%3 == 0) %} 
+                    <li class="item">
+                        <i class="cthulhuian cthulhu-lg green {{ item['l_rootCategory']|categorytoclass }}"></i>
+                        <a href="">{{ item['l_term']}}</a>
                         <br style="clear:both;" />
-                    {% endif %}  
-                    
-                    {% set i = loop %}
-                        
+                        <span class="oblique mini left indent">{{ item['l_category']}}</span>
+                    </li>                     
                 {% endfor %}
-
+                </ul>
             {% else %}
                 <p>no results for current index letter</p>
             {% endif %}
@@ -122,7 +116,7 @@
     </div>
         
     {# Block right side of the content #}    
-    <div class="grid_3 box">
+    <div class="col-lg-3 box">
         <div class="grid_16 blockList">
             <h3 class="right">{% trans from "lexicon" %}index.search{% endtrans %}</h3>
             <p class="right"><input type="text" id="filter_search" value="ex: cthulhu, arkham"/></p>
@@ -138,6 +132,5 @@
             </ul>
         {% endif %}
         </div>
-    </div>    
-</div>    
+    </div>       
 {% endblock %}    

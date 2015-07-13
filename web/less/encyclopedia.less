@@ -1,0 +1,159 @@
+/*********/
+/* Color definition
+/*********/
+
+@greenAcide:#9cb418;
+@greyAnthracite:#777776;
+@greySilver:#d8d9d7;
+@greyDark:#434343;
+
+
+/****************************************************/
+/* Class special to change color, text orientation */
+/**************************************************/
+.green{
+    color:@greenAcide;
+}
+.right{
+    text-align: right;
+}
+.floatleft{
+    text-align:left;
+}
+.oblique{
+    font-style:oblique;
+}
+.mini{
+    font-size:0.8em;
+}
+.indent{
+    text-indent: 20%;
+}
+.justify{
+    text-align:justify;
+}
+
+/****************************************************/
+/* basic display the layout parts for the front web */
+/**************************************************/
+
+.header .flags ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 0;
+    display:inline;
+    float:right;
+}
+.header .flags ul li{
+    margin-left: 0;
+    display:inline-block;
+}
+.header .internalLinks ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 2.5% 0;
+}
+.header .internalLinks ul li{
+    margin-left: 0;
+    display:inline-block;
+}
+
+.header .randomIndex{
+    text-align: right;
+}
+
+/************************************/
+/** CORPUS CLASS : INDEX LEXICON ***/
+/***********************************/
+.corpus .box .blockList input[type="text"]{
+    border:1px solid @greySilver;
+    width:75%;
+    color:@greyAnthracite;
+}
+.corpus .box .blockList ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.corpus .box .blockList ul li{
+    margin-left: 0;
+}
+
+.corpus .box .listLetter{
+    width:100%;
+    text-align:center;
+    margin-bottom:3%;
+    float:left;
+}
+.corpus .box .listLetter ul{
+    padding:0;
+    margin:0;
+    list-style-type: none;
+    width:100%;
+    text-align: left;
+}
+
+.corpus .box .listLetter ul li{
+    display:inline;
+    text-align: center;
+}
+.corpus .box .listLetter ul li {
+    a.selectedGrey:link, a.selectedGrey:visited{
+        background-color:@greyAnthracite;
+        padding:0.5% 1% 0.5% 1%;
+        display:inline-block;
+        width:3.33%;
+    }
+}
+.corpus .box .listLetter ul li {
+    a:link, a:visited{
+        background-color:@greySilver;
+        color:inherit;
+        padding:0.5% 1% 0.5% 1%;
+        margin:0 0 0.5% 0;
+        text-decoration: none;
+        display:inline-block;
+        width:3.33%;
+    }
+    a:hover{
+        background-color:@greyAnthracite;
+        color:inherit;
+    }
+}
+
+.corpus .box .resultItemByLetter{
+    width:100%;
+    float:left;
+}
+.corpus .box .resultItemByLetter ul{
+    list-style-type: none;
+    padding:0;
+    margin:0;
+}
+.corpus .box .resultItemByLetter ul{ 
+    li{
+    font-size:1.1em;
+    padding:0.5% 0.5% 0.5% 0.5%;
+    margin:0.5% 0 0.5% 0;
+    width:32.7%;
+    display:inline-block;
+    vertical-align: middle;
+    }
+    li:hover{
+        background-color:@greySilver;
+    }
+    a{
+        color:@greyDark;
+        text-decoration:none;
+    }
+    span{
+        display: block;
+        width: 100%;
+        color:@greyAnthracite;
+    }
+}
+
+.boxText{
+    padding:0.5%;
+    border-left:4px dotted @greenAcide;
+}

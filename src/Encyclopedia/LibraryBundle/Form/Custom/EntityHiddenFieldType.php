@@ -4,7 +4,7 @@ namespace Encyclopedia\LibraryBundle\Form\Custom;
 use Symfony\Component\Form\AbstractType;
 use Encyclopedia\LibraryBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class EntityHiddenFieldType extends AbstractType {
@@ -23,7 +23,7 @@ class EntityHiddenFieldType extends AbstractType {
         $builder->addModelTransformer($transformer);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver
                 ->setRequired(array('class'))
                 ->setDefaults(array(

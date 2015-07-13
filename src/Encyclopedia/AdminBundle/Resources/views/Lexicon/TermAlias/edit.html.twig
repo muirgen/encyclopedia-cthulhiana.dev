@@ -6,6 +6,7 @@
         <li><a href="{{ path('encyclopedia_admin_homepage') }}">Home</a></li>
         <li>Lexicon</li>
         <li><a href="{{ path('_admin_lexicon_term_index') }}">Terms</a></li>
+        <li><a href="{{ path('_admin_lexicon_term_edit', {'id':term.id} ) }}">{{ term.term }}</a></li>
         <li><a href=""></a>Alias</li>
         <li class="active">{{ nameOfAction }}</li>
     </ol>
@@ -29,37 +30,29 @@
                     {{ form_errors(form) }}
                 </div>
         {% endif %}
-                
+         
+        {{ form_widget(form.lexicon) }}
+        
         <div class="form-group">
-            {{ form_label(form.term, 'Term', {'label_attr': {'class': 'col-sm-3 control-label'}} ) }}
+            {{ form_label(form.termAlias, 'Alias', {'label_attr': {'class': 'col-sm-3 control-label'}} ) }}
             <div class="col-xs-8">
-                {{ form_widget(form.term, {attr:{'class':'form-control','role':'default'}} ) }}
+                {{ form_widget(form.termAlias, {attr:{'class':'form-control','role':'default'}} ) }}
 
                 {% if form_errors is defined %}
-                    <div class="col-xs-8 alert alert-danger" role="alert">{{ form_errors(form.term) }}</div>
+                    <div class="col-xs-8 alert alert-danger" role="alert">{{ form_errors(form.termAlias) }}</div>
                 {% endif %}
             </div>
         </div>
         <div class="form-group">
-            {{ form_label(form.idxTerm, 'Indexed Term', {'label_attr': {'class': 'col-sm-3 control-label'}} ) }}
+            {{ form_label(form.idxTermAlias, 'Indexed Alias', {'label_attr': {'class': 'col-sm-3 control-label'}} ) }}
             <div class="col-xs-8">
-                {{ form_widget(form.idxTerm, {attr:{'class':'form-control','role':'indexed'}} ) }}
+                {{ form_widget(form.idxTermAlias, {attr:{'class':'form-control','role':'indexed'}} ) }}
 
                 {% if form_errors is defined %}
-                    <div class="col-xs-8 alert alert-danger" role="alert">{{ form_errors(form.idxTerm) }}</div>
+                    <div class="col-xs-8 alert alert-danger" role="alert">{{ form_errors(form.idxTermAlias) }}</div>
                 {% endif %}
             </div>
         </div>    
-        <div class="form-group">
-            {{ form_label(form.category, 'Category' ,{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-xs-8">
-                {{ form_widget(form.category, {attr:{'class':'form-control'}} ) }}
-
-                {% if form_errors is defined %}
-                    <div class="col-xs-8 alert alert-danger" role="alert">{{ form_errors(form.category) }}</div>
-                {% endif %}
-            </div>
-        </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-8">
                 {{ form_widget(form.submit) }}
@@ -68,7 +61,7 @@
         {{ form_end(form) }}
     </div> 
     <div class="col-lg-6">
-        <h3>Alias <span class="pull-right"><a href="" title="Add an alias"><i class="fa fa-plus-circle"></i></a></span></h3>
+        <h3>Translations <span class="pull-right"><a href="" title="Add an alias"><i class="fa fa-plus-circle"></i></a></span></h3>
     </div>
 </div>    
 {% endblock %}

@@ -50,7 +50,14 @@
   top: 0.14285714285714285em;
   text-align: center;
 }
-
+.cthulhu-i{
+  font-family: 'cthulhuianv2medium';
+  font-size: 1.3333333333333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+  margin:0 1% 0;
+  font-style:normal;
+}
 .cthulhu-li.cthulhu-lg {
   left: -1.8571428571428572em;
 }
